@@ -1,6 +1,7 @@
 """The playable campaign surface: station, expedition and exclusive overlays.
 
-All drawing uses the established 1920x1080 design space. The simulation and
+Layout and input use the established 1920x1080 design space; artwork and
+primitives rasterize directly at the native output size. Simulation and
 persistence stay outside the screen; widgets only issue model commands.
 """
 from __future__ import annotations
@@ -16,6 +17,7 @@ from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
 from dtd.campaign_sprites import CampaignSprites
 from dtd.campaign_audio import CampaignAudio
 from dtd.campaign_camera import Camera
+from dtd.native_render import NativeDraw, RenderCamera
 from dtd.camera_indicators import offscreen_indicators, draw_indicators
 from dtd.campaign_effects import (DamageFlashes, EffectLights, MiningFragments,
                                   mining_beam, projectile, ore_glint)
@@ -51,6 +53,7 @@ class CampaignScreen(Screen):
         self._keys: set[int] = set()
         self._firing = False
         self._pending_shot = None
+        self._display_refresh_pending = False
         self._cursor = (960.0, 350.0)
         self._camera = Camera()
         self._aim = self._camera.screen_to_world(self._cursor)
@@ -68,6 +71,11 @@ class CampaignScreen(Screen):
             self._button_theme.cornerRadius = 7
         self._ui = UIManager(theme)
         self._canvas = pygame.Surface((1920, 1080))
+        self._raster = NativeDraw()
+        self._backdrop = None
+        self._shade = None
+        self._shield = None
+        self._shield_key = None
         self._art = CampaignSprites(loader=loader)
         self._sound = CampaignAudio()
         self._impacts = DamageFlashes()
@@ -78,10 +86,6 @@ class CampaignScreen(Screen):
         self._text_layer = []
         self._world_labels = []
         self._world_bars = []
-        self._shield = pygame.Surface((SAFE_RADIUS * 2 + 2, SAFE_RADIUS * 2 + 2), pygame.SRCALPHA)
-        pygame.draw.circle(self._shield, (33, 103, 119, 6),
-                           (SAFE_RADIUS + 1, SAFE_RADIUS + 1), SAFE_RADIUS)
-        self._shields = {1.0: self._shield}
         rng = random.Random(47)
         self._stars = [(rng.randrange(1920), rng.randrange(1080), rng.randrange(35, 90))
                        for _ in range(180)]
@@ -270,7 +274,29 @@ class CampaignScreen(Screen):
             self._camera.step_zoom(direction)
         self._sync_camera()
 
+    def _refresh_display_pointer(self) -> None:
+        if pygame.display.get_surface() is None:
+            return
+        pygame.event.pump()
+        self._cursor = current_scale().mouse(pygame.mouse.get_pos())
+        self._sync_camera()
+
+    def display_changed(self) -> None:
+        # SDL can queue a motion event in the previous backing coordinates when
+        # changing aspect bars. Refresh now for this frame, and once after that
+        # queued batch. Do not reinterpret an already captured click-world aim.
+        self._refresh_display_pointer()
+        self._display_refresh_pending = True
+
     def update(self, events) -> None:
+        try:
+            self._update_events(events)
+        finally:
+            if self._display_refresh_pending:
+                self._display_refresh_pending = False
+                self._refresh_display_pointer()
+
+    def _update_events(self, events) -> None:
         # Process each event once. A transition discards the rest of its batch;
         # a launch/resume click cannot also fire a weapon or trigger another UI.
         # Focus loss is a lifecycle event, even when it trails a click that
@@ -388,31 +414,39 @@ class CampaignScreen(Screen):
         self._text_layer = [entry for entry in self._text_layer
                             if not bounds.colliderect(pygame.Rect(
                                 entry[1], entry[2], *self._fonts[entry[3]].size(entry[0])))]
-        pygame.draw.rect(self._canvas, _PANEL, rect, border_radius=12)
-        pygame.draw.rect(self._canvas, _LINE, rect, 1, border_radius=12)
-        pygame.draw.line(self._canvas, (69, 111, 124),
+        self._raster.rect(self._canvas, _PANEL, rect, border_radius=12)
+        self._raster.rect(self._canvas, _LINE, rect, 1, border_radius=12)
+        self._raster.line(self._canvas, (69, 111, 124),
                          (bounds.x + 14, bounds.y + 1),
                          (bounds.x + min(bounds.width - 14, 180), bounds.y + 1))
 
     def _bar(self, x, y, width, fraction, color) -> None:
-        pygame.draw.rect(self._canvas, _LINE, (x, y, width, 10), border_radius=5)
-        pygame.draw.rect(self._canvas, color, (x, y, max(0, int(width * min(1, fraction))), 10), border_radius=5)
+        self._raster.rect(self._canvas, _LINE, (x, y, width, 10), border_radius=5)
+        self._raster.rect(self._canvas, color, (x, y, max(0, int(width * min(1, fraction))), 10), border_radius=5)
 
     def draw(self, surface) -> None:
         self._text_layer.clear()
-        self._canvas.fill(_BG)
-        self._art.draw_image(self._canvas, "background", (0, 0, 1920, 1080))
-        for x, y, light in self._stars:
-            self._canvas.set_at((x, y), (light, light, light + 15))
+        self._canvas = surface
+        self._raster = NativeDraw(surface.get_size())
+        if self._backdrop is None or self._backdrop.get_size() != surface.get_size():
+            self._backdrop = pygame.Surface(surface.get_size())
+            self._backdrop.fill(_BG)
+            # A 4K background alone nearly fills the sprite LRU. Keep this one
+            # static buffer separately, replacing it on resize, never every draw.
+            self._art.draw_image(self._backdrop, "background", surface.get_rect(), cache=False)
+            for x, y, light in self._stars:
+                self._raster.rect(self._backdrop, (light, light, light + 15), (x, y, 1, 1))
+            self._shade = None
+            self._shield = None
+            self._shield_key = None
+        surface.blit(self._backdrop, (0, 0))
         if self.expedition is not None:
             self._draw_flight()
         else:
             self._draw_station()
         if self.mode in ("paused", "abandon", "result", "victory"):
             self._text_layer.clear()
-            shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
-            shade.fill((0, 6, 16, 200))
-            self._canvas.blit(shade, (0, 0))
+            self._draw_shade(200)
             self._panel((530, 260, 860, 570))
             heading = {"paused": "paused", "abandon": "abandon", "result": "result", "victory": "victory"}[self.mode]
             self._text(self._t(heading), 600, 310, 42, _GOLD if self.mode == "victory" else _CYAN, 730)
@@ -425,10 +459,6 @@ class CampaignScreen(Screen):
             self._text(self.error, 90, 868, 27, _RED, 1740)
         elif self.message and self.mode == "station":
             self._text(self.message, 420, 994, 25, _CYAN, 1000)
-        if surface.get_size() == self._canvas.get_size():
-            surface.blit(self._canvas, (0, 0))
-        else:
-            pygame.transform.smoothscale(self._canvas, surface.get_size(), surface)
         # Glyphs are rasterized at output resolution; logical wrapping/spacing
         # still uses the selected font. Changing output size releases old fonts.
         scale_x, scale_y = surface.get_width() / 1920, surface.get_height() / 1080
@@ -447,6 +477,20 @@ class CampaignScreen(Screen):
             surface.blit(glyphs, (round(x * scale_x), round(y * scale_y)))
         self._ui.draw(surface)
 
+    def _draw_shade(self, alpha):
+        if self._shade is None or self._shade.get_size() != self._canvas.get_size():
+            self._shade = pygame.Surface(self._canvas.get_size(), pygame.SRCALPHA)
+        self._shade.fill((0, 6, 16, alpha))
+        self._canvas.blit(self._shade, (0, 0))
+
+    def _draw_ship_art(self, x, y, heading, *, size=26, **kwargs):
+        self._art.draw_ship(self._canvas, *self._raster.point((x, y)), heading,
+                            size=self._raster.length(size), pixel_scale=self._raster.scale, **kwargs)
+
+    def _draw_station_art(self, x, y, size=100):
+        self._art.draw_station(self._canvas, *self._raster.point((x, y)),
+                               size=self._raster.length(size))
+
     def _draw_station(self) -> None:
         c = self.campaign
         self._text(self._t("station"), 70, 28, 44, _CYAN)
@@ -461,8 +505,8 @@ class CampaignScreen(Screen):
             self._text(self._t(key), 90 + i * 450, 155, 21, _MUTED)
             self._text(value, 90 + i * 450, 187, 30)
         self._panel((60, 260, 1180, 235))
-        if not self._art.draw_image_cover(self._canvas, "dock", (64, 264, 1172, 227)):
-            self._art.draw_station(self._canvas, 650, 377)
+        if not self._art.draw_image_cover(self._canvas, "dock", self._raster.bounds((64, 264, 1172, 227))):
+            self._draw_station_art(650, 377)
         for x in (60, 680):
             self._panel((x, 515, 560, 330))
         self._panel((1300, 260, 560, 585))
@@ -471,15 +515,15 @@ class CampaignScreen(Screen):
         self._text(self._t("operation"), 1320, 280, 30, _CYAN)
         # Preview the next support hull; this is a passive operation asset.
         kind = "hauler" if c.support_ships == 0 else "refinery"
-        self._art.draw_ship(self._canvas, 1575, 365, -math.pi / 2,
+        self._draw_ship_art(1575, 365, -math.pi / 2,
                             kind=kind, size=40)
         for i in range(3):
             self._text(self._t("sector_" + str(i + 1)), 82, 621 + i * 86, 18,
                        _MUTED if i == 0 else _GOLD, 510)
         self._text(self._t("ship_note", bonus=self._fleet_bonus()), 1320, 480, 21, _MUTED, 500)
         for name, y, owned in (("miner", 542, c.miner), ("engineer", 674, c.engineer)):
-            self._art.draw_image(self._canvas, name, (1320, y, 92, 92))
-            pygame.draw.rect(self._canvas, _CYAN if owned else _LINE,
+            self._art.draw_image(self._canvas, name, self._raster.bounds((1320, y, 92, 92)))
+            self._raster.rect(self._canvas, _CYAN if owned else _LINE,
                              (1320, y, 92, 92), 1, border_radius=5)
             self._text(self._t(name + "_note"), 1430, y + 70, 20, _MUTED, 400)
         self._panel((60, 850, 1800, 100))
@@ -499,7 +543,7 @@ class CampaignScreen(Screen):
         for sx in (-1, 1):
             for sy in (-1, 1):
                 corner = (round(x + sx * radius), round(y + sy * radius))
-                pygame.draw.lines(self._canvas, color, False,
+                self._raster.lines(self._canvas, color, False,
                                   [(corner[0], corner[1] - sy * length), corner,
                                    (corner[0] - sx * length, corner[1])], width)
 
@@ -566,9 +610,9 @@ class CampaignScreen(Screen):
             dx, dy = rect.centerx - ax, rect.centery - ay
             length = max(1, math.hypot(dx, dy))
             start = (ax + dx / length * (radius + 5), ay + dy / length * (radius + 5))
-            pygame.draw.line(self._canvas, _LINE, start, rect.center, 1)
-        pygame.draw.rect(self._canvas, _BG, rect, border_radius=4)
-        pygame.draw.line(self._canvas, color, rect.topleft, (rect.left + 12, rect.top), 1)
+            self._raster.line(self._canvas, _LINE, start, rect.center, 1)
+        self._raster.rect(self._canvas, _BG, rect, border_radius=4)
+        self._raster.line(self._canvas, color, rect.topleft, (rect.left + 12, rect.top), 1)
         self._world_labels.append(rect)
         self._text(text, rect.x + 6, rect.y + 3, size, color)
 
@@ -579,8 +623,8 @@ class CampaignScreen(Screen):
             [(x-28, y+radius+9), (x-28, y-radius-23),
              (x+radius+11, y-7), (x-radius-67, y-7)])
         if rect is not None:
-            pygame.draw.line(self._canvas, _RED, (x, y), rect.center, 1)
-            pygame.draw.rect(self._canvas, _BG, rect, border_radius=3)
+            self._raster.line(self._canvas, _RED, (x, y), rect.center, 1)
+            self._raster.rect(self._canvas, _BG, rect, border_radius=3)
             self._bar(rect.x+3, rect.y+3, 50, enemy.hull/75, _RED)
             self._world_bars.append(rect)
 
@@ -641,13 +685,14 @@ class CampaignScreen(Screen):
                                        tx - radius, ty - radius - 32, color, anchor=(tx, ty, radius))
             points = self._direction_points(advice)
             if points:
-                pygame.draw.polygon(self._canvas, color, points)
+                self._raster.polygon(self._canvas, color, points)
 
     def _draw_flight(self) -> None:
         run, c = self.expedition, self.campaign
         self._sync_camera()
         camera = self._camera
         project, length = camera.world_to_screen, camera.scale_length
+        render_camera = RenderCamera(camera, self._raster.scale)
         self._world_labels.clear()
         self._world_bars.clear()
         indicator_obstacles = []
@@ -661,40 +706,42 @@ class CampaignScreen(Screen):
             project=project, viewport=camera.viewport, obstacles=indicator_obstacles)
         self._world_labels.extend(pygame.Rect(marker.bounds) for marker in indicators)
         old_clip = self._canvas.get_clip()
-        self._canvas.set_clip(camera.viewport)
-        self._art.draw_field_detail(self._canvas, camera)
+        self._canvas.set_clip(self._raster.bounds(camera.viewport))
+        self._art.draw_field_detail(self._canvas, render_camera)
         target = mining_target(c, run)
         sx, sy = project((STATION_X, STATION_Y))
-        if camera.zoom not in self._shields:
-            diameter = round(length(SAFE_RADIUS * 2 + 2))
-            self._shields[camera.zoom] = pygame.transform.smoothscale(self._shield, (diameter, diameter))
-        shield = self._shields[camera.zoom]
-        self._canvas.blit(shield, shield.get_rect(center=(round(sx), round(sy))))
+        shield_radius = round(render_camera.scale_length(SAFE_RADIUS))
+        if self._shield_key != shield_radius:
+            self._shield = pygame.Surface((shield_radius*2+2, shield_radius*2+2), pygame.SRCALPHA)
+            pygame.draw.circle(self._shield, (33, 103, 119, 6),
+                               (shield_radius+1, shield_radius+1), shield_radius)
+            self._shield_key = shield_radius
+        self._canvas.blit(self._shield, self._shield.get_rect(center=self._raster.point((sx, sy))))
         # Keep the exact safety boundary visible; docking gets emphasis only
         # near the bay. The HUD and return guidance retain the explicit action.
-        pygame.draw.circle(self._canvas, (32, 64, 76), (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
+        self._raster.circle(self._canvas, (32, 64, 76), (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
         near_dock = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= DOCK_RADIUS + 80
         dock_color = (65, 139, 149) if near_dock else (28, 52, 65)
-        pygame.draw.circle(self._canvas, dock_color, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
-        self._art.draw_station(self._canvas, sx, sy, size=length(100))
+        self._raster.circle(self._canvas, dock_color, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
+        self._draw_station_art(sx, sy, size=length(100))
         for rock in run.asteroids:
             if not camera.is_visible((rock.x, rock.y), rock.radius):
                 continue
-            self._art.draw_asteroid(self._canvas, rock, camera)
+            self._art.draw_asteroid(self._canvas, rock, render_camera)
             if rock is target or rock.health < rock.max_health:
                 rx, ry = project((rock.x, rock.y))
                 radius = length(rock.radius)
                 rect = self._annotation_rect((62, 16),
                     [(rx-31, ry+radius+10), (rx-31, ry-radius-26), (rx+radius+12, ry-8)])
                 if rect is not None:
-                    pygame.draw.rect(self._canvas, _BG, rect, border_radius=4)
+                    self._raster.rect(self._canvas, _BG, rect, border_radius=4)
                     self._bar(rect.x+3, rect.y+3, 56, rock.health/rock.max_health, _ORE[rock.ore])
                     self._world_bars.append(rect)
         for pickup in run.pickups:
             if camera.is_visible((pickup.x, pickup.y), 13):
                 ore_glint(self._canvas, pickup.x, pickup.y, pickup.ore,
-                          self._visual_time, pickup.id, camera)
-        self._fragments.draw(self._canvas, camera)
+                          self._visual_time, pickup.id, render_camera)
+        self._fragments.draw(self._canvas, render_camera)
         px, py = project((run.x, run.y))
         # Ship readability belongs to its alpha-shaped contour in the sprite
         # renderer; a circular backing would erase the scenery through hull gaps.
@@ -707,32 +754,32 @@ class CampaignScreen(Screen):
             self._flight_label(self._t("cut_progress", value=progress),
                                tx - 60, ty - radius - 44, _CYAN, anchor=(tx, ty, radius))
             if pygame.K_SPACE in self._keys and self.mode == "flight":
-                mining_beam(self._canvas, run, target, self._visual_time, camera,
+                mining_beam(self._canvas, run, target, self._visual_time, render_camera,
                             lights=self._lights,
-                            contact=self._art.mining_contact(run, target, camera))
+                            contact=self._art.mining_contact(run, target, render_camera))
         for enemy in run.enemies:
             if not camera.is_visible((enemy.x, enemy.y), 34):
                 continue
             ex, ey = project((enemy.x, enemy.y))
             self._rival_bar(enemy)
             self._brackets(ex, ey, length(31), _RED)
-            self._art.draw_ship(self._canvas, ex, ey, enemy.heading, kind="rival", size=length(24))
+            self._draw_ship_art(ex, ey, enemy.heading, kind="rival", size=length(24))
         for shot in run.projectiles:
             if camera.is_visible((shot.x, shot.y), 20):
-                projectile(self._canvas, shot, camera)
-        self._art.draw_ship(self._canvas, px, py, run.heading, size=length(32),
+                projectile(self._canvas, shot, render_camera)
+        self._draw_ship_art(px, py, run.heading, size=length(32),
                   thrust=self._moving(), phase=self._visual_time, color=_CYAN)
-        self._impacts.draw(self._canvas, camera, lights=self._lights)
+        self._impacts.draw(self._canvas, render_camera, lights=self._lights)
         if self._visual_time < 6:
             self._draw_player_label()
         if self.mode == "flight" and camera.viewport.collidepoint(self._cursor):
             ax, ay = map(int, self._cursor)
-            pygame.draw.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
-            pygame.draw.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
-            pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
+            self._raster.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
+            self._raster.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
+            self._raster.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
         self._draw_guidance()
         # Reserved early, painted last so guidance cannot cross navigation chips.
-        draw_indicators(self._canvas, indicators, self._text, self._t)
+        draw_indicators(self._canvas, indicators, self._text, self._t, draw=self._raster)
         self._canvas.set_clip(old_clip)
         self._panel((30, 24, 1860, 116))
         self._text(self._t("sector_title", sector=run.sector), 60, 35, 32, _CYAN)
@@ -759,9 +806,7 @@ class CampaignScreen(Screen):
 
     def _draw_fleet(self) -> None:
         self._text_layer.clear()
-        shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
-        shade.fill((0, 6, 16, 225))
-        self._canvas.blit(shade, (0, 0))
+        self._draw_shade(225)
         self._panel((250, 200, 1420, 720))
         self._text(self._t("fleet_title"), 300, 235, 42, _CYAN)
         self._text(self._t("fleet_passive"), 300, 302, 25, _MUTED, 1310)
@@ -777,6 +822,6 @@ class CampaignScreen(Screen):
         self._text(self._t("fleet_total", bonus=self._fleet_bonus()), 300, 765, 26, _GOLD, 1320)
 
     def _fleet_silhouette(self, x, y, index, color) -> None:
-        self._art.draw_ship(self._canvas, x, y, -math.pi / 2,
+        self._draw_ship_art(x, y, -math.pi / 2,
                   kind=("prospector", "hauler", "refinery")[index], size=110,
                   color=color)

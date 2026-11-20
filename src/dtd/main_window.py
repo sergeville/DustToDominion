@@ -206,11 +206,18 @@ class MainWindow:
         return game_constants.WINDOWED_FALLBACK_SIZE
 
     def _enter_fullscreen(self, resolution: str | None, display_index: int, persist: bool) -> bool:
-        # SCALED selects SDL_WINDOW_FULLSCREEN_DESKTOP, never an exclusive
-        # mode change. SDL owns aspect-preserving scaling and mouse mapping.
+        # Keep desktop-fullscreen semantics and SDL's letterbox/input mapping,
+        # but give the renderer a native-sized 16:9 content surface.
+        desktop = self._display_current_resolution(display_index)
+        units = min(desktop[0] // 16, desktop[1] // 9) if desktop else 0
+        if units > 0:
+            content_size = (16 * units, 9 * units)
+        else:
+            content_size = (game_constants.DESIGN_W, game_constants.DESIGN_H)
+            logger.warning("desktop dimensions unavailable on display {}; using scaled 1920x1080 fallback", display_index)
         try:
             pygame.display.set_mode(
-                (game_constants.DESIGN_W, game_constants.DESIGN_H),
+                content_size,
                 pygame.FULLSCREEN | pygame.SCALED,
                 display=display_index,
             )

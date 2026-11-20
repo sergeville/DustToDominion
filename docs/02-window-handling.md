@@ -14,11 +14,22 @@ if desktop dimensions cannot be queried. Displays smaller than 1280x720 retain
 the existing minimum-window limitation.
 
 Fullscreen uses the monitor's current desktop resolution, including ultrawide
-and Retina desktop sizes, without changing its video mode. Render a 1920x1080
-logical surface with `FULLSCREEN | SCALED`: SDL scales both graphics and text
-proportionally, centers the image with black bars where aspect ratios differ,
-and maps mouse coordinates back into the logical surface. Font selection and
-design-space point sizes remain unchanged.
+and Retina desktop sizes, without changing its video mode. Request the largest exact 16:9 drawing surface that fits the selected desktop
+with `FULLSCREEN | SCALED`. For 3440x1440 this is 2560x1440 with side bars;
+for 3840x2160 it is 3840x2160. Choose integer multiples of 16x9, flooring to fit.
+SDL centers the content and maps mouse coordinates into that drawing surface;
+the UI then converts once into 1920x1080 design coordinates. Font selection,
+design-space sizes and camera framing remain unchanged. The campaign renders
+directly at the drawing-surface resolution, including world graphics.
+If desktop dimensions are unavailable/invalid, warn and retain the old
+1920x1080 scaled fallback; do not report that fallback as native rendering.
+Desktop/window size, drawing-surface size and physical panel resolution are
+separate facts; Retina and untested monitors require their own verification.
+
+A successful app-level toggle notifies the active screen. Campaign refreshes
+current SDL mouse coordinates immediately and after the next event batch to
+correct stale motion coordinates emitted during native mode transitions; pending
+click-time world aim is preserved. Ordinary frames remain event-driven.
 
 F11 toggles the mode. On macOS, Ctrl+Cmd+F also toggles it. The existing window's
 display is used when no display is specified. An explicit programmatic display
@@ -97,3 +108,18 @@ a native smoke test separately records actual window/surface sizes and toggles.
    mouse position and Fleet activation passed. See the linked review below.
 
 Evidence: [Display validation](reviews/2026-11-20-display.md).
+
+
+3. Amendment 2026-11-20 — native campaign resolution: replace the fixed 1080p
+   fullscreen backbuffer with the desktop-fitting 16:9 native content surface;
+   retain SDL desktop fullscreen, proportional bars and input mapping. Test
+   3440x1440, 4K, nonstandard/small dimensions, unavailable dimensions, repeated
+   toggles and unchanged persistence. Verify actual native surface/window sizes
+   separately from offscreen 4K. Restore active after implementation checks.
+
+   **Completed 2026-11-20**: 2,061 tests passed, one known dummy-driver warning.
+   Native Cocoa fullscreen measured 3440x1440 output with a 2560x1440 campaign
+   surface at 1:1 scale and 440-pixel side bars. Return to 1920x1080 and stationary
+   pointer aiming passed after correcting stale SDL transition events. Direct
+   3840x2160 rendering and earned play passed offscreen; physical 4K and Retina
+   density are unverified. See [native review](reviews/2026-11-20-native-resolution/review.md).

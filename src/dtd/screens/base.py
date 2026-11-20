@@ -83,6 +83,9 @@ class Screen:
     def update(self, events: list[pygame.event.Event]) -> None:
         """Advance per-frame screen state (example: starfield twinkle)."""
 
+    def display_changed(self) -> None:
+        """Refresh screen input after a successful app-level display transition."""
+
     def advance(self, dt: float) -> None:
         """Advance timed gameplay; menu screens have no timed simulation."""
 

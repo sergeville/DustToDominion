@@ -136,12 +136,13 @@ def offscreen_indicators(*, player: Point, station: Point,
 
 
 def draw_indicators(surface: pygame.Surface, indicators: Iterable[EdgeIndicator],
-                    text: Callable, translate: Callable) -> tuple[Bounds, ...]:
+                    text: Callable, translate: Callable, *, draw=None) -> tuple[Bounds, ...]:
     """Draw chips/arrows with CampaignScreen-compatible text/localization hooks.
 
     Reserve each indicator.bounds before placing ordinary world annotations.
     Text is queued through the caller, retaining native output font rendering.
     """
+    draw = pygame.draw if draw is None else draw
     reservations = []
     for marker in indicators:
         color = (85, 220, 220) if marker.kind == "station" else (246, 106, 110)
@@ -149,10 +150,10 @@ def draw_indicators(surface: pygame.Surface, indicators: Iterable[EdgeIndicator]
         dx, dy = marker.direction
         tip = x + dx * 10, y + dy * 10
         back = x - dx * 7, y - dy * 7
-        pygame.draw.polygon(surface, color, [tip, (back[0] - dy * 6, back[1] + dx * 6),
+        draw.polygon(surface, color, [tip, (back[0] - dy * 6, back[1] + dx * 6),
                                              (back[0] + dy * 6, back[1] - dx * 6)])
-        pygame.draw.rect(surface, (7, 16, 28), marker.label_rect, border_radius=5)
-        pygame.draw.rect(surface, color, marker.label_rect, 1, border_radius=5)
+        draw.rect(surface, (7, 16, 28), marker.label_rect, border_radius=5)
+        draw.rect(surface, color, marker.label_rect, 1, border_radius=5)
         label = translate("camera_" + marker.kind, value=round(marker.distance))
         if marker.extra_threats:
             label += translate("camera_extra_threats", count=marker.extra_threats)

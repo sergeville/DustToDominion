@@ -191,9 +191,9 @@ def test_integrated_offscreen_station_chip_clears_enlarged_rival(player_factory,
     zoom_to(player, 2)
     recorded = []
     original = presentation.draw_indicators
-    def observe(surface, markers, *args):
+    def observe(surface, markers, *args, **kwargs):
         recorded.extend(markers)
-        return original(surface, markers, *args)
+        return original(surface, markers, *args, **kwargs)
     monkeypatch.setattr(presentation, 'draw_indicators', observe)
     before = copy.deepcopy(run)
     screen.draw(pygame.display.get_surface())

@@ -43,6 +43,7 @@ class CampaignSprites:
                  cache_bytes=MAX_CACHE_BYTES):
         self.asset_root = Path(root) if root is not None else ASSET_ROOT
         self._sources = {}
+        self._world_fits = {}
         self.issues = {}
         self._cache = OrderedDict()
         self._cache_bytes = 0
@@ -68,7 +69,10 @@ class CampaignSprites:
                     rgba.blit(loaded, (0, 0))
                     if pygame.mask.from_surface(rgba, 0).count() == rgba.get_width()*rgba.get_height():
                         raise ValueError("world sprite has no transparent background")
-                    image = self._normalize_world(rgba, bounds)
+                    self._world_fits[name] = (bounds, self._world_diameter(rgba, bounds))
+                    # Retain full source detail, sharing the loader surface when
+                    # possible. Draw transforms never mutate these originals.
+                    image = loaded if loaded.get_bitsize() in (24, 32) else rgba
                 elif loaded.get_bitsize() in (24, 32):
                     # Keep a read-only reference, not another full-size panel
                     # copy. All transforms return new surfaces.
@@ -106,13 +110,13 @@ class CampaignSprites:
         return tuple(pieces)
 
     @staticmethod
-    def _normalize_world(source, bounds):
+    def _world_diameter(source, bounds):
         """Center visible bounds and fit every alpha pixel inside a radius.
 
         Scanline extrema use Mask.overlap, in C, rather than a Python per-pixel
         scan. This happens once at preload and includes disconnected highlights.
-        A 512px normalized source is ample for the largest current world/fleet
-        use. Original higher-resolution exports remain on disk.
+        Preserve this geometry metadata, not a downsampled intermediate image.
+        Each final native-size transform samples the original source directly.
         """
         cropped = source.subsurface(bounds).copy()
         mask = pygame.mask.from_surface(cropped, 7)
@@ -130,12 +134,7 @@ class CampaignSprites:
                     radius_squared = max(radius_squared, (x-cx)**2+(y-cy)**2)
         # Pixel corner allowance keeps rotations/smooth filtering within bounds.
         diameter = 2*(math.sqrt(radius_squared)+1)
-        scale = 510/diameter
-        size = (max(1, round(width*scale)), max(1, round(height*scale)))
-        normalized = pygame.Surface((512, 512), pygame.SRCALPHA)
-        scaled = pygame.transform.smoothscale(cropped, size)
-        normalized.blit(scaled, scaled.get_rect(center=(256, 256)))
-        return normalized
+        return diameter
 
     @property
     def loaded_names(self):
@@ -151,23 +150,34 @@ class CampaignSprites:
                 "field_detail_bytes": sum(image.get_pitch()*image.get_height()
                                           for _, _, image in self._field_details)}
 
-    def _transformed(self, name, size, angle=0):
+    def _transformed(self, name, size, angle=0, *, cache=True, outline_scale=1):
         width, height = size
         # Two-degree buckets avoid an unlimited heading-key space while keeping
         # maximum angular error one degree; cardinal directions remain exact.
         angle = (round(angle/2)*2) % 360
-        key = (name, width, height, angle)
-        cached = self._cache.get(key)
+        key = (name, width, height, angle, round(outline_scale, 4))
+        cached = self._cache.get(key) if cache else None
         if cached is not None:
             self._cache.move_to_end(key)
             return cached
-        image = pygame.transform.smoothscale(self._sources[name], size)
+        source = self._sources[name]
+        if name in self._world_fits:
+            bounds, diameter = self._world_fits[name]
+            fit_scale = min(size) * (510 / 512) / diameter
+            fit_size = (max(1, round(bounds.width*fit_scale)),
+                        max(1, round(bounds.height*fit_scale)))
+            cropped = source.subsurface(bounds)
+            scaled = pygame.transform.smoothscale(cropped, fit_size)
+            image = pygame.Surface(size, pygame.SRCALPHA)
+            image.blit(scaled, scaled.get_rect(center=(width//2, height//2)))
+        else:
+            image = pygame.transform.smoothscale(source, size)
         if angle:
             image = pygame.transform.rotate(image, angle)
         if name in ("rival", "rival_v2"):
-            image = self._separate_rival(image)
+            image = self._separate_rival(image, outline_scale)
         elif name in ("prospector", "prospector_v2"):
-            image = self._separate_hull(image, (84, 178, 192, 110))
+            image = self._separate_hull(image, (84, 178, 192, 110), outline_scale)
         if name in WORLD_NAMES:
             # Guard the physical artwork footprint against antialias fringes and
             # rotation rounding; this affects presentation, never hit geometry.
@@ -176,7 +186,7 @@ class CampaignSprites:
                                (image.get_width()//2, image.get_height()//2),
                                min(width, height)//2)
             image.blit(clip, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
-        return self._remember(key, image)
+        return self._remember(key, image) if cache else image
 
     def _remember(self, key, image):
         cost = image.get_pitch()*image.get_height()
@@ -190,20 +200,21 @@ class CampaignSprites:
         return image
 
     @staticmethod
-    def _separate_rival(image):
+    def _separate_rival(image, scale=1):
         """Cached two-pixel dark separation and restrained one-pixel red rim.
 
         Stroke pixels remain within the original transform canvas and the
         normal circular footprint guard; gameplay size is not enlarged.
         """
-        return CampaignSprites._separate_hull(image, (235, 116, 111, 210))
+        return CampaignSprites._separate_hull(image, (235, 116, 111, 210), scale)
 
     @staticmethod
-    def _separate_hull(image, rim):
+    def _separate_hull(image, rim, scale=1):
         # Follow actual alpha, preserving transparent hull gaps and the scenery.
         mask = pygame.mask.from_surface(image, 32)
         separated = pygame.Surface(image.get_size(), pygame.SRCALPHA)
         for distance, color in ((2, (4, 9, 16, 220)), (1, rim)):
+            distance = max(1, round(distance*scale))
             silhouette = mask.to_surface(setcolor=color, unsetcolor=(0, 0, 0, 0))
             for dx, dy in ((-distance, 0), (distance, 0), (0, -distance), (0, distance),
                            (-distance, -distance), (-distance, distance),
@@ -212,7 +223,7 @@ class CampaignSprites:
         separated.blit(image, (0, 0))
         return separated
 
-    def _world(self, surface, name, x, y, radius, angle=0):
+    def _world(self, surface, name, x, y, radius, angle=0, *, outline_scale=1):
         if name not in self._sources:
             return False
         diameter = max(1, round(radius*2))
@@ -221,12 +232,12 @@ class CampaignSprites:
                 pygame.Rect(round(x-radius)-1, round(y-radius)-1,
                             diameter+2, diameter+2)):
             return True
-        image = self._transformed(name, (diameter, diameter), angle)
+        image = self._transformed(name, (diameter, diameter), angle, outline_scale=outline_scale)
         surface.blit(image, image.get_rect(center=(round(x), round(y))))
         return True
 
     def draw_ship(self, surface, x, y, heading, kind="prospector", size=26,
-                  thrust=False, phase=0.0, color=None):
+                  thrust=False, phase=0.0, color=None, *, pixel_scale=1):
         if kind not in SHIP_NAMES:
             raise ValueError(f"Unknown ship kind: {kind}")
         if size <= 0:
@@ -238,7 +249,7 @@ class CampaignSprites:
         if thrust:
             self._exhaust(surface, x, y, heading, size, phase,
                           color or ((242, 111, 101) if kind == "rival" else (79, 217, 228)))
-        self._world(surface, name, x, y, size, -90-math.degrees(heading))
+        self._world(surface, name, x, y, size, -90-math.degrees(heading), outline_scale=pixel_scale)
 
     def _exhaust(self, surface, x, y, heading, size, phase, accent):
         # Fixed two jets: no particle allocation, simulation changes or wall time.
@@ -267,17 +278,7 @@ class CampaignSprites:
     def draw_station(self, surface, x, y, size=100):
         name = "station_v2" if "station_v2" in self._sources else "station"
         if not self._world(surface, name, x, y, size):
-            if size == 100:
-                campaign_art.draw_station(surface, x, y)
-            elif size > 0:
-                diameter = max(1, round(size*2))
-                key = ("vector_station", diameter, diameter, 0)
-                image = self._cache.get(key)
-                if image is None:
-                    source = pygame.Surface((200, 200), pygame.SRCALPHA)
-                    campaign_art.draw_station(source, 100, 100)
-                    image = self._remember(key, pygame.transform.smoothscale(source, (diameter, diameter)))
-                surface.blit(image, image.get_rect(center=(round(x), round(y))))
+            campaign_art.draw_station(surface, x, y, size=size)
 
     def _rock_name(self, rock):
         name = ROCK_NAMES[rock.ore]
@@ -345,7 +346,7 @@ class CampaignSprites:
                 return camera.screen_to_world((x, y)) if camera is not None else (x, y)
         return None
 
-    def draw_image(self, surface, name, rect):
+    def draw_image(self, surface, name, rect, *, cache=True):
         """Fit a panel asset without distortion; return False if unavailable."""
         if name not in self._sources:
             return False
@@ -354,7 +355,7 @@ class CampaignSprites:
             return True
         source = self._sources[name]
         fit = source.get_rect().fit(rect)
-        image = self._transformed(name, fit.size)
+        image = self._transformed(name, fit.size, cache=cache)
         surface.blit(image, fit)
         return True
 
@@ -399,6 +400,12 @@ class CampaignSprites:
             key = ("debris:"+str(index), *size, 0)
             scaled = self._cache.get(key)
             if scaled is None:
-                scaled = self._remember(key, pygame.transform.smoothscale(image, size))
+                names = [name for name in ("asteroid_iron", "asteroid_iron_b")
+                         if name in self._sources]
+                # Even decorative fragments sample original pixels at final
+                # size, rather than enlarging their 6px overview thumbnails.
+                scaled = self._transformed(names[index % len(names)], size).copy()
+                scaled.set_alpha(image.get_alpha())
+                scaled = self._remember(key, scaled)
             surface.blit(scaled, point)
         return bool(self._field_details)

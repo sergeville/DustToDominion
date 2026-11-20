@@ -131,13 +131,15 @@ def draw_ship(surface: pygame.Surface, x: float, y: float, heading: float,
     h.dot(-.50, 0, .035, accent)
 
 
-def draw_station(surface: pygame.Surface, x: float, y: float) -> None:
-    """Draw the dock inside a 100-pixel radius; safe/dock rings belong to HUD."""
-    h = _Hull(surface, x, y, 0, 100)
-    pygame.draw.circle(surface, (24,42,54), (round(x),round(y)), 78, 12)
-    pygame.draw.circle(surface, (88,120,135), (round(x),round(y)), 78, 2)
+def draw_station(surface: pygame.Surface, x: float, y: float, size: float = 100) -> None:
+    """Draw the dock directly at its requested radius; rings belong to HUD."""
+    if size <= 0:
+        return
+    h = _Hull(surface, x, y, 0, size)
+    pygame.draw.circle(surface, (24,42,54), (round(x),round(y)), round(size*.78), max(1, round(size*.12)))
+    pygame.draw.circle(surface, (88,120,135), (round(x),round(y)), round(size*.78), max(1, round(size*.02)))
     for angle in (math.pi/4, 3*math.pi/4, 5*math.pi/4, 7*math.pi/4):
-        arm = _Hull(surface, x, y, angle, 100)
+        arm = _Hull(surface, x, y, angle, size)
         arm.plate([(.20,-.12),(.85,-.12),(.94,0),(.85,.12),(.20,.12)], (43,64,80))
         arm.plate([(.60,-.18),(.83,-.18),(.83,.18),(.60,.18)], (89,109,122))
         arm.line([(.69,-.12),(.69,.12)], _CYAN, 2)

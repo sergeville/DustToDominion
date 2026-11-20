@@ -213,7 +213,7 @@ def _run_event_loop(
             events = pygame.event.get()
             current_screen.update(events)
             action = current_screen.handle(events)
-            if _pump_app_events(window, events):
+            if _pump_app_events(window, events, current_screen):
                 return
             if action is ScreenAction.QUIT:
                 return
@@ -266,7 +266,9 @@ def _run_event_loop(
         audio.get_audio_manager().stop_loops()
 
 
-def _pump_app_events(window: MainWindow, events: list[pygame.event.Event]) -> bool:
+def _pump_app_events(
+    window: MainWindow, events: list[pygame.event.Event], screen: Screen | None = None
+) -> bool:
     """Handle app-level events; ``True`` means the loop should exit.
 
     QUIT (window close) exits and F11 toggles the display mode (spec 02).
@@ -283,7 +285,8 @@ def _pump_app_events(window: MainWindow, events: list[pygame.event.Event]) -> bo
                 and getattr(event, "mod", 0) & pygame.KMOD_GUI
             )
             if event.key == pygame.K_F11 or mac_fullscreen:
-                window.on_f11()
+                if window.on_f11() and screen is not None:
+                    screen.display_changed()
     return False
 
 

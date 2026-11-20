@@ -249,13 +249,13 @@ def test_iron_variant_is_stable_by_identity_and_missing_variant_uses_primary(tmp
 
 def test_rival_has_cached_separation_outside_hull_without_expanding_radius(tmp_path, monkeypatch):
     arrow(tmp_path, 'rival')
+    arrow(tmp_path, 'hauler')
     renderer = CampaignSprites(tmp_path)
     original = pixels(renderer._sources['rival'])
     plain, rival = canvas(), canvas()
-    # Compare with the original artwork, not the now-contoured player hull.
-    body_image = pygame.transform.smoothscale(renderer._sources['rival'], (48, 48))
-    body_image = pygame.transform.rotate(body_image, (round((-90-math.degrees(.7))/2)*2) % 360)
-    plain.blit(body_image, body_image.get_rect(center=(200, 200)))
+    # Identical source art through the unoutlined hauler path gives the actual
+    # circle-fitted hull mask independent of the source storage strategy.
+    renderer.draw_ship(plain, 200, 200, .7, kind='hauler', size=24)
     renderer.draw_ship(rival, 200, 200, .7, kind='rival', size=24)
     body = pygame.mask.from_surface(plain, 32)
     red_rim = pygame.mask.from_threshold(rival, (235, 116, 111, 210), (8, 8, 8, 48))

@@ -396,3 +396,77 @@ controls/audio are unverified and Serge's visual acceptance remains open. Sparse
 composition, prominent hull contours, repeated/baked materials and stylized effects
 remain visible differences from the target. This spec remains proposed for those
 human acceptance gates; no reference-fidelity approval is implied.
+
+
+## Amendment — 2026-11-20: native-resolution drawing
+
+Serge authorized this milestone after confirming baseline native controls and
+several audio cues. This amendment supersedes earlier fixed-1080p rendering
+limitations, not their historical evidence. Visual acceptance remains open.
+
+### Configuration and rendering contract
+
+Keep the 1920x1080 logical layout, camera and simulation geometry. Fullscreen
+uses spec 02's largest exact 16:9 backing fitting the desktop, with SDL retaining
+aspect bars and mapping mouse events to backing pixels. Render world sprites,
+primitives, lights, effects, indicators, station/fleet art and text directly at
+that target resolution; do not upscale a completed 1080p scene. Compose one
+output scale at the drawing boundary with the existing logical camera. Input
+uses current_scale().mouse once, then the logical camera inverse. Recompute
+stationary aiming on camera movement; retain correct cursor position across
+mode changes without reinterpreting old pixel coordinates. A successful app-level
+fullscreen toggle notifies the active screen. Campaign refreshes from SDL current
+mouse state immediately and once after the next queued event batch, because native
+SDL can deliver stale motion coordinates during the transition. This transition-only
+refresh preserves any pending click-time world aim; ordinary frames remain event-driven. Preserve pending
+click-time world aim. Preserve original source detail where available; raster
+sources and baked lighting still limit fidelity. All caches remain bounded.
+The sprite transform LRU remains at most 128 entries / 32 MiB. Separately retain
+one native backdrop, one optional modal shade and one current-zoom shield,
+replacing them on size changes rather than accumulating resolutions. At 4K each
+full-screen 32-bit buffer is 31.64 MiB; the shield may add roughly 12 MiB. These
+buffers and decoded source images are additional to the 32 MiB transform budget.
+
+No new setting, dependency, save field or gameplay change. The native 3440x1440
+window contains a 2560x1440 game area; it does not widen the world or stretch
+hulls. A 3840x2160 surface can be tested offscreen but is not evidence of a
+physical 4K monitor. Do not imply Retina pixel density without measuring it.
+
+### Ownership and Dev plan
+
+1. Lead amends specs 02/21 before code, retains frozen baseline evidence and owns
+   main_window plus its tests. Renderer owns campaign drawing, sprite/effect
+   projection, optional indicator draw boundary and renderer tests. QA owns
+   independent acceptance/capture files. Shared-file handoffs are explicit.
+2. Implement native backing selection, native campaign rasterization and
+   source-resolution transforms. Keep gameplay/input/audio/model/save semantics.
+3. QA verifies all zooms, stationary aim, mode transitions, earned mining trip,
+   docking/selling/combat/reload, native graphics and performance. Capture
+   matched baseline/final mining/combat and current station/fleet at native
+   content dimensions and offscreen 4K. Run affected tests then full regression.
+4. Record exact sizes, driver, warnings, timings, source revision and remaining
+   limitations. Update manual acceptance with Serge's reported baseline checks;
+   new-build physical input/listening and visual review remain separate.
+
+### Testing and acceptance criteria
+
+Tests must detect a hidden 1080p intermediate or fixed 512 source bottleneck;
+verify native target sizes and correct primitive/sprite/effect projection,
+clipping, logical layout, input inverse, bounded caches and draw purity. Existing
+safety/ranges/economy/save/audio behavior must pass. Native probes use isolated
+persistence and must not close or change Serge's running game. Report normal
+and effect-heavy frame timings rather than assuming 4K meets 60 fps. Spec21 stays
+proposed until Serge accepts the visuals.
+
+
+### Implementation outcome
+
+Native campaign drawing, original-source transforms, bounded buffers and
+transition-safe pointer mapping are implemented. Independent regression passed
+2,061 tests with one known dummy-display renderer warning. Both 2560×1440 and
+3840×2160 automated earned mining/combat/checkpoint routes passed. Native Cocoa
+measured 2560×1440 internal content at 1:1 pixels within the unchanged 3440×1440
+desktop. The fixed stationary-pointer defect and complete evidence are recorded
+in the [native review](reviews/2026-11-20-native-resolution/review.md).
+Physical 4K/Retina checks and Serge’s new-build visual acceptance remain open;
+this specification stays proposed for those broader visual acceptance gates.

@@ -16,7 +16,7 @@ def _length(camera, value):
 
 def light_sprite(radius, color, level=7):
     """Build a tiny black-backed additive pool; callers cache this result."""
-    radius = max(1, min(64, round(radius)))
+    radius = max(1, min(256, round(radius)))
     image = pygame.Surface((radius*2+1, radius*2+1), depth=32)
     image.fill((0, 0, 0))
     for step in range(8, 0, -1):
@@ -44,7 +44,10 @@ class EffectLights:
                 "entry_limit": 64, "byte_limit": 2 * 1024 * 1024}
 
     def add(self, surface, point, radius, color, strength=1):
-        radius = max(1, min(64, round(radius)))
+        # Preserve the established 64-design-pixel light cap at native output.
+        # Absolute 256px cap still bounds individual allocations above 4K.
+        limit = min(256, round(64*max(1, surface.get_width()/1920)))
+        radius = max(1, min(limit, round(radius)))
         level = max(0, min(7, round(strength * 7)))
         if not level or not surface.get_clip().colliderect(
                 pygame.Rect(point[0]-radius, point[1]-radius, radius*2+1, radius*2+1)):

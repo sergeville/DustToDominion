@@ -1,0 +1,5 @@
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/.venv/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:370: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+no tests ran in 55.63s

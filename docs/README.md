@@ -2,6 +2,9 @@
 
 ## Local campaign work — start here
 
+- [Gameplay audio milestone](22-gameplay-audio.md): eight original sounds, event-based playback, silent-device handling and separate controls/listening acceptance.
+- [Audio review and controls checklist](reviews/2026-11-20-gameplay-audio/review.md): current validation and recording provenance.
+
 - [Current artwork and lighting pass](reviews/2026-11-20-art-lighting/review.md): varied rocks, improved materials, restrained overlays, bounded effects and matching gameplay evidence; visual acceptance open.
 - [Prior camera pass](reviews/2026-11-20-camera/review.md): following camera, zoom, inverse aiming, navigation indicators and matched before/after captures.
 

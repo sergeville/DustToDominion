@@ -280,3 +280,31 @@ balance/art approval, physical 4K fullscreen and other platforms remain open.
 World detail still scales from 1080p and the reference's close-up composition is
 not reproduced. No new dependencies/assets, no push/PR, no user save mutation.
 Owned probe windows closed; reopen the existing launcher to load current code.
+
+
+## Gameplay audio milestone — 2026-11-20
+
+Local product **`e46970f`** builds on reviewed artwork/camera **`844ad1d`**.
+Eight original synthesized MIT audio assets and reusable source now cover thrust,
+mining contact, pickup, weapons, impacts, destruction, docking and selling.
+A read-only observer uses the existing AudioManager; loops and one-shots stop on
+lifecycle transitions, honor game mute/volume, and never accumulate a backlog.
+Zero volume discards old/new voices. Missing audio-device startup warns and
+continues silently; restart with a working device restores audio availability.
+
+Independent full suite: **2,010 passed in 91.49s**, one known dummy-display
+renderer warning. Twenty independent audio cases and actual unavailable-driver
+startup/earned mining/combat/save-reload passed. The artwork, camera, model,
+economy, geometry and save schema are unchanged. Tests used isolated persistence.
+Drive dependency-read stalls required the prior exact-version local test
+environment; no pins or project environment were altered.
+
+[Current report](2026-11-20-gameplay-audio/review.md),
+[independent QA](2026-11-20-gameplay-audio/independent-review.md) and
+[Serge's checklist](2026-11-20-gameplay-audio/MANUAL-CHECKLIST.md) separate automated
+sound/event evidence from native controls and physical listening. Native startup
+loaded 39 resources, but computer control could not attach to the unbundled Python
+window. **Hands-on input/listening remain pending.** World rendering is still
+1920×1080; native 4K is deferred until this milestone review. Visual acceptance
+remains open. Save/close any old game and reopen the existing launcher → Continue
+→ Sector 1. Nothing pushed; unrelated work preserved.

@@ -1,0 +1,254 @@
+{
+  "tested_product_revision": "e46970fd4958580b6e237cad584a15be488bb4ca",
+  "files": {
+    "MANUAL-CHECKLIST.md": {
+      "bytes": 3327,
+      "sha256": "139e3700cb339c24a657f2211b52e4ee2b20414e6addd7cf148d94ed99edc37b"
+    },
+    "audio-review.md": {
+      "bytes": 5659,
+      "sha256": "686387c09cbbf2f8b2071021fdf7798499c166186e1f364a0ac1b734e2ccbfa5"
+    },
+    "baseline.json": {
+      "bytes": 7843,
+      "sha256": "32a1c89c8c95aa58371141e8075b4d8bddb91ad121f245ca45e123b3022d5404"
+    },
+    "capture.log": {
+      "bytes": 649,
+      "sha256": "1e5dd1bb29f6516b13f2d357d172a5bd61f53d34a0c62939e22797bd75b1e674"
+    },
+    "capture.py": {
+      "bytes": 10756,
+      "sha256": "4ae25e7d51c13c1248159a589e2349d681bdaa7b4e1d807803ea7607113b03f3"
+    },
+    "final/combat-approach.png": {
+      "bytes": 972799,
+      "sha256": "adbf2578a07b4633f15c9a100342e8fc7926b4ff8298d79bb0d7878e879d32d0"
+    },
+    "final/combat-defeated-rival.png": {
+      "bytes": 973888,
+      "sha256": "33ba8bfce8f0d77cfeb516705cefc763f2e499238ceb2ca677399a9f494d7d13"
+    },
+    "final/combat-docked.png": {
+      "bytes": 1013289,
+      "sha256": "8f83147228f5f475318f89fedfdd84f80590c8d5ac9e4782dc6e86c6a82cc4aa"
+    },
+    "final/combat-firing.png": {
+      "bytes": 972040,
+      "sha256": "cf0b99734587f1dcf2c06d5d583207f1e0f4e1c543cab53e5f63f3c0571d5791"
+    },
+    "final/earned-combat-decoded-destruction.png": {
+      "bytes": 869347,
+      "sha256": "749176c4979d28442eab99aef5708d290d48691e1d4b6bd44791ab11170a1da4"
+    },
+    "final/earned-combat-decoded-weapon.png": {
+      "bytes": 844339,
+      "sha256": "6855596bcc5d8966a6b4e9a20d4203cd1866f5500d772aa0c589011bc105a5b0"
+    },
+    "final/earned-combat-encode.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final/earned-combat-mux.log": {
+      "bytes": 69,
+      "sha256": "f56205c459769b137ff323d7e5f29dfa408721f4426c0f01016220237e6a57a8"
+    },
+    "final/earned-combat-video.mp4": {
+      "bytes": 1116407,
+      "sha256": "8a0578b81bc0a5fbd8c04f69eac3bc143c756264094f27f4bdb0c957692f2e75"
+    },
+    "final/earned-combat.mp4": {
+      "bytes": 1285916,
+      "sha256": "1a211a358d8a5135d51c6fb0ae9c2181cd8a47f5ebdd4f1a728ccf78f837aca2"
+    },
+    "final/earned-combat.wav": {
+      "bytes": 1396780,
+      "sha256": "e17ee08014a40e3c0f14b9459efb43eaabd5909b842839c24a0d463208538efb"
+    },
+    "final/earned-mining-trip-decoded-mining_loop.png": {
+      "bytes": 784969,
+      "sha256": "45c913eedd9cd4c7b01b0c49d587fc3d950c53cc4c843006c7010556658e4c6d"
+    },
+    "final/earned-mining-trip-encode.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final/earned-mining-trip-mux.log": {
+      "bytes": 69,
+      "sha256": "a6e8e23a67a6f8125695314e1f892b6942ab08bdf2f21a1ac8b2a85ef2eb1e0f"
+    },
+    "final/earned-mining-trip-video.mp4": {
+      "bytes": 1039416,
+      "sha256": "f544b8f18a801e571d1ee65645ee53453cb9edd41099de87828a654322e84304"
+    },
+    "final/earned-mining-trip.mp4": {
+      "bytes": 1234647,
+      "sha256": "eaa47047a249e698c7a9931d2acbc4edd1a29fdbe016600600055d8741ec2ec8"
+    },
+    "final/earned-mining-trip.wav": {
+      "bytes": 1490988,
+      "sha256": "cd5f2711d217e964453136335c0c80f3769ecfe5b3824e7af347b1ab4501a4ac"
+    },
+    "final/media-validation.json": {
+      "bytes": 9338,
+      "sha256": "2f3acb6b8567c159af03685397c019b8fe1eddfb89fba98060db055a04862195"
+    },
+    "final/menu-fleet.png": {
+      "bytes": 313519,
+      "sha256": "c4682ce23570ce3c98e57dceb6dde10924a3982a2bf8f5229751142539d402ce"
+    },
+    "final/menu-station.png": {
+      "bytes": 1001297,
+      "sha256": "cc21e56f8221c6169b39263a5e3078848c258fe1f52da2db958a3e431453d136"
+    },
+    "final/report.json": {
+      "bytes": 35755,
+      "sha256": "30cda3895d309c4c03b26dfc199fab9e9668e7fdf38245f60786d3ae40eef615"
+    },
+    "final/session-audio.raw": {
+      "bytes": 3225600,
+      "sha256": "46c326b6f56cb384fdfdc8d4274f83372913746cf676a484e451d130bdb99a5c"
+    },
+    "final/trip-collected.png": {
+      "bytes": 890963,
+      "sha256": "76c3674eb9c2afc2a1577be404a0e2b1a5faab0cb992993f500f8166fa40dd25"
+    },
+    "final/trip-docked.png": {
+      "bytes": 267254,
+      "sha256": "f33a2808096d5604c93a7f023fe880d1db132141829268a44c7fce90e22ce55c"
+    },
+    "final/trip-fresh.png": {
+      "bytes": 975757,
+      "sha256": "595a2a458966e96ab84e45a01dbffb4201f31ad307b91446a51b9d3b606082c2"
+    },
+    "final/trip-mining.png": {
+      "bytes": 914664,
+      "sha256": "6c1f0406c451cb75b2b7b2fb74072b05556539bf9f9ff17eb0b13c6f2a65eab2"
+    },
+    "final/trip-sold.png": {
+      "bytes": 1003661,
+      "sha256": "6129c5b16103bac98948fb0a1b25dd639e94de215761e453fe9e2790957508ab"
+    },
+    "final-integrity.json": {
+      "bytes": 356,
+      "sha256": "571abae5fe14f3ebf1a918b82fc88395ffa1f9790df845d869a6b696c1ed1198"
+    },
+    "full-suite-interrupted.log": {
+      "bytes": 398,
+      "sha256": "56a1a81abc064d78f463af453eb81ccc76bb427b7bc1f4663e57e3c7b095e7fd"
+    },
+    "full-suite-localpycache-interrupted.log": {
+      "bytes": 930,
+      "sha256": "0df1213494e8af745dc1689106279e24a4cb3c239f6c0edfb0325befdbda0a84"
+    },
+    "full-suite.log": {
+      "bytes": 2775,
+      "sha256": "c0b6c3550269785f87c93ddc8c4f0f50f59a46f1f6869f24a67eac5be905cdba"
+    },
+    "independent-review.md": {
+      "bytes": 7603,
+      "sha256": "03006600a4eafc3998401d20147047d35595b55dce8f5e6b62e873a5658c710c"
+    },
+    "integration-review.md": {
+      "bytes": 4586,
+      "sha256": "867042e9ef032f9582853b43483c15df6b4caa1223f61e8c6a55f6f86d4ec5c9"
+    },
+    "native-check.md": {
+      "bytes": 1157,
+      "sha256": "a62fa1854b97c2422289ed6141f08db9dec8744072935729fead9756441c61ae"
+    },
+    "native-launch.log": {
+      "bytes": 539,
+      "sha256": "0bdfceac70a34fe41be8d7adf4207a6fa0cc1818cbbbe817b15ec94c17d0760b"
+    },
+    "preservation.json": {
+      "bytes": 1065,
+      "sha256": "08897b4339ce0e63997f4f971703655f79636908fa88e10c4097bb18be92649a"
+    },
+    "review.md": {
+      "bytes": 7290,
+      "sha256": "03e57eaa8838deb0010b0c157b7c0209046b0130a4fbd996b0e5a1ac97418881"
+    },
+    "superseded-initial-capture/README.md": {
+      "bytes": 350,
+      "sha256": "8e7372949746e1d3ca4e14b78dd676d0c9175bb664142319e09597ed392a0005"
+    },
+    "superseded-initial-capture/capture.log": {
+      "bytes": 649,
+      "sha256": "6c015503135a18448aa23bdd1dfbb7879b1cad94566996f9fab9fa02fb197776"
+    },
+    "superseded-initial-capture/earned-combat.wav": {
+      "bytes": 1359916,
+      "sha256": "1bd653b0ce414d947dacd68d0302baddfacf1ce609e2f7d3b5bfd5796770bf0e"
+    },
+    "superseded-initial-capture/media-validation.json": {
+      "bytes": 8334,
+      "sha256": "966cabd9e94a51038974fbce9df5463f777c11e70ffe8fe849fa746f7bd30758"
+    },
+    "superseded-initial-capture/report.json": {
+      "bytes": 35690,
+      "sha256": "0fb967dddb5a045256302d92e91d4e05dfbcd9864c8c0ff17128b5fcee593fa4"
+    },
+    "unavailable/combat-approach.png": {
+      "bytes": 972799,
+      "sha256": "adbf2578a07b4633f15c9a100342e8fc7926b4ff8298d79bb0d7878e879d32d0"
+    },
+    "unavailable/combat-defeated-rival.png": {
+      "bytes": 973888,
+      "sha256": "33ba8bfce8f0d77cfeb516705cefc763f2e499238ceb2ca677399a9f494d7d13"
+    },
+    "unavailable/combat-docked.png": {
+      "bytes": 1013289,
+      "sha256": "8f83147228f5f475318f89fedfdd84f80590c8d5ac9e4782dc6e86c6a82cc4aa"
+    },
+    "unavailable/combat-firing.png": {
+      "bytes": 972040,
+      "sha256": "cf0b99734587f1dcf2c06d5d583207f1e0f4e1c543cab53e5f63f3c0571d5791"
+    },
+    "unavailable/menu-fleet.png": {
+      "bytes": 313519,
+      "sha256": "c4682ce23570ce3c98e57dceb6dde10924a3982a2bf8f5229751142539d402ce"
+    },
+    "unavailable/menu-station.png": {
+      "bytes": 1001297,
+      "sha256": "cc21e56f8221c6169b39263a5e3078848c258fe1f52da2db958a3e431453d136"
+    },
+    "unavailable/report.json": {
+      "bytes": 9046,
+      "sha256": "9d7846f1ba707a3b166045c1482bd5a443b200542931588e3f0a077ccbc3df65"
+    },
+    "unavailable/trip-collected.png": {
+      "bytes": 890963,
+      "sha256": "76c3674eb9c2afc2a1577be404a0e2b1a5faab0cb992993f500f8166fa40dd25"
+    },
+    "unavailable/trip-docked.png": {
+      "bytes": 267254,
+      "sha256": "f33a2808096d5604c93a7f023fe880d1db132141829268a44c7fce90e22ce55c"
+    },
+    "unavailable/trip-fresh.png": {
+      "bytes": 975757,
+      "sha256": "595a2a458966e96ab84e45a01dbffb4201f31ad307b91446a51b9d3b606082c2"
+    },
+    "unavailable/trip-mining.png": {
+      "bytes": 914664,
+      "sha256": "6c1f0406c451cb75b2b7b2fb74072b05556539bf9f9ff17eb0b13c6f2a65eab2"
+    },
+    "unavailable/trip-sold.png": {
+      "bytes": 1003661,
+      "sha256": "6129c5b16103bac98948fb0a1b25dd639e94de215761e453fe9e2790957508ab"
+    },
+    "unavailable.log": {
+      "bytes": 1604,
+      "sha256": "0317e557e8ae218983c3def304a65d129a2f3d64a404a7bbc59d76047a0f0745"
+    },
+    "unavailable.py": {
+      "bytes": 1914,
+      "sha256": "80e2ea3b7eaf4cfebe6bf9a5b1c844f35fc7f20ca3707b82aa001c8758d0cc49"
+    },
+    "verify_media.py": {
+      "bytes": 2269,
+      "sha256": "d4a55b3cef2cbf25d80c9d017652b31e8941ea57d72f63d36eed12b1b2e23585"
+    }
+  },
+  "note": "Current final recordings are under final/; superseded-initial-capture is diagnostic history. No native input or listening acceptance."
+}

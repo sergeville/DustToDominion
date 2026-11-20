@@ -1,0 +1,12 @@
+{
+  "product_revision": "e46970fd4958580b6e237cad584a15be488bb4ca",
+  "source_count": 39,
+  "resource_count": 41,
+  "all_capture_hashes_match_current": true,
+  "all_python_sources_match_product_commit": true,
+  "all_final_earned_images_match_pre_audio": true,
+  "encode_logs_nonempty": [
+    "earned-mining-trip-mux.log",
+    "earned-combat-mux.log"
+  ]
+}

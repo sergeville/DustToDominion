@@ -1,0 +1,1 @@
+Superseded capture diagnostics: first combat audio buffer retained queued audio from the fast intervening progression. Final capture adds a 200 ms stationary pre-roll after existing launch lifecycle cleanup. No product change. The first media-validation also exposed final held-frame truncation from ffmpeg -shortest; final mux preserves all frames.

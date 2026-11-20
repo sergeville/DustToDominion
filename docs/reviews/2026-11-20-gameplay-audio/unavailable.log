@@ -1,0 +1,12 @@
+2026-11-20 14:38:04.910 | WARNING  | dtd.game_config:load_game_config:141 - game configuration unavailable (ConfigUnavailableError); proceeding with default values
+2026-11-20 14:38:04.925 | WARNING  | dtd.main:_init_pygame:133 - 1 pygame module(s) failed to initialize; continuing because only display and font are required
+2026-11-20 14:38:04.925 | WARNING  | dtd.main:_init_pygame:143 - Audio mixer/device unavailable; continuing silently. Restart to retry audio.
+2026-11-20 14:38:05.242 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+2026-11-20 14:38:05.242 | WARNING  | dtd.audio:__init__:197 - AudioManager is silent: no initialized mixer/device
+2026-11-20 14:38:05.243 | WARNING  | dtd.game_config:load_game_config:141 - game configuration unavailable (ConfigUnavailableError); proceeding with default values
+2026-11-20 14:38:05.253 | WARNING  | dtd.main:_init_pygame:133 - 1 pygame module(s) failed to initialize; continuing because only display and font are required
+2026-11-20 14:38:05.253 | WARNING  | dtd.main:_init_pygame:143 - Audio mixer/device unavailable; continuing silently. Restart to retry audio.
+2026-11-20 14:38:05.565 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+2026-11-20 14:38:05.565 | WARNING  | dtd.audio:__init__:197 - AudioManager is silent: no initialized mixer/device
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+Actual unavailable-driver startup, earned trip/combat/reload passed

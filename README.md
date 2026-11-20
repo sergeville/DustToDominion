@@ -6,16 +6,42 @@ ships, hire two crew members and build a three-ship operation. Win with both
 crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
 This local continuation includes a complete playable ruleset, textured artwork
-and a player-following camera. The [artwork and lighting report](docs/reviews/2026-11-20-art-lighting/review.md)
-records the latest checks and matching before/after images. Physical play, audio,
-balance and **Serge's visual acceptance remain open**. The
+and a player-following camera. The new gameplay sound pass builds on reviewed
+artwork revision `844ad1d`. Native controls/listening, balance and **Serge's visual
+acceptance remain open**. The
 [campaign specification](docs/19-complete-small-game.md) and
 [team handoff](docs/reviews/TEAM-HANDOFF.md) retain the rules and implementation history.
 
+## Gameplay sound and controls
+
+Local product **`e46970f`**: **2,010 automated tests passed**, including independent
+audio lifecycle/device checks. Native input and listening remain pending.
+
+Eight original synthesized sounds cover thrust, mining contact, ore pickup,
+weapons, impacts, destruction, docking and selling. Loops follow valid activity;
+pausing, focus loss, docking and leaving the screen clear campaign sounds.
+Game SFX mute and volume apply, including zero-volume mute without stale tails.
+When audio-device initialization fails, the game logs a warning and remains
+playable silently; restart with a working device to restore audio.
+
+See the [milestone report](docs/reviews/2026-11-20-gameplay-audio/review.md),
+[independent QA](docs/reviews/2026-11-20-gameplay-audio/independent-review.md) and
+[Serge's short manual checklist](docs/reviews/2026-11-20-gameplay-audio/MANUAL-CHECKLIST.md).
+Original generator, measured levels and MIT provenance are retained in
+[the audio sources](assets/source/audio/README.md). These are synthesized effects,
+with human loudness/timbre acceptance still pending.
+
+Reopen **Open Dust to Dominion.command → Continue → Launch / Sector 1**.
+Use Options to enable/adjust **game sound effects**. Space mines rocks; weapons
+hit rival ships outside the shield. Sector 1 has no rivals. Existing saves,
+artwork, camera, hitboxes, combat and economy are preserved. Internal world
+rendering remains **1920×1080**; native 4K is deferred until this milestone review.
+
 ## Artwork and lighting
 
-**1,958 tests passed** in the final suite. One known dummy-display renderer
-warning remains; see the current report for recorded play and performance evidence.
+**1,958 tests passed** for the prior artwork revision `844ad1d`. See its
+[review](docs/reviews/2026-11-20-art-lighting/review.md) for recorded play, the known
+dummy-display warning and performance evidence.
 
 Six new reusable assets add angular iron, broken gold and crystal rock forms,
 clearer ship materials and a brighter station. The player uses a hull-shaped

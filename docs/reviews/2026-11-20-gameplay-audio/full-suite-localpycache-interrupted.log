@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 189, in _run_module_as_main
+  File "<frozen runpy>", line 148, in _get_module_details
+  File "<frozen runpy>", line 112, in _get_module_details
+  File "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/.venv/lib/python3.12/site-packages/pytest/__init__.py", line 10, in <module>
+    from _pytest.cacheprovider import Cache
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1132, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1191, in get_data
+KeyboardInterrupt

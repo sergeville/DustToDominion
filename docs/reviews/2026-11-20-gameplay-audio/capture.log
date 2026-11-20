@@ -1,0 +1,5 @@
+2026-11-20 14:44:09.696 python[74241:27741898] CRITICAL: You are using the SDL disk i/o audio driver!
+2026-11-20 14:44:09.696 python[74241:27741898] CRITICAL:  Writing to file [/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/docs/reviews/2026-11-20-gameplay-audio/final/session-audio.raw].
+2026-11-20 14:44:10.007 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+Earned trip, combat and actual SDL disk audio captured

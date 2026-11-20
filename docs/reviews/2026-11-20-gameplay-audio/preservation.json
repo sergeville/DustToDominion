@@ -1,0 +1,40 @@
+{
+  "baseline_revision": "844ad1dfb87f1104c19d68f7a1ee91107bbb0d19",
+  "source_sha256": {
+    "baseline_count": 38,
+    "changed_existing": [
+      "src/dtd/audio.py",
+      "src/dtd/main.py",
+      "src/dtd/pak.py",
+      "src/dtd/resource_loader.py",
+      "src/dtd/screens/base.py",
+      "src/dtd/screens/campaign.py"
+    ]
+  },
+  "resource_sha256": {
+    "baseline_count": 33,
+    "changed_existing": []
+  },
+  "identical_earned_pngs": [
+    "combat-approach.png",
+    "combat-defeated-rival.png",
+    "combat-docked.png",
+    "combat-firing.png",
+    "menu-fleet.png",
+    "menu-station.png",
+    "trip-collected.png",
+    "trip-docked.png",
+    "trip-fresh.png",
+    "trip-mining.png",
+    "trip-sold.png"
+  ],
+  "validation_runtime": {
+    "python": "3.12.13",
+    "pygame-ce": "2.5.8",
+    "SDL": "2.32.10",
+    "pytest": "9.1.1",
+    "pydantic": "2.13.5",
+    "full_suite_executable": "/tmp/dtd-art-lighting-validation-venv/bin/python",
+    "reason": "project venv full collection stalled on Drive reads; exact existing pins, no dependency changes"
+  }
+}

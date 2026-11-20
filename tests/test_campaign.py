@@ -223,6 +223,118 @@ def test_rival_cannot_chase_or_shoot_through_station_safe_region():
     assert run.hull == 100  # Incoming shots are absorbed by the safe region.
 
 
+def test_station_cannot_be_used_to_farm_bounties_without_launching_into_danger():
+    campaign = Campaign()
+    while campaign.unlocked_sector < 3:
+        mine_safe_sortie(campaign)
+    for sector in (2, 3):
+        run = campaign.launch(sector)
+        for _ in range(100):
+            enemy = run.enemies[0]
+            run.step(0.1, InputState(firing=True, aim_x=enemy.x, aim_y=enemy.y))
+        assert (run.x, run.y, run.hull) == (STATION_X, STATION_Y, 100)
+        assert len(run.enemies) == sector - 1 and run.bounty == 0
+        assert not run.projectiles
+        assert run.request_dock() and campaign.finish_run(run)
+
+
+@pytest.mark.parametrize("friendly", [False, True])
+def test_station_shield_absorbs_all_crossing_projectiles_including_grazes(friendly):
+    run = Campaign().launch(1)
+    # Both endpoints lie outside the shield, but the middle of this short
+    # segment passes through its top edge: endpoint-only collision misses it.
+    start_x, y = STATION_X - 6, STATION_Y - SAFE_RADIUS + 0.01
+    assert math.hypot(start_x - STATION_X, y - STATION_Y) > SAFE_RADIUS
+    assert math.hypot(start_x + 13 - STATION_X, y - STATION_Y) > SAFE_RADIUS
+    run.projectiles.append(Projectile(start_x, y, 780, 0, 30, friendly))
+    run.step(1 / 60, InputState())
+    assert not run.projectiles and run.hull == 100
+
+
+def test_player_cannot_snipe_beyond_rival_detection_range():
+    campaign = Campaign()
+    while campaign.unlocked_sector < 2:
+        mine_safe_sortie(campaign)
+    run = campaign.launch(2)
+    travel(run, 1500, 500)
+    enemy = run.enemies[0]
+    assert math.hypot(enemy.x - run.x, enemy.y - run.y) > 680
+    for _ in range(80):
+        run.step(0.1, InputState(firing=True, aim_x=enemy.x, aim_y=enemy.y))
+        assert all(math.hypot(shot.x - run.x, shot.y - run.y) <= 585
+                   for shot in run.projectiles if shot.friendly)
+    assert enemy.hull == 75 and run.bounty == 0
+    assert run.hull == 100
+
+
+def test_complete_campaign_through_dangerous_sectors_requires_and_survives_combat():
+    campaign = Campaign()
+    sectors, bounties = [], []
+
+    def expedition():
+        campaign.repair()
+        sector = campaign.unlocked_sector
+        run = campaign.launch(sector)
+        # Approach a visible rival and aim continuously, using normal movement
+        # and firing. The station shield must be left before a shot can fire.
+        for _ in range(600):
+            if not run.enemies:
+                break
+            enemy = min(run.enemies, key=lambda e: math.hypot(e.x - run.x, e.y - run.y))
+            dx, dy = enemy.x - run.x, enemy.y - run.y
+            distance = math.hypot(dx, dy)
+            run.step(0.1, InputState(dx / distance if distance > 330 else 0,
+                                    dy / distance if distance > 330 else 0,
+                                    firing=True, aim_x=enemy.x, aim_y=enemy.y))
+            assert not run.finished
+        assert not run.enemies
+        for rock in list(run.asteroids):
+            if len(run.cargo) >= campaign.capacity:
+                break
+            travel(run, rock.x, rock.y)
+            for _ in range(30):
+                run.step(0.1, InputState(mining=True))
+                if rock.health == 0 or len(run.cargo) >= campaign.capacity:
+                    run.step(0.1, InputState())
+                    break
+        travel(run, STATION_X, STATION_Y)
+        assert run.request_dock() and campaign.finish_run(run)
+        assert campaign.sell() > 0
+        assert Campaign.from_dict(campaign.to_dict()).to_dict() == campaign.to_dict()
+        sectors.append(sector)
+        bounties.append(run.bounty)
+
+    for item in ("cargo", "cargo", "laser", "laser", "miner", "ship", "ship", "engineer"):
+        while campaign.credits < campaign.price(item):
+            expedition()
+        assert campaign.buy(item)
+    while not campaign.victory:
+        expedition()
+        assert len(sectors) < 20
+    assert {1, 2, 3} == set(sectors)
+    assert 70 in bounties and 180 in bounties
+    assert campaign.won and campaign.ship_count == 3 and campaign.miner and campaign.engineer
+
+
+def test_exposed_pilot_takes_real_rival_damage_and_can_retreat_and_repair():
+    campaign = Campaign()
+    while campaign.unlocked_sector < 2:
+        mine_safe_sortie(campaign)
+    run = campaign.launch(2)
+    enemy = run.enemies[0]
+    travel(run, enemy.x, enemy.y + 300)
+    for _ in range(40):
+        run.step(0.1, InputState())
+        if run.hull < campaign.max_hull:
+            break
+    assert 0 < run.hull < campaign.max_hull
+    travel(run, STATION_X, STATION_Y)
+    assert run.request_dock() and campaign.finish_run(run)
+    before = campaign.credits
+    assert campaign.repair() > 0
+    assert campaign.credits < before and campaign.hull == campaign.max_hull
+
+
 def test_engineer_reduces_damage_and_defeat_recovers_free():
     campaign = Campaign(credits=0, cargo=[2], engineer=True)
     run = campaign.launch(1)

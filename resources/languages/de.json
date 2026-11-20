@@ -52,7 +52,7 @@
     "engineer": "Ingenieur",
     "purchase": "{item} / {price} CR",
     "owned": "{item} / Vollständig",
-    "ship_note": "Begleitschiffe erhöhen den Verkaufserlös: +10%, dann +20%.",
+    "ship_note": "Passive Schiffe erhöhen den Erlös. Gesamtbonus: +{bonus}%.",
     "miner_note": "Besatzungsbonus: 15% schnellerer Abbau.",
     "engineer_note": "Besatzungsbonus: 15% weniger Schaden.",
     "objective": "DOMINION-CHARTA / 3 Schiffe, beide Crewmitglieder und 1.200 CR Guthaben.",
@@ -80,6 +80,20 @@
     "controls": "WASD / Pfeile: fliegen    Leertaste: abbauen    Maus: zielen / klicken: feuern    E: andocken    Esc: Pause",
     "dock_hint": "STATION IN REICHWEITE / E: andocken und Fracht sichern",
     "return_hint": "FRACHTRAUM VOLL / Zur Stationsboje unten zurückkehren",
-    "mine_hint": "Nahe am Felsen Leertaste halten. Erz im Vorbeiflug sammeln."
+    "mine_hint": "Nahe am Felsen Leertaste halten. Erz im Vorbeiflug sammeln.",
+    "no_save": "Noch kein Spielstand. Wählen Sie Neues Spiel.",
+    "view_fleet": "Flotte ansehen",
+    "fleet_back": "Zurück zur Station",
+    "fleet_title": "IHRE FLOTTE",
+    "fleet_passive": "Sie steuern das Startschiff. Begleitschiffe erhöhen nur den Verkaufserlös und fliegen nicht mit.",
+    "vessel_0": "Prospektor / Start",
+    "vessel_1": "Frachter / Begleiter 1",
+    "vessel_2": "Raffinerie / Begleiter 2",
+    "fleet_owned": "IM BESITZ",
+    "fleet_available": "ZUM KAUF VERFÜGBAR",
+    "pilot_benefit": "Ihr steuerbares Bergbauschiff",
+    "support_benefit": "+{bonus}% Erzverkaufswert",
+    "fleet_total": "Aktueller Verkaufsbonus der Flotte: +{bonus}%",
+    "weapons_locked": "SICHER / Waffen gesperrt"
   }
 }

@@ -230,6 +230,8 @@ class TitleScreen(Screen):
             Button(pygame.Rect(980, 570, 470, 70), text=self._text("campaign.cancel"),
                    on_click=self._cancel_new),
         ]
+        for button in self._modal_ui.widgets:
+            button.set_font_point_size(28)
 
     def handle(self, events: list[pygame.event.Event]) -> ScreenAction | None:
         # ESC cancels replacement; it must not also quit on that same event.
@@ -272,6 +274,9 @@ class TitleScreen(Screen):
 
     def _request_continue(self) -> None:
         try:
+            if not self.store.exists():
+                self._message = self._text("campaign.no_save")
+                return
             self.campaign = self.store.load()
         except SaveError:
             self._message = self._text("campaign.load_error")

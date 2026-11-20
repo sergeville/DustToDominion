@@ -435,3 +435,7 @@ Tests use the `silent_language_manager` fixture, following the pattern of
   feature (explicitly out of scope and unspecified). Doc flipped to
   `active`.
 
+
+Validation follow-up (2026-11-20, spec 19): English/German campaign keys add
+an absent-save hint, station weapons-lock hint, fleet roster labels/status and
+total sale bonus. UI tests cover the new roster and missing-save messages.

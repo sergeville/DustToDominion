@@ -384,3 +384,8 @@ staged implementation plan is suggested (each stage should include tests):
 14. Campaign integration (2026-11-20): four-button title, confirmed replacement,
     Continue, elapsed-time screen contract and transition event regressions implemented.
     Native play acceptance remains open under spec 19.
+
+15. Validation follow-up (2026-11-20, spec 19): absent checkpoints receive a
+    dedicated localized New Game hint; corrupt/inaccessible checkpoints retain
+    the preservation error. Replacement buttons use the same fixed font size.
+    Test absent/corrupt distinction and rendered confirmation in both locales.

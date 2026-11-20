@@ -102,6 +102,9 @@ class CampaignScreen(Screen):
                 self._purchase_button(item, (1320, 410 + i * 132, 510, 58))
             self._button((80, 974, 300, 58), self._t("save"), self._save)
             self._button((1540, 974, 300, 58), self._t("title"), self._title)
+            self._button((1110, 208, 280, 58), self._t("view_fleet"), self._fleet)
+        elif self.mode == "fleet":
+            self._button((760, 820, 400, 66), self._t("fleet_back"), self._station)
         elif self.mode == "paused":
             self._button((660, 600, 600, 66), self._t("resume"), self._resume)
             self._button((660, 688, 600, 66), self._t("abandon"), self._confirm_abandon)
@@ -195,6 +198,16 @@ class CampaignScreen(Screen):
         self.expedition = None
         self._rebuild()
 
+    def _fleet(self) -> None:
+        if self.mode != "station":
+            return
+        self.mode = "fleet"
+        self._clear_input()
+        self._rebuild()
+
+    def _fleet_bonus(self) -> int:
+        return (0, 10, 30)[self.campaign.support_ships]
+
     def _station(self) -> None:
         self.mode = "station"
         self._clear_input()
@@ -226,6 +239,8 @@ class CampaignScreen(Screen):
                     self._resume()
                 elif self.mode == "abandon":
                     self._pause()
+                elif self.mode == "fleet":
+                    self._station()
                 break
             if self.mode == "flight":
                 if event.type == pygame.KEYDOWN:
@@ -308,7 +323,9 @@ class CampaignScreen(Screen):
             self._text(self._t(heading), 600, 310, 42, _GOLD if self.mode == "victory" else _CYAN, 730)
             body = self.message if self.mode == "result" else self._t(self.mode + "_body")
             self._text(body, 600, 395, 27, _WHITE, 720)
-        if self.error:
+        if self.mode == "fleet":
+            self._draw_fleet()
+        if self.error and self.mode != "fleet":
             self._panel((60, 850, 1800, 108))
             self._text(self.error, 90, 868, 27, _RED, 1740)
         elif self.message and self.mode == "station":
@@ -340,7 +357,7 @@ class CampaignScreen(Screen):
         for i in range(3):
             self._text(self._t("sector_" + str(i + 1)), 82, 480 + i * 132, 21,
                        _MUTED if i == 0 else _GOLD, 510)
-        self._text(self._t("ship_note"), 1320, 480, 21, _MUTED, 500)
+        self._text(self._t("ship_note", bonus=self._fleet_bonus()), 1320, 480, 21, _MUTED, 500)
         self._text(self._t("miner_note"), 1320, 612, 21, _MUTED, 500)
         self._text(self._t("engineer_note"), 1320, 744, 21, _MUTED, 500)
         self._panel((60, 850, 1800, 100))
@@ -391,7 +408,9 @@ class CampaignScreen(Screen):
             pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
         self._panel((30, 24, 1860, 135))
         self._text(self._t("sector_title", sector=run.sector), 60, 45, 32, _CYAN)
-        self._text(self._t("danger" if run.sector > 1 else "safe"), 60, 96, 24, _RED if run.sector > 1 else _MUTED)
+        in_safe_zone = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= SAFE_RADIUS
+        status = "weapons_locked" if in_safe_zone else "danger" if run.sector > 1 else "safe"
+        self._text(self._t(status), 60, 96, 23, _CYAN if in_safe_zone else _RED if run.sector > 1 else _MUTED)
         self._text(self._t("hull_value", value=int(run.hull), maximum=c.max_hull), 640, 45, 28)
         self._bar(640, 113, 400, run.hull/c.max_hull, _RED if run.hull < 30 else _CYAN)
         self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 45, 28, _GOLD)
@@ -401,3 +420,42 @@ class CampaignScreen(Screen):
         self._text(self._t("controls"), 60, 1008, 24, _WHITE)
         hint = "dock_hint" if run.dock_ready else "return_hint" if len(run.cargo) >= c.capacity else "mine_hint"
         self._text(self._t(hint), 550, 932, 25, _CYAN, 1200)
+
+    def _draw_fleet(self) -> None:
+        shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
+        shade.fill((0, 6, 16, 225))
+        self._canvas.blit(shade, (0, 0))
+        self._panel((250, 200, 1420, 720))
+        self._text(self._t("fleet_title"), 300, 235, 42, _CYAN)
+        self._text(self._t("fleet_passive"), 300, 302, 25, _MUTED, 1310)
+        for index, x in enumerate((300, 760, 1220)):
+            owned = index == 0 or self.campaign.support_ships >= index
+            color = _CYAN if owned else _MUTED
+            self._panel((x, 390, 400, 310))
+            self._text(self._t("vessel_" + str(index)), x + 24, 410, 25, _WHITE, 350)
+            self._fleet_silhouette(x + 200, 515, index, color)
+            self._text(self._t("fleet_owned" if owned else "fleet_available"), x + 24, 584, 24, color)
+            self._text(self._t("pilot_benefit" if index == 0 else "support_benefit",
+                               bonus=10 if index == 1 else 20), x + 24, 628, 22, _GOLD, 350)
+        self._text(self._t("fleet_total", bonus=self._fleet_bonus()), 300, 735, 30, _GOLD, 1320)
+
+    def _fleet_silhouette(self, x, y, index, color) -> None:
+        if index == 0:
+            self._ship(x, y, -math.pi / 2, color, 52)
+            return
+        # Original vector hulls; these show passive fleet inventory, not escorts.
+        if index == 1:
+            outline = [(-60, 42), (-60, -15), (-30, -15), (-23, -52),
+                       (23, -52), (30, -15), (60, -15), (60, 42),
+                       (27, 42), (27, 18), (-27, 18), (-27, 42)]
+            pods = ((-48, 8), (48, 8))
+        else:
+            outline = [(-80, 37), (-80, -28), (-45, -28), (-28, -48),
+                       (28, -48), (45, -28), (80, -28), (80, 37),
+                       (38, 37), (24, 52), (-24, 52), (-38, 37)]
+            pods = ((-60, 0), (0, 0), (60, 0))
+        points = [(x + dx, y + dy) for dx, dy in outline]
+        pygame.draw.polygon(self._canvas, (21, 43, 56), points)
+        pygame.draw.polygon(self._canvas, color, points, 3)
+        for dx, dy in pods:
+            pygame.draw.rect(self._canvas, color, (x + dx - 10, y + dy - 16, 20, 32), 2)

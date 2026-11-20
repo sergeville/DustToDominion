@@ -23,8 +23,11 @@ On this Mac, double-click **Open Dust to Dominion.command**, then choose
 - Sector 1 has no enemies. Sectors 2 and 3 unlock after 300 and 1,000 credits in sales.
 - Defeat or confirmed abandonment loses cargo and returns you with half hull for free.
 
-Your ship is a white outline in the flight view; rivals are red. Support ships
-are passive ore-sale bonuses, not separately visible or piloted ships.
+Your ship is a white outline in the flight view; rivals are red. At the
+station, choose **View fleet** to inspect all three vessel silhouettes, ownership
+and bonuses. Support ships provide passive ore-sale bonuses and do not fly
+alongside you. The station shield locks your weapons and absorbs all shots;
+leave the blue safe area before fighting rivals.
 
 Progress saves at the station, including after purchases and returning from
 an expedition. **Continue** resumes the last station checkpoint; quitting in

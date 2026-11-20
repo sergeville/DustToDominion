@@ -51,7 +51,7 @@ def test_escape_cancels_confirmation_without_quitting(title):
 def test_continue_restores_campaign_and_missing_save_stays_on_title(title):
     title._request_continue()
     assert title.handle([]) is None
-    assert title._message
+    assert title._message == "campaign.no_save"
     prior = Campaign()
     prior.credits = 421
     title.store.save(prior)
@@ -65,5 +65,5 @@ def test_load_error_does_not_overwrite_corrupt_save(title, bootstrapped_persiste
     path.write_bytes(b'broken checkpoint')
     title._request_continue()
     assert title.handle([]) is None
-    assert title._message
+    assert title._message == "campaign.load_error"
     assert path.read_bytes() == b'broken checkpoint'

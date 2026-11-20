@@ -144,6 +144,39 @@ have automated coverage, including a complete campaign through reachable
 actions. See [review report](reviews/2026-11-20-playable-game.md) for results.
 Stage 4 remains open for a human native-window playthrough and balance review;
 this spec intentionally stays proposed until that acceptance is recorded.
-The ship drawings are simple vector outlines. Passive support ships have no
-separate visual model, and the existing standalone ship editor is not wired
-into campaign ship rendering.
+The ship drawings use simple vector outlines. Passive support ships have
+distinct silhouettes in the Fleet roster, but are not simulated in flight.
+The standalone ship editor is not wired into campaign rendering.
+
+## Validation amendments — 2026-11-20
+
+Independent play probes found a risk-free bounty farm: the player could shoot
+from station safety and outrange inactive rivals. The station safe region now
+locks the player's weapons and absorbs every projectile crossing it, friendly
+or hostile. Player shots travel for 0.75 seconds at 780 units/second (585 units),
+within rivals' 680-unit detection range. The visible station hint explains the
+weapons lock. Combat remains available outside the safe region. Tests cover
+station farming, attacks from beyond detection, shield crossing and legitimate
+combat/docking rewards. This changes balance, not saved-state format.
+
+A station Fleet button opens a read-only roster: the starter and two support
+vessels have distinguishable vector silhouettes, owned/available status and
+individual benefits. Show the currently earned total ore-sale bonus, not just
+incremental purchase bonuses. Support vessels remain passive and unpiloted;
+this panel does not imply flying escorts. Back/Esc returns to the station,
+with no purchase or world simulation behind the overlay. Text stays localized
+in English and German; verify both locales and all supported resolutions.
+
+Continue without a checkpoint explicitly says there is no saved campaign and
+suggests New Game. A corrupt/inaccessible save still reports a load error
+without altering it. Replacement confirmation buttons use a consistent font.
+
+Dev plan stage 5: record these validation findings before code, implement the
+combat guard and fleet/save-message clarity, add focused regressions and event-
+driven acceptance tests, then rerun the full suite and render the changed views.
+
+Stage 5 completed for automated acceptance: 1,730 full-suite tests passed,
+including event-driven victory/combat/checkpoint cases, model stress probes,
+and bilingual roster rendering/click validation at all supported resolutions.
+Native-window acceptance, subjective difficulty and comparison against a
+running reference game remain unverified; see the review report.

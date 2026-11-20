@@ -1,0 +1,56 @@
+[
+  {
+    "locale": "en-us",
+    "resolution": [
+      1280,
+      720
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  },
+  {
+    "locale": "en-us",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  },
+  {
+    "locale": "en-us",
+    "resolution": [
+      2560,
+      1440
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  },
+  {
+    "locale": "de",
+    "resolution": [
+      1280,
+      720
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  },
+  {
+    "locale": "de",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  },
+  {
+    "locale": "de",
+    "resolution": [
+      2560,
+      1440
+    ],
+    "title_new_continue_confirm_cancel": true,
+    "station_save_launch_pause_resume_dock_sell": true
+  }
+]

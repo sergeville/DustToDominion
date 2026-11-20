@@ -16,6 +16,7 @@ WORLD_TOP, WORLD_BOTTOM = 190.0, 970.0
 MINE_RANGE = 175.0
 ORE_PRICES = (10, 20, 35)
 MAX_PROJECTILES = 96
+PLAYER_PROJECTILE_TTL = 0.75  # 585 units: inside rival detection and firing range.
 _UPGRADE_PRICES = {"cargo": (100, 180), "laser": (120, 220), "hull": (100, 180)}
 
 
@@ -296,11 +297,12 @@ class Expedition:
                 self.pickups.append(Pickup(self._pickup_id, rock.x, rock.y, rock.ore))
                 self._mine_cooldown = 0.6 / (1 + 0.25 * self.campaign.upgrades["laser"] + 0.15 * self.campaign.miner)
                 self.asteroids = [item for item in self.asteroids if item.health > 0]
-        if controls.firing and self._fire_cooldown <= 1e-9 and len(self.projectiles) < MAX_PROJECTILES:
-            self.projectiles.append(Projectile(self.x, self.y, math.cos(self.heading) * 780, math.sin(self.heading) * 780,
-                                               24 * (1 + 0.25 * self.campaign.upgrades["laser"]), True))
-            self._fire_cooldown = 0.22
         safe = math.hypot(self.x - STATION_X, self.y - STATION_Y) <= SAFE_RADIUS
+        if controls.firing and not safe and self._fire_cooldown <= 1e-9 and len(self.projectiles) < MAX_PROJECTILES:
+            self.projectiles.append(Projectile(self.x, self.y, math.cos(self.heading) * 780, math.sin(self.heading) * 780,
+                                               24 * (1 + 0.25 * self.campaign.upgrades["laser"]), True,
+                                               ttl=PLAYER_PROJECTILE_TTL))
+            self._fire_cooldown = 0.22
         for enemy in self.enemies:
             enemy.cooldown = max(0, enemy.cooldown - dt)
             distance = math.hypot(self.x - enemy.x, self.y - enemy.y)
@@ -318,10 +320,19 @@ class Expedition:
                 enemy.cooldown = 1.3
         surviving = []
         for shot in self.projectiles:
+            old_x, old_y = shot.x, shot.y
             shot.x += shot.vx * dt
             shot.y += shot.vy * dt
             shot.ttl -= dt
             if shot.ttl <= 0 or not WORLD_LEFT <= shot.x <= WORLD_RIGHT or not WORLD_TOP <= shot.y <= WORLD_BOTTOM:
+                continue
+            # Shield collision uses the whole movement segment, including a
+            # grazing crossing whose two endpoints both lie outside the circle.
+            vx, vy = shot.x - old_x, shot.y - old_y
+            distance_squared = vx * vx + vy * vy
+            along = 0.0 if distance_squared == 0 else max(0.0, min(1.0,
+                ((STATION_X - old_x) * vx + (STATION_Y - old_y) * vy) / distance_squared))
+            if math.hypot(old_x + along * vx - STATION_X, old_y + along * vy - STATION_Y) <= SAFE_RADIUS:
                 continue
             hit = False
             if shot.friendly:
@@ -332,8 +343,6 @@ class Expedition:
                         if enemy.hull <= 0:
                             self.bounty += 30 + self.sector * 20
                         break
-            elif math.hypot(shot.x - STATION_X, shot.y - STATION_Y) <= SAFE_RADIUS:
-                hit = True
             elif not safe and math.hypot(shot.x - self.x, shot.y - self.y) <= 23 + shot.radius:
                 self.hull = max(0, self.hull - shot.damage * (0.85 if self.campaign.engineer else 1.0))
                 hit = True

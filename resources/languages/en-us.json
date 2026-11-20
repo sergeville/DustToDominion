@@ -52,7 +52,7 @@
     "engineer": "Engineer",
     "purchase": "{item} / {price} CR",
     "owned": "{item} / Complete",
-    "ship_note": "Each support ship boosts ore sales. Fleet bonus: +10%, then +20%.",
+    "ship_note": "Passive ships boost ore sales. Current total bonus: +{bonus}%.",
     "miner_note": "Crew bonus: mine 15% faster.",
     "engineer_note": "Crew bonus: receive 15% less damage.",
     "objective": "DOMINION CHARTER / Own 3 ships, hire both crew, and bank 1,200 CR.",
@@ -80,6 +80,20 @@
     "controls": "WASD / Arrows: move     Space: mine     Mouse: aim / click: fire     E: dock     Esc: pause",
     "dock_hint": "BEACON IN RANGE / Press E to dock and keep cargo",
     "return_hint": "CARGO FULL / Return to the station beacon below",
-    "mine_hint": "Hold Space near a rock. Fly close to collect the ore."
+    "mine_hint": "Hold Space near a rock. Fly close to collect the ore.",
+    "no_save": "No saved campaign yet. Choose New Game.",
+    "view_fleet": "View fleet",
+    "fleet_back": "Back to station",
+    "fleet_title": "YOUR FLEET",
+    "fleet_passive": "You pilot the starter. Support ships are passive: they boost sales and do not fly alongside you.",
+    "vessel_0": "Prospector / Starter",
+    "vessel_1": "Hauler / Support 1",
+    "vessel_2": "Refinery / Support 2",
+    "fleet_owned": "OWNED",
+    "fleet_available": "AVAILABLE TO BUY",
+    "pilot_benefit": "Your piloted mining ship",
+    "support_benefit": "+{bonus}% ore-sale value",
+    "fleet_total": "Current fleet sale bonus: +{bonus}%",
+    "weapons_locked": "SAFE ZONE / Weapons locked"
   }
 }

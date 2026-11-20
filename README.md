@@ -114,3 +114,10 @@ are written back to `game.json`.
   window drag operation, preventing our code from keeping the audio buffer full. Note that this
   seems to only be an issue on Windows.
 
+
+### Visual direction and latest preview
+
+See the [visual goal](docs/concepts/README.md) for the intended look and feel,
+and [actual presentation screenshots](docs/reviews/2026-11-20-feedback.md) for
+the implemented vector-art step. Flight now marks useful targets and shows
+mining progress; the station **View fleet** displays detailed vessel hulls.

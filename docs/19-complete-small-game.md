@@ -180,3 +180,14 @@ including event-driven victory/combat/checkpoint cases, model stress probes,
 and bilingual roster rendering/click validation at all supported resolutions.
 Native-window acceptance, subjective difficulty and comparison against a
 running reference game remain unverified; see the review report.
+
+## Presentation follow-up — 2026-11-20
+
+[Spec 20](20-flight-readability-and-feedback.md) extends the campaign with
+procedural vessel detail, mining feedback and contextual navigation guidance.
+The campaign rules, support-ship behavior and checkpoint schema remain unchanged.
+
+### Additional dev plan stage
+
+Implement and validate spec 20's rendering/guidance layer while retaining the
+existing complete earned-progression and persistence regression coverage.

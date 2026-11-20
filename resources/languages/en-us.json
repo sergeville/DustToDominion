@@ -94,6 +94,15 @@
     "pilot_benefit": "Your piloted mining ship",
     "support_benefit": "+{bonus}% ore-sale value",
     "fleet_total": "Current fleet sale bonus: +{bonus}%",
-    "weapons_locked": "SAFE ZONE / Weapons locked"
+    "weapons_locked": "SAFE ZONE / Weapons locked",
+    "guide_dock": "DOCK READY / Press E to secure cargo at the station",
+    "guide_return_full": "CARGO FULL / Follow the beacon home",
+    "guide_return_damaged": "HULL CRITICAL / Return to station safety",
+    "guide_collect": "COLLECT ORE / Fly close to the glowing fragments",
+    "guide_mine": "IN RANGE / Hold SPACE to cut the marked asteroid",
+    "guide_approach": "FIND ORE / Fly toward the marked asteroid",
+    "guide_return_depleted": "FIELD CLEARED / Return and dock for another run",
+    "distance": "{value} m",
+    "cut_progress": "CUT {value}%"
   }
 }

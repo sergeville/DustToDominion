@@ -1,0 +1,122 @@
+[
+  {
+    "file": "de-1280-bottom-edge.png",
+    "sha256": "68c472edb9df31a1da92bc7ee8aa4b7f816b50df6e7c917c1e00a595e07b4872"
+  },
+  {
+    "file": "de-1280-fleet.png",
+    "sha256": "2b3a67aeb3f3db2b22289010cefc1103437f0146888912f552d9d334a43629d5"
+  },
+  {
+    "file": "de-1280-fresh.png",
+    "sha256": "3db09b90edabaeb87322b8e1d95884d6c939290f179b3ac25db62a328401d81d"
+  },
+  {
+    "file": "de-1280-mining.png",
+    "sha256": "a566871b0345ee8530442355096240552c7dece3a456a2356080c906989c0bd1"
+  },
+  {
+    "file": "de-1280-return.png",
+    "sha256": "d1400232f85ffad81f996429c1ffef4879d9a4733800e22a36c9f2760455739c"
+  },
+  {
+    "file": "de-1920-bottom-edge.png",
+    "sha256": "9940bab40a527d374b728118ec7a673916ed0aa9f8c41f8037e788a8fb2050b8"
+  },
+  {
+    "file": "de-1920-fleet.png",
+    "sha256": "5a24692ef53e5543b60f9374f9223ccb2c2292f92f76338ae3caad3f7678b4ed"
+  },
+  {
+    "file": "de-1920-fresh.png",
+    "sha256": "f40586dd4b08fa50d80cfeb0d2a35f5b7f0afcc4d3da7a68d2fb1feb07183eb6"
+  },
+  {
+    "file": "de-1920-mining.png",
+    "sha256": "9387ec5554b99086e1268a81b9e91d65aa81ba4d9f31808bfcd0edcbe2e70ec0"
+  },
+  {
+    "file": "de-1920-return.png",
+    "sha256": "84ccd3794304b93e3690197892c9720b12159b7ba3aee9c9c0329b78e44c3067"
+  },
+  {
+    "file": "de-2560-bottom-edge.png",
+    "sha256": "a43404b1e61a3a6b6f2ce783c7502596c49f63156e7d454523dcd5e0ac0c2bb3"
+  },
+  {
+    "file": "de-2560-fleet.png",
+    "sha256": "023814e3bc4ba2470d94af55a2dbf6316ccf6ccd6af0f4c02271742f78e6652b"
+  },
+  {
+    "file": "de-2560-fresh.png",
+    "sha256": "ad46f9e1a62f65899fc3b7d673bc6afeb04066649b5202c521fbca836f2b69ce"
+  },
+  {
+    "file": "de-2560-mining.png",
+    "sha256": "a564b934600d24fd0f533457708e879f061c8390279bbfe3a95342d8783ab8b5"
+  },
+  {
+    "file": "de-2560-return.png",
+    "sha256": "634dbb889236194f047f45e038c22e999e06374ed73c29498026d3791b882e50"
+  },
+  {
+    "file": "en-us-1280-bottom-edge.png",
+    "sha256": "46528931767733660f124eaf706f69284861e9600429fbe388dc712d01086ddd"
+  },
+  {
+    "file": "en-us-1280-fleet.png",
+    "sha256": "82c5bbef6fe995cdeed0f389d047415bc8f873137ecec367d09f221ef565fdb0"
+  },
+  {
+    "file": "en-us-1280-fresh.png",
+    "sha256": "69c74a6d157ae6fa0e261da2ed110867c5fa9b40266d31fa1da19a366957582d"
+  },
+  {
+    "file": "en-us-1280-mining.png",
+    "sha256": "8746093557106372e38a3e46a6228da8f985f101df23ba1492e4c9c3aec40f6f"
+  },
+  {
+    "file": "en-us-1280-return.png",
+    "sha256": "3d3b7f6559fd2de809baddae5bcbed68ba7d3c1687cf60ae1f56a8fe4bd6d855"
+  },
+  {
+    "file": "en-us-1920-bottom-edge.png",
+    "sha256": "ad468bd46ac74f9b1b0e7647e80baa0ab8ac5f3567e417ab4af47d26f1d98937"
+  },
+  {
+    "file": "en-us-1920-fleet.png",
+    "sha256": "369a153f4156d05ea9dbe172b24b091df8369962391479471da4b33dc8062b5f"
+  },
+  {
+    "file": "en-us-1920-fresh.png",
+    "sha256": "17e0c0d388f2c96138635d5df1468b5d62a34adc9349fe7bfafaa6d3532efc20"
+  },
+  {
+    "file": "en-us-1920-mining.png",
+    "sha256": "54e6d327027eef5ddd69a7f27d674703f51a93529a0518df48fcb140f63a9499"
+  },
+  {
+    "file": "en-us-1920-return.png",
+    "sha256": "22b6332424eb70c4c8e77f2e25fe11424087462c696d10dc7460ee36e96439bf"
+  },
+  {
+    "file": "en-us-2560-bottom-edge.png",
+    "sha256": "2bc1dd08eb33942ffb207f9fef05f149e6453ccb0676afbd8d30ff70a47f8e12"
+  },
+  {
+    "file": "en-us-2560-fleet.png",
+    "sha256": "37fe1dd7f2d3fb5988a6e8349f99e4246aacc4347f9ab265b19f2af320b4601e"
+  },
+  {
+    "file": "en-us-2560-fresh.png",
+    "sha256": "543c0f5dfda54bf94f1cc484bcbe7e81f7e9b166b8112f237765ac2cef53d43a"
+  },
+  {
+    "file": "en-us-2560-mining.png",
+    "sha256": "91d2c5ada66b767e1568c60b75925689103f0b93f9691ef9b4d8f9f9371462f9"
+  },
+  {
+    "file": "en-us-2560-return.png",
+    "sha256": "d5eee74f6c26c650c975c0eb12bac8197d6ae47a97d5c4c59a59f8311bf8f43f"
+  }
+]

@@ -6,6 +6,9 @@
 - [Complete small game specification](19-complete-small-game.md): implemented rules; native acceptance still pending.
 - [Validation report](reviews/2026-11-20-playable-game.md): results and limits.
 
+- [Flight presentation review](reviews/2026-11-20-feedback.md): current art, guidance and tests.
+- [Visual goal concept](concepts/README.md): intended look and feel, separate from current implementation.
+
 ## Specification workflow
 
 Architecture documents for the project go here.

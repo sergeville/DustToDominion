@@ -13,6 +13,8 @@ import pygame
 
 from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
                           DOCK_RADIUS, SAFE_RADIUS, MINE_RANGE)
+from dtd.campaign_art import draw_ship, draw_station, draw_asteroid
+from dtd.campaign_guidance import guidance, mining_target
 from dtd.campaign_store import SaveError
 from dtd.language import get_language_manager
 from dtd.screens.base import Screen, ScreenAction
@@ -45,6 +47,7 @@ class CampaignScreen(Screen):
         self._firing = False
         self._aim = (960.0, 350.0)
         self._accumulator = 0.0
+        self._visual_time = 0.0
         self._pending_action = None
         self._button_theme = copy.copy(theme)
         # Preserve the selected font/theme when customized; the stock bright-blue
@@ -273,6 +276,7 @@ class CampaignScreen(Screen):
         self._accumulator += min(dt, 0.25)
         while self._accumulator + 1e-10 >= _STEP:
             self._accumulator -= _STEP
+            self._visual_time += _STEP
             self.expedition.step(_STEP, controls)
             if self.expedition.finished:
                 self._finish(self.expedition.defeated)
@@ -365,13 +369,30 @@ class CampaignScreen(Screen):
         progress = (min(c.ship_count / 3, 1) + (int(c.miner) + int(c.engineer)) / 2 + min(c.credits / 1200, 1)) / 3
         self._bar(80, 924, 1750, progress, _GOLD)
 
-    def _ship(self, x, y, heading, color, size=26) -> None:
-        points = []
-        for angle, length in ((0, size * 1.4), (2.45, size), (math.pi, size * .45), (-2.45, size)):
-            points.append((x + math.cos(heading + angle) * length, y + math.sin(heading + angle) * length))
-        pygame.draw.polygon(self._canvas, _PANEL, points)
-        pygame.draw.polygon(self._canvas, color, points, 3)
-        pygame.draw.circle(self._canvas, color, (int(x), int(y)), 5)
+    def _moving(self) -> bool:
+        keys = self._keys
+        horizontal = bool(keys & {pygame.K_d, pygame.K_RIGHT}) != bool(keys & {pygame.K_a, pygame.K_LEFT})
+        vertical = bool(keys & {pygame.K_s, pygame.K_DOWN}) != bool(keys & {pygame.K_w, pygame.K_UP})
+        return self.mode == "flight" and (horizontal or vertical)
+
+    def _draw_guidance(self) -> None:
+        run = self.expedition
+        advice = guidance(self.campaign, run)
+        color = _RED if advice.key == "return_damaged" else _GOLD if advice.key == "return_full" else _CYAN
+        if advice.target is not None:
+            tx, ty = advice.target
+            pygame.draw.circle(self._canvas, color, (round(tx), round(ty)), 22, 1)
+            if advice.distance > 45:
+                angle = math.atan2(ty - run.y, tx - run.x)
+                # Keep the direction marker clear of the top/bottom HUD.
+                x = max(60, min(1860, run.x + math.cos(angle) * 70))
+                y = max(190, min(866, run.y + math.sin(angle) * 70))
+                points = [(x + math.cos(angle + offset) * length,
+                           y + math.sin(angle + offset) * length)
+                          for offset, length in ((0, 14), (2.5, 10), (-2.5, 10))]
+                pygame.draw.polygon(self._canvas, color, points)
+        self._text(self._t("guide_" + advice.key), 60, 142, 23, color)
+        self._text(self._t("distance", value=round(advice.distance)), 1710, 142, 21, _MUTED)
 
     def _draw_flight(self) -> None:
         run, c = self.expedition, self.campaign
@@ -379,34 +400,43 @@ class CampaignScreen(Screen):
         pygame.draw.circle(self._canvas, (14, 36, 43), (STATION_X, STATION_Y), SAFE_RADIUS)
         pygame.draw.circle(self._canvas, _LINE, (STATION_X, STATION_Y), SAFE_RADIUS, 1)
         pygame.draw.circle(self._canvas, _CYAN, (STATION_X, STATION_Y), DOCK_RADIUS, 2)
-        pygame.draw.rect(self._canvas, _LINE, (STATION_X - 48, STATION_Y - 22, 96, 44), 3)
-        pygame.draw.rect(self._canvas, _CYAN, (STATION_X - 22, STATION_Y - 48, 44, 96), 3)
+        draw_station(self._canvas, STATION_X, STATION_Y)
         for rock in run.asteroids:
-            points = [(rock.x + math.cos(i * math.tau / 9) * rock.radius * (0.85 + (i % 3) * .08),
-                       rock.y + math.sin(i * math.tau / 9) * rock.radius * (0.85 + (i % 3) * .08)) for i in range(9)]
-            pygame.draw.polygon(self._canvas, (28, 40, 54), points)
-            pygame.draw.polygon(self._canvas, _ORE[rock.ore], points, 3)
+            draw_asteroid(self._canvas, rock)
             self._bar(rock.x - 28, rock.y + rock.radius + 10, 56, rock.health / rock.max_health, _ORE[rock.ore])
         for pickup in run.pickups:
             x, y = pickup.x, pickup.y
             pygame.draw.polygon(self._canvas, _ORE[pickup.ore], [(x, y-10), (x+8, y), (x, y+10), (x-8, y)])
-        if pygame.K_SPACE in self._keys and self.mode == "flight" and len(run.cargo) < c.capacity:
-            candidates = [a for a in run.asteroids if math.hypot(a.x-run.x, a.y-run.y) <= MINE_RANGE]
-            if candidates:
-                target = min(candidates, key=lambda a: math.hypot(a.x-run.x, a.y-run.y))
+        target = mining_target(c, run)
+        if target is not None:
+            pygame.draw.circle(self._canvas, _LINE, (round(run.x), round(run.y)), round(MINE_RANGE), 1)
+            pygame.draw.circle(self._canvas, _CYAN, (round(target.x), round(target.y)), round(target.radius + 8), 1)
+            progress = round((1 - target.health / target.max_health) * 100)
+            self._text(self._t("cut_progress", value=progress),
+                       max(50, min(1650, target.x - 60)), max(185, target.y - target.radius - 44), 20, _CYAN)
+            if pygame.K_SPACE in self._keys and self.mode == "flight":
+                pygame.draw.line(self._canvas, (25, 91, 105), (run.x, run.y), (target.x, target.y), 9)
                 pygame.draw.line(self._canvas, _CYAN, (run.x, run.y), (target.x, target.y), 3)
+                pygame.draw.circle(self._canvas, _WHITE, (round(target.x), round(target.y)), 4)
+                for i in range(6):
+                    angle = i * math.tau / 6 + self._visual_time * 3
+                    radius = 10 + 8 * (1 + math.sin(self._visual_time * 12 + i))
+                    point = (round(target.x + math.cos(angle) * radius),
+                             round(target.y + math.sin(angle) * radius))
+                    pygame.draw.line(self._canvas, _GOLD, (target.x, target.y), point, 1)
         for enemy in run.enemies:
-            self._ship(enemy.x, enemy.y, enemy.heading, _RED, 24)
+            draw_ship(self._canvas, enemy.x, enemy.y, enemy.heading, kind="rival", size=24)
             self._bar(enemy.x-25, enemy.y+34, 50, enemy.hull/75, _RED)
         for shot in run.projectiles:
             pygame.draw.circle(self._canvas, _GOLD if shot.friendly else _RED, (int(shot.x), int(shot.y)), 5)
-        self._ship(run.x, run.y, run.heading, _WHITE)
+        draw_ship(self._canvas, run.x, run.y, run.heading, size=32,
+                  thrust=self._moving(), phase=self._visual_time)
         if self.mode == "flight":
             ax, ay = map(int, self._aim)
             pygame.draw.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
             pygame.draw.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
             pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
-        self._panel((30, 24, 1860, 135))
+        self._panel((30, 24, 1860, 156))
         self._text(self._t("sector_title", sector=run.sector), 60, 45, 32, _CYAN)
         in_safe_zone = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= SAFE_RADIUS
         status = "weapons_locked" if in_safe_zone else "danger" if run.sector > 1 else "safe"
@@ -416,10 +446,9 @@ class CampaignScreen(Screen):
         self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 45, 28, _GOLD)
         self._bar(1130, 113, 400, len(run.cargo)/c.capacity, _GOLD)
         self._text(self._t("credits", value=c.credits), 1590, 65, 27, _GOLD)
+        self._draw_guidance()
         self._panel((30, 982, 1860, 78))
         self._text(self._t("controls"), 60, 1008, 24, _WHITE)
-        hint = "dock_hint" if run.dock_ready else "return_hint" if len(run.cargo) >= c.capacity else "mine_hint"
-        self._text(self._t(hint), 550, 932, 25, _CYAN, 1200)
 
     def _draw_fleet(self) -> None:
         shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
@@ -440,22 +469,6 @@ class CampaignScreen(Screen):
         self._text(self._t("fleet_total", bonus=self._fleet_bonus()), 300, 735, 30, _GOLD, 1320)
 
     def _fleet_silhouette(self, x, y, index, color) -> None:
-        if index == 0:
-            self._ship(x, y, -math.pi / 2, color, 52)
-            return
-        # Original vector hulls; these show passive fleet inventory, not escorts.
-        if index == 1:
-            outline = [(-60, 42), (-60, -15), (-30, -15), (-23, -52),
-                       (23, -52), (30, -15), (60, -15), (60, 42),
-                       (27, 42), (27, 18), (-27, 18), (-27, 42)]
-            pods = ((-48, 8), (48, 8))
-        else:
-            outline = [(-80, 37), (-80, -28), (-45, -28), (-28, -48),
-                       (28, -48), (45, -28), (80, -28), (80, 37),
-                       (38, 37), (24, 52), (-24, 52), (-38, 37)]
-            pods = ((-60, 0), (0, 0), (60, 0))
-        points = [(x + dx, y + dy) for dx, dy in outline]
-        pygame.draw.polygon(self._canvas, (21, 43, 56), points)
-        pygame.draw.polygon(self._canvas, color, points, 3)
-        for dx, dy in pods:
-            pygame.draw.rect(self._canvas, color, (x + dx - 10, y + dy - 16, 20, 32), 2)
+        draw_ship(self._canvas, x, y, -math.pi / 2,
+                  kind=("prospector", "hauler", "refinery")[index], size=65,
+                  color=color)

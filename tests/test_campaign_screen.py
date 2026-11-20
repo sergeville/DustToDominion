@@ -216,3 +216,84 @@ def test_safe_zone_has_visible_weapons_lock_hint(screen, monkeypatch):
     screen.expedition.x = STATION_X + SAFE_RADIUS + 1
     screen._draw_flight()
     assert screen._t('weapons_locked') not in drawn
+
+
+def test_visual_time_follows_consumed_steps_and_freezes_on_pause(screen):
+    screen._launch(1)
+    screen.advance(.1)
+    phase = screen._visual_time
+    assert phase == pytest.approx(.1)
+    import copy
+    before = copy.deepcopy(screen.expedition)
+    screen.draw(pygame.display.get_surface())
+    screen.draw(pygame.display.get_surface())
+    assert screen._visual_time == phase
+    assert screen.expedition == before
+    screen._pause()
+    screen.advance(5)
+    assert screen._visual_time == phase
+    screen._resume()
+    screen.advance(1 / 60)
+    assert screen._visual_time == pytest.approx(phase + 1 / 60)
+
+
+def test_thrust_uses_net_input_and_stops_on_focus_loss(screen, monkeypatch):
+    import dtd.screens.campaign as module
+    calls = []
+    monkeypatch.setattr(module, 'draw_ship', lambda *args, **kwargs: calls.append(kwargs))
+    screen._launch(1)
+    screen.update([key(pygame.K_w), key(pygame.K_s)])
+    screen._draw_flight()
+    assert not calls[-1]['thrust']
+    screen.update([key(pygame.K_s, up=True)])
+    screen._draw_flight()
+    assert calls[-1]['thrust']
+    screen.update([pygame.event.Event(pygame.WINDOWFOCUSLOST)])
+    screen._draw_flight()
+    assert not calls[-1]['thrust']
+
+
+def test_actual_mining_target_feedback_is_independent_of_pickup_guidance(screen, monkeypatch):
+    from dtd.campaign import Asteroid, Pickup
+    screen._launch(1)
+    run = screen.expedition
+    run.x, run.y = 700, 500
+    run.asteroids = [Asteroid(2, 800, 500, 40, 0), Asteroid(1, 600, 500, 40, 0, 1, 3)]
+    run.pickups = [Pickup(1, 720, 520, 0)]
+    drawn = []
+    monkeypatch.setattr(screen, '_text', lambda text, *args, **kwargs: drawn.append(text))
+    screen._draw_flight()
+    assert screen._t('guide_collect') in drawn
+    assert screen._t('cut_progress', value=67) in drawn
+    run.cargo = [0] * screen.campaign.capacity
+    drawn.clear()
+    screen._draw_flight()
+    assert screen._t('guide_return_full') in drawn
+    assert not any(text.startswith('CUT ') for text in drawn)
+
+
+def test_fresh_launch_guidance_invites_mining_in_both_languages(screen, monkeypatch):
+    screen._launch(1)
+    drawn = []
+    monkeypatch.setattr(screen, '_text', lambda text, *args, **kwargs: drawn.append(text))
+    for locale in ('en-us', 'de'):
+        init_language_manager(screen._loader, locale)
+        drawn.clear()
+        screen._draw_flight()
+        assert screen._t('guide_approach') in drawn
+        assert screen._t('guide_dock') not in drawn
+        assert not any('campaign.' in text for text in drawn)
+
+
+def test_guidance_stays_in_header_and_does_not_cover_reachable_ship(screen, monkeypatch):
+    from dtd.campaign import WORLD_TOP
+    screen._launch(1)
+    screen.expedition.y = 935
+    panels, text = [], []
+    monkeypatch.setattr(screen, '_panel', lambda rect: panels.append(pygame.Rect(rect)))
+    monkeypatch.setattr(screen, '_text', lambda value, x, y, size=28, *args, **kwargs: text.append((value, y, size)))
+    screen._draw_flight()
+    ship = pygame.Rect(928, 903, 64, 64)
+    assert not any(panel.colliderect(ship) for panel in panels)
+    advice = [item for item in text if item[0] == screen._t('guide_approach')]
+    assert advice and advice[0][1] + advice[0][2] < WORLD_TOP

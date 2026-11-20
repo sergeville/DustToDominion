@@ -175,3 +175,16 @@ Measured results:
 5. Record native acceptance before activating spec 19. Keep the no-push boundary
    and preserved user drafts intact. Do not reconstruct old macOS patches from
    historical prose without inspecting actual source/evidence.
+
+## 8. Flight presentation follow-up — 2026-11-20
+
+This later iteration supersedes the earlier visual baseline, not its history.
+See [spec 20](../20-flight-readability-and-feedback.md) and the
+[presentation review](2026-11-20-feedback.md) for procedural ship/asteroid/station
+art, contextual guidance, mining feedback, reviewers' corrections and evidence.
+The [generated visual goal](../concepts/README.md) is a separate longer-term art
+target requested by Serge, explicitly distinguished from actual screenshots.
+The earlier validation counts above describe the previous implementation.
+
+Latest full suite: **1,768 passed in 36.44s**; independent scoped gate: 67 passed.
+Native play acceptance remains open.

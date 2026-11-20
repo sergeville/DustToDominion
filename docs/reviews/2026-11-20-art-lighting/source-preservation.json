@@ -1,0 +1,14 @@
+{
+  "baseline_commit": "05251648c6f185002c03f1fbf060dfbc0fa09bb4",
+  "baseline_png_integrity": {
+    "mining.png": true,
+    "combat.png": true
+  },
+  "source_files_checked": 38,
+  "changed_source_paths": [
+    "src/dtd/campaign_effects.py",
+    "src/dtd/campaign_sprites.py",
+    "src/dtd/screens/campaign.py"
+  ],
+  "unchanged_source_count": 35
+}

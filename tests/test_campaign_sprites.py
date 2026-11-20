@@ -249,15 +249,17 @@ def test_iron_variant_is_stable_by_identity_and_missing_variant_uses_primary(tmp
 
 def test_rival_has_cached_separation_outside_hull_without_expanding_radius(tmp_path, monkeypatch):
     arrow(tmp_path, 'rival')
-    arrow(tmp_path, 'prospector')
     renderer = CampaignSprites(tmp_path)
     original = pixels(renderer._sources['rival'])
     plain, rival = canvas(), canvas()
-    renderer.draw_ship(plain, 200, 200, .7, kind='prospector', size=24)
+    # Compare with the original artwork, not the now-contoured player hull.
+    body_image = pygame.transform.smoothscale(renderer._sources['rival'], (48, 48))
+    body_image = pygame.transform.rotate(body_image, (round((-90-math.degrees(.7))/2)*2) % 360)
+    plain.blit(body_image, body_image.get_rect(center=(200, 200)))
     renderer.draw_ship(rival, 200, 200, .7, kind='rival', size=24)
     body = pygame.mask.from_surface(plain, 32)
     red_rim = pygame.mask.from_threshold(rival, (235, 116, 111, 210), (8, 8, 8, 48))
-    dark_edge = pygame.mask.from_threshold(rival, (4, 9, 16, 255), (3, 3, 3, 3))
+    dark_edge = pygame.mask.from_threshold(rival, (4, 9, 16, 220), (3, 3, 3, 36))
     assert red_rim.count() > red_rim.overlap_area(body, (0, 0)) + 10
     assert dark_edge.count() > dark_edge.overlap_area(body, (0, 0)) + 10
     assert pygame.Rect(175, 175, 50, 50).contains(rival.get_bounding_rect())

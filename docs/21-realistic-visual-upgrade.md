@@ -294,3 +294,105 @@ camera work from physical input/audio, artwork/lighting judgment, human visual
 acceptance and native 4K world rendering. Serge explicitly separated framing
 improvement from artwork/lighting acceptance; neither is implicitly approved by
 this camera pass. Specification status remains proposed for those open gates.
+
+## Amendment — 2026-11-20: artwork, lighting and restrained targeting
+
+Serge authorized the existing team to implement an artwork/lighting pass after
+camera commit `0525164`. This is a presentation-only amendment. The implemented
+camera and inverse input mapping, model geometry/ranges/collisions, economy,
+combat/safety rules, save schema and user saves remain unchanged. Native 4K world
+rendering is **unimplemented** and physical controls/audio acceptance is
+**unverified**; neither is closed by this pass or by an automated recording.
+
+### Asset and rendering contract
+
+- Create varied, identifiable asteroid silhouettes with readable iron/gold/crystal
+  materials inspired by the supplied realistic reference. Stable identity chooses
+  variants without consuming simulation randomness. Render inside existing bounds;
+  decorative irregularity never changes collision geometry.
+- Improve the prospector/rival and station metal, panel separation and emissive
+  accents at actual gameplay sizes. Preserve overhead orientation, friendly/hostile
+  distinction and clear silhouettes. Retain reusable originals, generated alpha,
+  prompts, hashes and derivation steps. No generated screenshot substitutes for
+  actual game evidence; no source assets discarded.
+- Replace the opaque circular player backing with a subtle hull-shaped readability
+  treatment. Preserve readability against rocks/station without a solid disc or
+  bright full-body flash. Missing-asset fallback must remain usable.
+- Improve mining contact light, bounded fragments, thrusters and hit/destruction
+  effects. Effects use supplied simulation time, project through the existing camera,
+  do not mutate models/RNG, and remain capped in lifetime, count and cache memory.
+  Transient illumination is a 2D approximation; do not claim dynamic physical lighting.
+  Contact follows the actual transformed rock alpha (at most 512 samples), with a
+  geometric fallback for missing artwork. Light cache ≤64 entries/2 MiB; mining
+  fragments ≤96/one-second lifetime; destruction bursts ≤8 groups/0.65 seconds.
+  Existing transform cache remains ≤128 entries/32 MiB and hit flashes ≤32/0.32 seconds.
+- Reduce redundant full range rings and repeated brackets. Preserve exact safe-zone
+  boundary information, docking cues, current mining target/progress, rival identity,
+  mouse crosshair and offscreen station/threat navigation. HUD remains screen space.
+
+### Configuration and ownership
+
+No new dependencies, persistent settings or save fields. Presentation constants
+remain centralized where practical. Retain the 1×/1.5×/2× camera and 1.5× default.
+Art agent owns new asset/source files and provenance; renderer owns sprite/effects
+modules and their tests. Lead acts as UI owner for `screens/campaign.py`, range and
+bracket treatment, resource integration, canonical docs and handoff. Shared-file
+handoffs are explicit. Independent QA owns separate acceptance/evidence files.
+
+### Dev plan — artwork and lighting pass
+
+1. Save matching baseline mining/combat frames and source hashes; agree ownership
+   and amend this canonical plan before modifying consumed assets/product code.
+   **Completed:** preserved exact prior-camera frames and source inventory before
+   edits; later re-read of all 38 files verified only the three intended presentation
+   modules changed.
+2. Generate and inspect reusable art, integrate bounded sprite/effects improvements,
+   then reduce UI visual weight while keeping navigation and target information.
+   **Completed:** six additional source/export pairs, alpha-shaped hull separation,
+   alpha-aware mining contact, bounded effects and restrained overlays.
+3. Run an isolated earned launch → mine → collect → dock → sell trip, then combat.
+   Capture actual renderer before/after frames at matching sizes and compare with
+   corresponding reference panels. Produce a short actual gameplay recording if
+   an available encoder permits it; label automation, output/internal resolution,
+   frame cadence and audio honestly.
+   **Completed:** earned 80→110 CR trip and 70 CR combat bounty, matched comparison
+   sheets and two silent 1080p/30fps automated gameplay clips retained.
+4. Independently verify visibility, camera/input invariants, affected gameplay,
+   bounded effects and performance; run affected and full checks. Review source
+   hashes, warnings and evidence before local commit/handoff. Keep visual acceptance
+   open for Serge and list unfinished work explicitly.
+   **Completed:** independent QA passed 1,958 tests, earned routes, 41 final image
+   originals and two decoded recordings; native graphics and separate effect-cap
+   timing passed. All final source/resource/evidence hashes were verified.
+
+### Testing and acceptance criteria
+
+- Original model/store/camera/input math and gameplay values are unchanged; existing
+  mining, combat, quick-tap, stationary-cursor, zoom/resize/fullscreen and save
+  regressions pass. Tests use isolated persistence only.
+- Representative asteroid variants have distinct silhouettes and readable ore
+  materials at 1×/1.5×/2×. Ship contour treatment follows alpha rather than painting
+  a filled circle; friendly and rival ships remain visible against rock/station.
+- Range/target cues retain correct projected positions and essential meanings with
+  less visual clutter; labels/bars/edge chips remain unobscured in EN/DE fixtures.
+- Effects are deterministic presentation data, bounded under sustained use, correctly
+  camera-mapped and isolated from gameplay. Missing artwork remains nonfatal.
+- Compare actual renderer output to baseline/reference, review the largest remaining
+  gaps and report normal/heavy frame timings and warnings. Native window dimensions,
+  internal 1920×1080 world drawing and offscreen output dimensions remain distinct.
+- A short event-driven recording demonstrates the running renderer but cannot prove
+  physical controls, audio quality or human visual acceptance. Do not mark the spec
+  active while those applicable human acceptance gates remain open.
+
+### Artwork and lighting result — 2026-11-20
+
+Implementation and independent technical QA are complete for this pass. See the
+[current report](reviews/2026-11-20-art-lighting/review.md) for matching before/after
+and reference panels, earned recordings, exact provenance, performance outliers
+and launch instructions. The internal world remains 1920×1080; native fullscreen
+was verified at a 3440×1440 window using that backbuffer. Offscreen 3840×2160 images
+are scaled-world evidence. Native 4K world rendering is unimplemented, physical
+controls/audio are unverified and Serge's visual acceptance remains open. Sparse
+composition, prominent hull contours, repeated/baked materials and stylized effects
+remain visible differences from the target. This spec remains proposed for those
+human acceptance gates; no reference-fidelity approval is implied.

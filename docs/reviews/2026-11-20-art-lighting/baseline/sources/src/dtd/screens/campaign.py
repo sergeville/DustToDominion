@@ -1,0 +1,754 @@
+"""The playable campaign surface: station, expedition and exclusive overlays.
+
+All drawing uses the established 1920x1080 design space. The simulation and
+persistence stay outside the screen; widgets only issue model commands.
+"""
+from __future__ import annotations
+
+import math
+import copy
+import random
+
+import pygame
+
+from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
+                          DOCK_RADIUS, SAFE_RADIUS, MINE_RANGE)
+from dtd.campaign_sprites import CampaignSprites
+from dtd.campaign_camera import Camera
+from dtd.camera_indicators import offscreen_indicators, draw_indicators
+from dtd.campaign_effects import DamageFlashes, mining_beam, projectile, ore_glint
+from dtd.campaign_guidance import guidance, mining_target
+from dtd.campaign_store import SaveError
+from dtd.language import get_language_manager
+from dtd.screens.base import Screen, ScreenAction
+from dtd.ui import UIManager, current_scale
+from dtd.widgets.button import Button
+
+_BG = (7, 13, 25)
+_PANEL = (13, 26, 43)
+_LINE = (38, 68, 87)
+_WHITE = (225, 238, 242)
+_MUTED = (139, 165, 182)
+_CYAN = (85, 220, 220)
+_GOLD = (246, 195, 100)
+_RED = (246, 106, 110)
+_ORE = ((111, 185, 207), (241, 182, 88), (182, 131, 246))
+_STEP = 1 / 60
+
+
+class CampaignScreen(Screen):
+    """A session-owned Campaign rendered through a transient Screen."""
+
+    def __init__(self, theme, loader, campaign: Campaign, store) -> None:
+        self._theme, self._loader = theme, loader
+        self.campaign, self.store = campaign, store
+        self.expedition = None
+        self.mode = "station"
+        self.message = ""
+        self.error = ""
+        self._keys: set[int] = set()
+        self._firing = False
+        self._pending_shot = None
+        self._cursor = (960.0, 350.0)
+        self._camera = Camera()
+        self._aim = self._camera.screen_to_world(self._cursor)
+        self._accumulator = 0.0
+        self._visual_time = 0.0
+        self._pending_action = None
+        self._button_theme = copy.copy(theme)
+        # Preserve the selected font/theme when customized; the stock bright-blue
+        # widget background gets a subdued cockpit variant for this surface.
+        if theme.get_theme_resource_id() == "default":
+            for key, color in {"foregroundNormal": _CYAN, "backgroundNormal": (19, 48, 61),
+                               "foregroundHover": _WHITE, "backgroundHover": (29, 76, 91),
+                               "foregroundDisabled": (110, 133, 150), "backgroundDisabled": (17, 29, 43)}.items():
+                setattr(self._button_theme, key, pygame.Color(color))
+            self._button_theme.cornerRadius = 7
+        self._ui = UIManager(theme)
+        self._canvas = pygame.Surface((1920, 1080))
+        self._art = CampaignSprites(loader=loader)
+        self._impacts = DamageFlashes()
+        self._fonts = {}
+        self._output_fonts = {}
+        self._text_layer = []
+        self._world_labels = []
+        self._world_bars = []
+        self._shield = pygame.Surface((SAFE_RADIUS * 2 + 2, SAFE_RADIUS * 2 + 2), pygame.SRCALPHA)
+        pygame.draw.circle(self._shield, (33, 103, 119, 18),
+                           (SAFE_RADIUS + 1, SAFE_RADIUS + 1), SAFE_RADIUS)
+        self._shields = {1.0: self._shield}
+        rng = random.Random(47)
+        self._stars = [(rng.randrange(1920), rng.randrange(1080), rng.randrange(35, 90))
+                       for _ in range(180)]
+        self._victory_shown = campaign.won
+        self._rebuild()
+
+    def _t(self, key: str, **values) -> str:
+        return get_language_manager().get_string("campaign." + key).format(**values)
+
+    def _clear_input(self) -> None:
+        self._keys.clear()
+        self._firing = False
+        self._pending_shot = None
+        self._accumulator = 0.0
+
+    def _button(self, rect, text, callback, enabled=True) -> None:
+        button = Button(pygame.Rect(rect), text=text, border_width=1, on_click=callback)
+        size = 26
+        while size > 16 and self._theme.get_font(size).size(text)[0] > rect[2] - 24:
+            size -= 1
+        button.set_font_point_size(size)
+        button.set_theme_override(self._button_theme)
+        button.enabled = enabled
+        self._ui.widgets.append(button)
+
+    def _rebuild(self) -> None:
+        # Replace the whole manager: overlays never share an input layer.
+        self._ui = UIManager(self._theme)
+        if self.mode == "station":
+            for sector in range(1, 4):
+                self._button((80, 570 + (sector - 1) * 86, 510, 46),
+                             self._t("launch", sector=sector),
+                             lambda s=sector: self._launch(s),
+                             sector <= self.campaign.unlocked_sector)
+            self._button((700, 570, 510, 46), self._t("sell", value=self.campaign.cargo_value()),
+                         lambda: self._station_action("sell"), bool(self.campaign.cargo))
+            self._button((700, 624, 510, 46), self._t("repair"),
+                         lambda: self._station_action("repair"),
+                         self.campaign.hull < self.campaign.max_hull and self.campaign.credits > 0)
+            for i, item in enumerate(("cargo", "laser", "hull")):
+                self._purchase_button(item, (700, 678 + i * 54, 510, 46))
+            for i, item in enumerate(("ship", "miner", "engineer")):
+                self._purchase_button(item, (1320 if i == 0 else 1430,
+                                             410 + i * 132, 510 if i == 0 else 400, 58))
+            self._button((80, 974, 300, 58), self._t("save"), self._save)
+            self._button((1540, 974, 300, 58), self._t("title"), self._title)
+            self._button((1110, 158, 280, 58), self._t("view_fleet"), self._fleet)
+        elif self.mode == "fleet":
+            self._button((760, 820, 400, 66), self._t("fleet_back"), self._station)
+        elif self.mode == "paused":
+            self._button((660, 600, 600, 66), self._t("resume"), self._resume)
+            self._button((660, 688, 600, 66), self._t("abandon"), self._confirm_abandon)
+        elif self.mode == "abandon":
+            self._button((660, 600, 600, 66), self._t("cancel"), self._pause)
+            self._button((660, 688, 600, 66), self._t("confirm_abandon"), self._abandon)
+        elif self.mode in ("result", "victory"):
+            self._button((660, 600, 600, 66), self._t("continue"), self._station)
+            self._button((660, 688, 600, 66), self._t("title"), self._title)
+
+    def _purchase_button(self, item, rect) -> None:
+        price = self.campaign.price(item)
+        label = self._t(item)
+        text = self._t("purchase", item=label, price=price) if price is not None else self._t("owned", item=label)
+        self._button(rect, text, lambda: self._station_action(item),
+                     price is not None and self.campaign.credits >= price)
+
+    def _save(self) -> bool:
+        try:
+            self.store.save(self.campaign)
+        except SaveError:
+            # Keep the live campaign and last checkpoint. Technical details belong
+            # in the store log; the player receives an actionable localized error.
+            self.error = self._t("save_failed")
+            return False
+        self.error = ""
+        self.message = self._t("saved")
+        return True
+
+    def _station_action(self, action: str) -> None:
+        if self.mode != "station":
+            return
+        if action == "sell":
+            amount = self.campaign.sell()
+            self.message = self._t("sold", value=amount)
+        elif action == "repair":
+            self.campaign.repair()
+        else:
+            if not self.campaign.buy(action):
+                return
+        notice = self.message
+        self._save()
+        self.message = notice
+        if self.campaign.victory and not self._victory_shown:
+            self._victory_shown = True
+            self.campaign.won = True
+            self.mode = "victory"
+            self._save()
+        self._rebuild()
+
+    def _launch(self, sector: int) -> None:
+        self.expedition = self.campaign.launch(sector)
+        self._sync_camera()
+        self._impacts = DamageFlashes()
+        self._visual_time = 0.0
+        self.mode = "flight"
+        self.message = ""
+        self._clear_input()
+        self._rebuild()
+
+    def _pause(self) -> None:
+        self.mode = "paused"
+        self._clear_input()
+        self._rebuild()
+
+    def _resume(self) -> None:
+        self.mode = "flight"
+        self._clear_input()
+        self._rebuild()
+
+    def _confirm_abandon(self) -> None:
+        self.mode = "abandon"
+        self._clear_input()
+        self._rebuild()
+
+    def _abandon(self) -> None:
+        self._finish(True)
+
+    def _finish(self, defeated=False) -> None:
+        run = self.expedition
+        if run is None:
+            return
+        self.campaign.finish_run(run, defeated=defeated)
+        self.message = self._t("defeat_body" if defeated or run.defeated else "docked_body")
+        self.mode = "result"
+        if self.campaign.victory and not self._victory_shown:
+            self._victory_shown = True
+            self.campaign.won = True
+            self.mode = "victory"
+        self._clear_input()
+        notice = self.message
+        self._save()
+        self.message = notice
+        self.expedition = None
+        self._rebuild()
+
+    def _fleet(self) -> None:
+        if self.mode != "station":
+            return
+        self.mode = "fleet"
+        self._clear_input()
+        self._rebuild()
+
+    def _fleet_bonus(self) -> int:
+        return (0, 10, 30)[self.campaign.support_ships]
+
+    def _station(self) -> None:
+        self.mode = "station"
+        self._clear_input()
+        self._rebuild()
+
+    def _title(self) -> None:
+        if self._save():
+            self._pending_action = ScreenAction.SHOW_TITLE_SCREEN
+
+    def _sync_camera(self) -> None:
+        if self.expedition is not None:
+            self._camera.follow(self.expedition.x, self.expedition.y)
+        self._aim = self._camera.screen_to_world(self._cursor)
+
+    def _zoom(self, direction=None) -> None:
+        if direction is None:
+            self._camera.set_zoom(1.0)
+        else:
+            self._camera.step_zoom(direction)
+        self._sync_camera()
+
+    def update(self, events) -> None:
+        # Process each event once. A transition discards the rest of its batch;
+        # a launch/resume click cannot also fire a weapon or trigger another UI.
+        # Focus loss is a lifecycle event, even when it trails a click that
+        # changes modes. Never let event-batch suppression discard that pause.
+        if any(event.type == pygame.WINDOWFOCUSLOST for event in events):
+            self._clear_input()
+            if self.expedition is not None:
+                self._pause()
+            return
+        self._sync_camera()
+        for event in events:
+            before = self.mode
+            if event.type == pygame.WINDOWFOCUSLOST and self.mode == "flight":
+                self._pause()
+                break
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                if self.mode == "flight":
+                    self._pause()
+                elif self.mode == "paused":
+                    self._resume()
+                elif self.mode == "abandon":
+                    self._pause()
+                elif self.mode == "fleet":
+                    self._station()
+                break
+            if self.mode == "flight":
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_HOME:
+                        self._zoom()
+                    elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                        self._zoom(-1)
+                    elif event.key in (pygame.K_EQUALS, pygame.K_PLUS, pygame.K_KP_PLUS):
+                        self._zoom(1)
+                    else:
+                        self._keys.add(event.key)
+                    if event.key == pygame.K_e and self.expedition.request_dock():
+                        self._finish()
+                elif event.type == pygame.KEYUP:
+                    self._keys.discard(event.key)
+                elif event.type == pygame.MOUSEWHEEL:
+                    self._zoom(event.y)
+                elif event.type == pygame.MOUSEMOTION:
+                    self._cursor = current_scale().mouse(event.pos)
+                    self._aim = self._camera.screen_to_world(self._cursor)
+                elif event.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP) and event.button == 1:
+                    self._cursor = current_scale().mouse(event.pos)
+                    self._aim = self._camera.screen_to_world(self._cursor)
+                    self._firing = (event.type == pygame.MOUSEBUTTONDOWN
+                                    and self._camera.viewport.collidepoint(self._cursor))
+                    if self._firing:
+                        self._pending_shot = self._aim
+            else:
+                self._ui.update([event])
+            if self.mode != before:
+                break
+
+    def advance(self, dt: float) -> None:
+        if self.mode != "flight" or self.expedition is None:
+            return
+        if not math.isfinite(dt) or dt <= 0:
+            return
+        keys = self._keys
+        self._accumulator += min(dt, 0.25)
+        while self._accumulator + 1e-10 >= _STEP:
+            self._accumulator -= _STEP
+            # Preserve a tap until a real step, then consume it even when the
+            # model rejects firing (shield/cooldown). Held fire uses current aim.
+            self._sync_camera()
+            held = self._firing and self._camera.viewport.collidepoint(self._cursor)
+            aim = self._aim if held or self._pending_shot is None else self._pending_shot
+            controls = InputState(
+                move_x=int(bool(keys & {pygame.K_d, pygame.K_RIGHT})) - int(bool(keys & {pygame.K_a, pygame.K_LEFT})),
+                move_y=int(bool(keys & {pygame.K_s, pygame.K_DOWN})) - int(bool(keys & {pygame.K_w, pygame.K_UP})),
+                mining=pygame.K_SPACE in keys,
+                firing=held or self._pending_shot is not None,
+                aim_x=aim[0], aim_y=aim[1])
+            self._pending_shot = None
+            self._visual_time += _STEP
+            before = self._impacts.snapshot(self.expedition)
+            self.expedition.step(_STEP, controls)
+            self._sync_camera()
+            self._impacts.advance(_STEP, before, self.expedition)
+            if self.expedition.finished:
+                self._finish(self.expedition.defeated)
+                break
+
+    def _text(self, text, x, y, size=28, color=_WHITE, width=None) -> None:
+        if size not in self._fonts:
+            self._fonts[size] = self._theme.get_font(size)
+        font = self._fonts[size]
+        if width:
+            words, lines, line = text.split(), [], ""
+            for word in words:
+                proposed = (line + " " + word).strip()
+                if line and font.size(proposed)[0] > width:
+                    lines.append(line)
+                    line = word
+                else:
+                    line = proposed
+            lines.append(line)
+        else:
+            lines = [text]
+        for line in lines:
+            self._text_layer.append((line, x, y, size, color))
+            y += size + 9
+
+    def _panel(self, rect) -> None:
+        # Opaque panels obscure earlier labels just as they obscure artwork.
+        bounds = pygame.Rect(rect)
+        self._text_layer = [entry for entry in self._text_layer
+                            if not bounds.colliderect(pygame.Rect(
+                                entry[1], entry[2], *self._fonts[entry[3]].size(entry[0])))]
+        pygame.draw.rect(self._canvas, _PANEL, rect, border_radius=12)
+        pygame.draw.rect(self._canvas, _LINE, rect, 1, border_radius=12)
+        pygame.draw.line(self._canvas, (69, 111, 124),
+                         (bounds.x + 14, bounds.y + 1),
+                         (bounds.x + min(bounds.width - 14, 180), bounds.y + 1))
+
+    def _bar(self, x, y, width, fraction, color) -> None:
+        pygame.draw.rect(self._canvas, _LINE, (x, y, width, 10), border_radius=5)
+        pygame.draw.rect(self._canvas, color, (x, y, max(0, int(width * min(1, fraction))), 10), border_radius=5)
+
+    def draw(self, surface) -> None:
+        self._text_layer.clear()
+        self._canvas.fill(_BG)
+        self._art.draw_image(self._canvas, "background", (0, 0, 1920, 1080))
+        for x, y, light in self._stars:
+            self._canvas.set_at((x, y), (light, light, light + 15))
+        if self.expedition is not None:
+            self._draw_flight()
+        else:
+            self._draw_station()
+        if self.mode in ("paused", "abandon", "result", "victory"):
+            self._text_layer.clear()
+            shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
+            shade.fill((0, 6, 16, 200))
+            self._canvas.blit(shade, (0, 0))
+            self._panel((530, 260, 860, 570))
+            heading = {"paused": "paused", "abandon": "abandon", "result": "result", "victory": "victory"}[self.mode]
+            self._text(self._t(heading), 600, 310, 42, _GOLD if self.mode == "victory" else _CYAN, 730)
+            body = self.message if self.mode == "result" else self._t(self.mode + "_body")
+            self._text(body, 600, 395, 27, _WHITE, 720)
+        if self.mode == "fleet":
+            self._draw_fleet()
+        if self.error and self.mode != "fleet":
+            self._panel((60, 850, 1800, 108))
+            self._text(self.error, 90, 868, 27, _RED, 1740)
+        elif self.message and self.mode == "station":
+            self._text(self.message, 420, 994, 25, _CYAN, 1000)
+        if surface.get_size() == self._canvas.get_size():
+            surface.blit(self._canvas, (0, 0))
+        else:
+            pygame.transform.smoothscale(self._canvas, surface.get_size(), surface)
+        # Glyphs are rasterized at output resolution; logical wrapping/spacing
+        # still uses the selected font. Changing output size releases old fonts.
+        scale_x, scale_y = surface.get_width() / 1920, surface.get_height() / 1080
+        output_size = surface.get_size()
+        if getattr(self, '_text_output_size', None) != output_size:
+            self._output_fonts.clear()
+            self._text_output_size = output_size
+        for text, x, y, size, color in self._text_layer:
+            point_size = max(1, round(size * scale_y))
+            if point_size not in self._output_fonts:
+                self._output_fonts[point_size] = self._theme.get_font(point_size)
+            glyphs = self._output_fonts[point_size].render(text, True, color)
+            if abs(scale_x - scale_y) > .001:
+                glyphs = pygame.transform.smoothscale(glyphs,
+                    (max(1, round(glyphs.get_width() * scale_x / scale_y)), glyphs.get_height()))
+            surface.blit(glyphs, (round(x * scale_x), round(y * scale_y)))
+        self._ui.draw(surface)
+
+    def _draw_station(self) -> None:
+        c = self.campaign
+        self._text(self._t("station"), 70, 28, 44, _CYAN)
+        self._text(self._t("station_subtitle"), 72, 92, 23, _MUTED)
+        self._text(self._t("credits", value=c.credits), 1540, 48, 38, _GOLD)
+        self._panel((60, 142, 1800, 94))
+        stats = (("hull_stat", f"{int(c.hull)}/{c.max_hull}"),
+                 ("cargo_stat", f"{len(c.cargo)}/{c.capacity}"),
+                 ("fleet_stat", f"{c.ship_count}/3"),
+                 ("crew_stat", f"{int(c.miner) + int(c.engineer)}/2"))
+        for i, (key, value) in enumerate(stats):
+            self._text(self._t(key), 90 + i * 450, 155, 21, _MUTED)
+            self._text(value, 90 + i * 450, 187, 30)
+        self._panel((60, 260, 1180, 235))
+        if not self._art.draw_image_cover(self._canvas, "dock", (64, 264, 1172, 227)):
+            self._art.draw_station(self._canvas, 650, 377)
+        for x in (60, 680):
+            self._panel((x, 515, 560, 330))
+        self._panel((1300, 260, 560, 585))
+        self._text(self._t("sectors"), 80, 532, 28, _CYAN)
+        self._text(self._t("workshop"), 700, 532, 28, _CYAN)
+        self._text(self._t("operation"), 1320, 280, 30, _CYAN)
+        # Preview the next support hull; this is a passive operation asset.
+        kind = "hauler" if c.support_ships == 0 else "refinery"
+        self._art.draw_ship(self._canvas, 1575, 365, -math.pi / 2,
+                            kind=kind, size=40)
+        for i in range(3):
+            self._text(self._t("sector_" + str(i + 1)), 82, 621 + i * 86, 18,
+                       _MUTED if i == 0 else _GOLD, 510)
+        self._text(self._t("ship_note", bonus=self._fleet_bonus()), 1320, 480, 21, _MUTED, 500)
+        for name, y, owned in (("miner", 542, c.miner), ("engineer", 674, c.engineer)):
+            self._art.draw_image(self._canvas, name, (1320, y, 92, 92))
+            pygame.draw.rect(self._canvas, _CYAN if owned else _LINE,
+                             (1320, y, 92, 92), 1, border_radius=5)
+            self._text(self._t(name + "_note"), 1430, y + 70, 20, _MUTED, 400)
+        self._panel((60, 850, 1800, 100))
+        self._text(self._t("objective"), 80, 866, 26, _GOLD, 1750)
+        progress = (min(c.ship_count / 3, 1) + (int(c.miner) + int(c.engineer)) / 2 + min(c.credits / 1200, 1)) / 3
+        self._bar(80, 924, 1750, progress, _GOLD)
+
+    def _moving(self) -> bool:
+        keys = self._keys
+        horizontal = bool(keys & {pygame.K_d, pygame.K_RIGHT}) != bool(keys & {pygame.K_a, pygame.K_LEFT})
+        vertical = bool(keys & {pygame.K_s, pygame.K_DOWN}) != bool(keys & {pygame.K_w, pygame.K_UP})
+        return self.mode == "flight" and (horizontal or vertical)
+
+    def _brackets(self, x, y, radius, color, width=2) -> None:
+        """Four open corners keep the target silhouette unobscured."""
+        length = min(18, radius / 2)
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                corner = (round(x + sx * radius), round(y + sy * radius))
+                pygame.draw.lines(self._canvas, color, False,
+                                  [(corner[0], corner[1] - sy * length), corner,
+                                   (corner[0] - sx * length, corner[1])], width)
+
+    def _annotation_obstacles(self):
+        run = self.expedition
+        if run is None:
+            return []
+        camera = self._camera
+        obstacles = []
+        for actor, radius in [(run, 38)] + [(e, 29) for e in run.enemies] + [(r, r.radius) for r in run.asteroids]:
+            x, y = camera.world_to_screen((actor.x, actor.y))
+            radius = camera.scale_length(radius) + 5
+            obstacles.append(pygame.Rect(x-radius, y-radius, radius*2, radius*2))
+        obstacles += self._world_labels + self._world_bars
+        points = self._direction_points(guidance(self.campaign, run))
+        if points:
+            xs, ys = zip(*points)
+            obstacles.append(pygame.Rect(min(xs), min(ys), max(xs)-min(xs)+2,
+                                         max(ys)-min(ys)+2).inflate(12, 12))
+        return obstacles
+
+    def _annotation_rect(self, size, candidates):
+        """Prefer nearby free space, then a bounded grid; never cover a hull."""
+        width, height = size
+        bounds = pygame.Rect(12, 150, 1896, 868)
+        obstacles = self._annotation_obstacles()
+        # Expand locally before searching the field. A clear but distant bar
+        # loses its association with the ship, even when it overlaps nothing.
+        ox, oy = candidates[0]
+        nearby = ((ox + dx * distance, oy + dy * distance)
+                  for distance in (40, 80, 120)
+                  for dx, dy in ((0, -1), (1, 0), (-1, 0), (0, 1),
+                                 (1, -1), (-1, -1), (1, 1), (-1, 1)))
+        def fallback():
+            # Sorting is only needed if every local placement was blocked.
+            yield from sorted(((x, y) for y in range(158, 990, 40)
+                               for x in range(20, max(21, 1900 - width), max(width + 12, 120))),
+                              key=lambda point: (point[0] - ox)**2 + (point[1] - oy)**2)
+        from itertools import chain
+        for x, y in chain(candidates, nearby, fallback()):
+            rect = pygame.Rect(round(x), round(y), width, height).clamp(bounds)
+            if bounds.contains(rect) and not any(rect.colliderect(o) for o in obstacles):
+                return rect
+        return None
+
+    def _flight_label(self, text, x, y, color, anchor=None) -> None:
+        size = 20
+        width, height = self._theme.get_font(size).size(text)
+        candidates = [(x - 6, y - 3)]
+        if anchor is not None:
+            ax, ay, radius = anchor
+            candidates += [(ax + radius + 16, ay - height / 2 - 3),
+                           (ax - radius - width - 28, ay - height / 2 - 3),
+                           (ax - width / 2 - 6, ay + radius + 28),
+                           (ax - width / 2 - 6, ay - radius - height - 22)]
+        else:
+            candidates += [(x - 6, y + 90), (x + width + 18, y - 3),
+                           (x - width - 30, y - 3)]
+        rect = self._annotation_rect((width + 12, height + 6), candidates)
+        if rect is None:
+            return
+        if anchor is not None and rect.topleft != (round(x - 6), round(y - 3)):
+            ax, ay, radius = anchor
+            dx, dy = rect.centerx - ax, rect.centery - ay
+            length = max(1, math.hypot(dx, dy))
+            start = (ax + dx / length * (radius + 5), ay + dy / length * (radius + 5))
+            pygame.draw.line(self._canvas, _LINE, start, rect.center, 1)
+        pygame.draw.rect(self._canvas, _BG, rect, border_radius=4)
+        pygame.draw.line(self._canvas, color, rect.topleft, (rect.left + 12, rect.top), 1)
+        self._world_labels.append(rect)
+        self._text(text, rect.x + 6, rect.y + 3, size, color)
+
+    def _rival_bar(self, enemy):
+        x, y = self._camera.world_to_screen((enemy.x, enemy.y))
+        radius = self._camera.scale_length(31)
+        rect = self._annotation_rect((56, 14),
+            [(x-28, y+radius+9), (x-28, y-radius-23),
+             (x+radius+11, y-7), (x-radius-67, y-7)])
+        if rect is not None:
+            pygame.draw.line(self._canvas, _RED, (x, y), rect.center, 1)
+            pygame.draw.rect(self._canvas, _BG, rect, border_radius=3)
+            self._bar(rect.x+3, rect.y+3, 50, enemy.hull/75, _RED)
+            self._world_bars.append(rect)
+
+    def _direction_points(self, advice):
+        if advice.target is None or advice.distance <= 45:
+            return []
+        run = self.expedition
+        angle = math.atan2(advice.target[1] - run.y, advice.target[0] - run.x)
+        px, py = self._camera.world_to_screen((run.x, run.y))
+        distance = self._camera.scale_length(32) + 38
+        x = max(60, min(1860, px + math.cos(angle) * distance))
+        y = max(170, min(998, py + math.sin(angle) * distance))
+        return [(x + math.cos(angle + offset) * length,
+                 y + math.sin(angle + offset) * length)
+                for offset, length in ((0, 14), (2.5, 10), (-2.5, 10))]
+
+    def _draw_player_label(self):
+        run = self.expedition
+        text = self._t("player_label")
+        width, height = self._theme.get_font(20).size(text)
+        points = self._direction_points(guidance(self.campaign, run))
+        arrow = pygame.Rect(0, 0, 0, 0)
+        if points:
+            xs, ys = zip(*points)
+            arrow = pygame.Rect(min(xs), min(ys), max(xs) - min(xs) + 2,
+                                max(ys) - min(ys) + 2).inflate(12, 12)
+        px, py = self._camera.world_to_screen((run.x, run.y))
+        offset = self._camera.scale_length(37) + 13
+        candidates = [(px - width / 2, py - offset - height),
+                      (px - width / 2, py + offset),
+                      (px - offset - width, py - height / 2),
+                      (px + offset, py - height / 2)]
+        for x, y in candidates:
+            x = max(12, min(1908 - width, x))
+            rect = pygame.Rect(x, y, width, height).inflate(12, 6)
+            if pygame.Rect(0, 145, 1920, 875).contains(rect) and not rect.colliderect(arrow):
+                self._flight_label(text, x, y, _WHITE,
+                                   anchor=(px, py, self._camera.scale_length(37)))
+                return
+
+    def _draw_guidance(self) -> None:
+        run = self.expedition
+        advice = guidance(self.campaign, run)
+        color = _RED if advice.key == "return_damaged" else _GOLD
+        if advice.target is not None:
+            tx, ty = advice.target
+            returning = advice.key.startswith("return_") or advice.key == "dock"
+            radius = DOCK_RADIUS + 10 if returning else 18
+            if advice.key in ("approach", "mine"):
+                rock = next(r for r in run.asteroids if r.id == advice.target_id)
+                radius = rock.radius + 12
+            if self._camera.is_visible((tx, ty), radius):
+                tx, ty = self._camera.world_to_screen((tx, ty))
+                radius = self._camera.scale_length(radius)
+                self._brackets(tx, ty, radius, color)
+                if advice.key == "approach" and self._camera.viewport.collidepoint((tx, ty)):
+                    self._flight_label(self._t("ore_target", value=round(advice.distance)),
+                                       tx - radius, ty - radius - 32, color, anchor=(tx, ty, radius))
+            points = self._direction_points(advice)
+            if points:
+                pygame.draw.polygon(self._canvas, color, points)
+
+    def _draw_flight(self) -> None:
+        run, c = self.expedition, self.campaign
+        self._sync_camera()
+        camera = self._camera
+        project, length = camera.world_to_screen, camera.scale_length
+        self._world_labels.clear()
+        self._world_bars.clear()
+        indicator_obstacles = []
+        for actor, radius in [(run, 38)] + [(e, 31) for e in run.enemies if e.hull > 0]:
+            x, y = project((actor.x, actor.y))
+            radius = length(radius) + 5
+            indicator_obstacles.append(pygame.Rect(x-radius, y-radius, 2*radius, 2*radius))
+        indicators = offscreen_indicators(
+            player=(run.x, run.y), station=(STATION_X, STATION_Y),
+            threats=[(e.id, e.x, e.y) for e in run.enemies if e.hull > 0],
+            project=project, viewport=camera.viewport, obstacles=indicator_obstacles)
+        self._world_labels.extend(pygame.Rect(marker.bounds) for marker in indicators)
+        old_clip = self._canvas.get_clip()
+        self._canvas.set_clip(camera.viewport)
+        self._art.draw_field_detail(self._canvas, camera)
+        target = mining_target(c, run)
+        sx, sy = project((STATION_X, STATION_Y))
+        if camera.zoom not in self._shields:
+            diameter = round(length(SAFE_RADIUS * 2 + 2))
+            self._shields[camera.zoom] = pygame.transform.smoothscale(self._shield, (diameter, diameter))
+        shield = self._shields[camera.zoom]
+        self._canvas.blit(shield, shield.get_rect(center=(round(sx), round(sy))))
+        pygame.draw.circle(self._canvas, _LINE, (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
+        pygame.draw.circle(self._canvas, _CYAN, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
+        self._art.draw_station(self._canvas, sx, sy, size=length(100))
+        for rock in run.asteroids:
+            if not camera.is_visible((rock.x, rock.y), rock.radius):
+                continue
+            self._art.draw_asteroid(self._canvas, rock, camera)
+            if rock is target or rock.health < rock.max_health:
+                rx, ry = project((rock.x, rock.y))
+                radius = length(rock.radius)
+                rect = self._annotation_rect((62, 16),
+                    [(rx-31, ry+radius+10), (rx-31, ry-radius-26), (rx+radius+12, ry-8)])
+                if rect is not None:
+                    pygame.draw.rect(self._canvas, _BG, rect, border_radius=4)
+                    self._bar(rect.x+3, rect.y+3, 56, rock.health/rock.max_health, _ORE[rock.ore])
+                    self._world_bars.append(rect)
+        for pickup in run.pickups:
+            if camera.is_visible((pickup.x, pickup.y), 13):
+                ore_glint(self._canvas, pickup.x, pickup.y, pickup.ore,
+                          self._visual_time, pickup.id, camera)
+        px, py = project((run.x, run.y))
+        # Backing precedes the beam so it cannot hide the mining mount/glow.
+        pygame.draw.circle(self._canvas, _BG, (round(px), round(py)), round(length(37)))
+        if target is not None:
+            tx, ty = project((target.x, target.y))
+            radius = length(target.radius)
+            pygame.draw.circle(self._canvas, _LINE, (round(px), round(py)), round(length(MINE_RANGE)), 1)
+            pygame.draw.circle(self._canvas, _CYAN, (round(tx), round(ty)), round(length(target.radius + 8)), 1)
+            progress = round((1 - target.health / target.max_health) * 100)
+            self._flight_label(self._t("cut_progress", value=progress),
+                               tx - 60, ty - radius - 44, _CYAN, anchor=(tx, ty, radius))
+            if pygame.K_SPACE in self._keys and self.mode == "flight":
+                mining_beam(self._canvas, run, target, self._visual_time, camera)
+        for enemy in run.enemies:
+            if not camera.is_visible((enemy.x, enemy.y), 34):
+                continue
+            ex, ey = project((enemy.x, enemy.y))
+            self._rival_bar(enemy)
+            self._brackets(ex, ey, length(31), _RED)
+            self._art.draw_ship(self._canvas, ex, ey, enemy.heading, kind="rival", size=length(24))
+        for shot in run.projectiles:
+            if camera.is_visible((shot.x, shot.y), 20):
+                projectile(self._canvas, shot, camera)
+        self._brackets(px, py, length(36), _WHITE)
+        self._art.draw_ship(self._canvas, px, py, run.heading, size=length(32),
+                  thrust=self._moving(), phase=self._visual_time, color=_CYAN)
+        self._impacts.draw(self._canvas, camera)
+        if self._visual_time < 6:
+            self._draw_player_label()
+        if self.mode == "flight" and camera.viewport.collidepoint(self._cursor):
+            ax, ay = map(int, self._cursor)
+            pygame.draw.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
+            pygame.draw.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
+            pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
+        self._draw_guidance()
+        # Reserved early, painted last so guidance cannot cross navigation chips.
+        draw_indicators(self._canvas, indicators, self._text, self._t)
+        self._canvas.set_clip(old_clip)
+        self._panel((30, 24, 1860, 116))
+        self._text(self._t("sector_title", sector=run.sector), 60, 35, 32, _CYAN)
+        in_safe_zone = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= SAFE_RADIUS
+        status = "weapons_locked" if in_safe_zone else "danger" if run.sector > 1 else "safe"
+        self._text(self._t(status), 60, 73, 23, _CYAN if in_safe_zone else _RED if run.sector > 1 else _MUTED)
+        self._text(self._t("hull_value", value=int(run.hull), maximum=c.max_hull), 640, 35, 28)
+        self._bar(640, 80, 400, run.hull/c.max_hull, _RED if run.hull < 30 else _CYAN)
+        self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 35, 28, _GOLD)
+        self._bar(1130, 80, 400, len(run.cargo)/c.capacity, _GOLD)
+        self._text(self._t("credits", value=c.credits), 1590, 47, 27, _GOLD)
+        # Guidance text is screen space, emitted after its opaque HUD backing.
+        advice = guidance(c, run)
+        color = _RED if advice.key == "return_damaged" else _GOLD
+        self._text(self._t("guide_" + advice.key), 60, 108, 23, color)
+        self._text(self._t("distance", value=round(advice.distance)), 1710, 108, 21, _MUTED)
+        self._text(self._t("camera_zoom", value=f"{camera.zoom:g}"), 1430, 108, 19, _MUTED)
+        self._panel((30, 1026, 1860, 42))
+        controls = self._t("controls") + "   " + self._t("camera_controls")
+        size = 24
+        while size > 14 and self._theme.get_font(size).size(controls)[0] > 1800:
+            size -= 1
+        self._text(controls, 60, 1034, size, _WHITE)
+
+    def _draw_fleet(self) -> None:
+        self._text_layer.clear()
+        shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)
+        shade.fill((0, 6, 16, 225))
+        self._canvas.blit(shade, (0, 0))
+        self._panel((250, 200, 1420, 720))
+        self._text(self._t("fleet_title"), 300, 235, 42, _CYAN)
+        self._text(self._t("fleet_passive"), 300, 302, 25, _MUTED, 1310)
+        for index, x in enumerate((300, 760, 1220)):
+            owned = index == 0 or self.campaign.support_ships >= index
+            color = _CYAN if owned else _MUTED
+            self._panel((x, 365, 400, 385))
+            self._text(self._t("vessel_" + str(index)), x + 24, 385, 25, _WHITE, 350)
+            self._fleet_silhouette(x + 200, 535, index, color)
+            self._text(self._t("fleet_owned" if owned else "fleet_available"), x + 24, 655, 24, color)
+            self._text(self._t("pilot_benefit" if index == 0 else "support_benefit",
+                               bonus=10 if index == 1 else 20), x + 24, 690, 21, _GOLD, 350)
+        self._text(self._t("fleet_total", bonus=self._fleet_bonus()), 300, 765, 26, _GOLD, 1320)
+
+    def _fleet_silhouette(self, x, y, index, color) -> None:
+        self._art.draw_ship(self._canvas, x, y, -math.pi / 2,
+                  kind=("prospector", "hauler", "refinery")[index], size=110,
+                  color=color)

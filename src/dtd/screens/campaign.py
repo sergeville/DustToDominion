@@ -12,11 +12,12 @@ import random
 import pygame
 
 from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
-                          DOCK_RADIUS, SAFE_RADIUS, MINE_RANGE)
+                          DOCK_RADIUS, SAFE_RADIUS)
 from dtd.campaign_sprites import CampaignSprites
 from dtd.campaign_camera import Camera
 from dtd.camera_indicators import offscreen_indicators, draw_indicators
-from dtd.campaign_effects import DamageFlashes, mining_beam, projectile, ore_glint
+from dtd.campaign_effects import (DamageFlashes, EffectLights, MiningFragments,
+                                  mining_beam, projectile, ore_glint)
 from dtd.campaign_guidance import guidance, mining_target
 from dtd.campaign_store import SaveError
 from dtd.language import get_language_manager
@@ -68,13 +69,15 @@ class CampaignScreen(Screen):
         self._canvas = pygame.Surface((1920, 1080))
         self._art = CampaignSprites(loader=loader)
         self._impacts = DamageFlashes()
+        self._lights = EffectLights()
+        self._fragments = MiningFragments()
         self._fonts = {}
         self._output_fonts = {}
         self._text_layer = []
         self._world_labels = []
         self._world_bars = []
         self._shield = pygame.Surface((SAFE_RADIUS * 2 + 2, SAFE_RADIUS * 2 + 2), pygame.SRCALPHA)
-        pygame.draw.circle(self._shield, (33, 103, 119, 18),
+        pygame.draw.circle(self._shield, (33, 103, 119, 6),
                            (SAFE_RADIUS + 1, SAFE_RADIUS + 1), SAFE_RADIUS)
         self._shields = {1.0: self._shield}
         rng = random.Random(47)
@@ -180,6 +183,7 @@ class CampaignScreen(Screen):
         self.expedition = self.campaign.launch(sector)
         self._sync_camera()
         self._impacts = DamageFlashes()
+        self._fragments = MiningFragments()
         self._visual_time = 0.0
         self.mode = "flight"
         self.message = ""
@@ -333,9 +337,12 @@ class CampaignScreen(Screen):
             self._pending_shot = None
             self._visual_time += _STEP
             before = self._impacts.snapshot(self.expedition)
+            before_rocks = self._fragments.snapshot(self.expedition)
             self.expedition.step(_STEP, controls)
             self._sync_camera()
             self._impacts.advance(_STEP, before, self.expedition)
+            self._fragments.advance(_STEP, before_rocks, self.expedition,
+                                    mining=controls.mining)
             if self.expedition.finished:
                 self._finish(self.expedition.defeated)
                 break
@@ -471,9 +478,9 @@ class CampaignScreen(Screen):
         vertical = bool(keys & {pygame.K_s, pygame.K_DOWN}) != bool(keys & {pygame.K_w, pygame.K_UP})
         return self.mode == "flight" and (horizontal or vertical)
 
-    def _brackets(self, x, y, radius, color, width=2) -> None:
-        """Four open corners keep the target silhouette unobscured."""
-        length = min(18, radius / 2)
+    def _brackets(self, x, y, radius, color, width=1) -> None:
+        """Short screen-sized corners identify a target without framing the scene."""
+        length = min(10, radius / 2)
         for sx in (-1, 1):
             for sy in (-1, 1):
                 corner = (round(x + sx * radius), round(y + sy * radius))
@@ -648,8 +655,12 @@ class CampaignScreen(Screen):
             self._shields[camera.zoom] = pygame.transform.smoothscale(self._shield, (diameter, diameter))
         shield = self._shields[camera.zoom]
         self._canvas.blit(shield, shield.get_rect(center=(round(sx), round(sy))))
-        pygame.draw.circle(self._canvas, _LINE, (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
-        pygame.draw.circle(self._canvas, _CYAN, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
+        # Keep the exact safety boundary visible; docking gets emphasis only
+        # near the bay. The HUD and return guidance retain the explicit action.
+        pygame.draw.circle(self._canvas, (32, 64, 76), (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
+        near_dock = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= DOCK_RADIUS + 80
+        dock_color = (65, 139, 149) if near_dock else (28, 52, 65)
+        pygame.draw.circle(self._canvas, dock_color, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
         self._art.draw_station(self._canvas, sx, sy, size=length(100))
         for rock in run.asteroids:
             if not camera.is_visible((rock.x, rock.y), rock.radius):
@@ -668,19 +679,22 @@ class CampaignScreen(Screen):
             if camera.is_visible((pickup.x, pickup.y), 13):
                 ore_glint(self._canvas, pickup.x, pickup.y, pickup.ore,
                           self._visual_time, pickup.id, camera)
+        self._fragments.draw(self._canvas, camera)
         px, py = project((run.x, run.y))
-        # Backing precedes the beam so it cannot hide the mining mount/glow.
-        pygame.draw.circle(self._canvas, _BG, (round(px), round(py)), round(length(37)))
+        # Ship readability belongs to its alpha-shaped contour in the sprite
+        # renderer; a circular backing would erase the scenery through hull gaps.
         if target is not None:
             tx, ty = project((target.x, target.y))
             radius = length(target.radius)
-            pygame.draw.circle(self._canvas, _LINE, (round(px), round(py)), round(length(MINE_RANGE)), 1)
-            pygame.draw.circle(self._canvas, _CYAN, (round(tx), round(ty)), round(length(target.radius + 8)), 1)
+            # The active target already has corners, health and CUT progress.
+            # Additional complete range/target circles obscure contact effects.
             progress = round((1 - target.health / target.max_health) * 100)
             self._flight_label(self._t("cut_progress", value=progress),
                                tx - 60, ty - radius - 44, _CYAN, anchor=(tx, ty, radius))
             if pygame.K_SPACE in self._keys and self.mode == "flight":
-                mining_beam(self._canvas, run, target, self._visual_time, camera)
+                mining_beam(self._canvas, run, target, self._visual_time, camera,
+                            lights=self._lights,
+                            contact=self._art.mining_contact(run, target, camera))
         for enemy in run.enemies:
             if not camera.is_visible((enemy.x, enemy.y), 34):
                 continue
@@ -691,10 +705,9 @@ class CampaignScreen(Screen):
         for shot in run.projectiles:
             if camera.is_visible((shot.x, shot.y), 20):
                 projectile(self._canvas, shot, camera)
-        self._brackets(px, py, length(36), _WHITE)
         self._art.draw_ship(self._canvas, px, py, run.heading, size=length(32),
                   thrust=self._moving(), phase=self._visual_time, color=_CYAN)
-        self._impacts.draw(self._canvas, camera)
+        self._impacts.draw(self._canvas, camera, lights=self._lights)
         if self._visual_time < 6:
             self._draw_player_label()
         if self.mode == "flight" and camera.viewport.collidepoint(self._cursor):

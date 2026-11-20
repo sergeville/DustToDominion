@@ -1,0 +1,216 @@
+"""Game-specific configuration (spec 01: Game configuration).
+
+The game is a *client* of the generic config module: it names the config
+keys (sections) it cares about and the pydantic model that validates them,
+and the module parses and validates the rest. Per spec 01 the main game
+config file is never fatal: any ``ConfigError`` is trapped, logged as a
+warning, and the game proceeds with default values.
+"""
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any, Mapping
+
+from loguru import logger
+from pydantic import BaseModel, ConfigDict, Field
+
+from dtd import config, persistence
+from dtd.errors import ConfigError
+from dtd.game_constants import (
+    DEFAULT_FONT_VALUE,
+    DEFAULT_LANGUAGE_CODE,
+    DEFAULT_THEME_VALUE,
+    VOLUME_MAX_PERCENT,
+    VOLUME_MIN_PERCENT,
+)
+from dtd.main_window import MainWindowConfig
+
+#: Env var overriding the location of game.json (spec 01).
+GAME_CONFIG_ENV_VAR = "DUST_TO_DOMINION_CONFIG"
+GAME_CONFIG_FILENAME = "game.json"
+
+
+class ResourcesConfig(BaseModel):
+    """The ``resources`` section of game.json (spec 03: Configuration).
+
+    ``location`` is the ordered resource search path: each entry is a
+    resource directory or a ``.pak`` package file, scanned in the order
+    listed, with later entries overriding earlier ones by resource ID
+    (spec 03: Resource scanning). The game's ``resources/`` subdirectory
+    is always implied first, so an empty section (or no section at all)
+    is the default. Entries may be relative; they are resolved against
+    the *game* directory (where the game script resides), not the current
+    working directory (spec 03: a note about relative paths). Resolving
+    them is the resource loader's job, not this model's.
+
+    Only ``location`` is expected: any other key - including a legacy
+    ``mode`` key from before the flat search path - is rejected, which
+    ``load_game_config`` turns into a warning plus whole-config defaults
+    (spec 01; spec 03 dev plan stage 7: no migration path for existing
+    config files).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    location: list[str] = Field(default_factory=list)
+
+
+class AudioConfig(BaseModel):
+    """The ``audio`` section of game.json (spec 05: Configuration).
+
+    Audio is split into three sound-effect categories plus music, each with
+    its own enabled flag and volume (spec 05 amendment 2026-10-09): game
+    sfx, UI sfx, and speech. Volumes are integer percentages 0 (mute) -
+    100 (full), later applied as ``set_volume(value / 100)`` (spec 05:
+    Validation). Deliberately NOT ``extra='forbid'``: per spec 05,
+    unrecognized keys in the ``audio`` object are silently ignored (and
+    dropped when the section is next saved, per spec 01's section-rewrite
+    semantics) - which is also how the pre-amendment ``sfx_enabled`` /
+    ``sfx_volume`` keys are handled: silently dropped, defaults apply.
+    A ``None`` section means "use defaults" - dtd.audio normalizes it to a
+    fresh ``AudioConfig()`` (spec 05: a top-level ``audio`` of ``null`` is
+    fine).
+    """
+
+    game_sfx_enabled: bool = True
+    game_sfx_volume: int = Field(
+        default=100, ge=VOLUME_MIN_PERCENT, le=VOLUME_MAX_PERCENT
+    )
+    ui_sfx_enabled: bool = True
+    ui_sfx_volume: int = Field(
+        default=80, ge=VOLUME_MIN_PERCENT, le=VOLUME_MAX_PERCENT
+    )
+    speech_enabled: bool = True
+    speech_volume: int = Field(
+        default=90, ge=VOLUME_MIN_PERCENT, le=VOLUME_MAX_PERCENT
+    )
+    music_enabled: bool = True
+    music_volume: int = Field(
+        default=80, ge=VOLUME_MIN_PERCENT, le=VOLUME_MAX_PERCENT
+    )
+
+
+class GameConfig(BaseModel):
+    """Top-level model for game.json.
+
+    Each spec that adds a config section adds a field here (spec 02 added
+    ``mainWindow``, spec 03 added ``resources``, spec 04 added ``theme``
+    and ``font``, spec 05 added ``audio``, spec 16 added ``language``).
+    extra='forbid' keeps typos loud (spec 01: unexpected properties are
+    always an error).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    help_metadata: Any = Field(default=None, alias="_help", exclude=True)
+    mainWindow: MainWindowConfig | None = None
+    resources: ResourcesConfig | None = None
+    # Spec 05: audio sfx/speech/music settings. A missing key (or an explicit
+    # null) means "defaults"; dtd.audio resolves None -> AudioConfig().
+    audio: AudioConfig | None = None
+    # Spec 04: UI theme and font. Both are optional resource identifiers or
+    # the fixed string "default". A missing key, an empty/blank value, a
+    # value of "default", or a value that does not resolve to a loaded
+    # resource all fall back to the built-in defaults - resolved by
+    # dtd.ui.Theme at startup, never fatal (spec 04: Configuration).
+    # Non-string values fail validation and become InvalidConfigError,
+    # which load_game_config turns into a warning plus defaults (spec 01).
+    theme: str = ""
+    font: str = ""
+    # Spec 16: UI language - the stripped filename of a language resource
+    # (for example "en-us"), never a resource id. A missing key gets the
+    # silent default "en-us"; blank or unrecognized values are resolved by
+    # the LanguageManager at startup and by set_current_language() at
+    # runtime (spec 16: Validating language codes) - the same
+    # consume-time normalization the theme/font values above get from
+    # Theme. Never fatal: a non-string fails validation and becomes a
+    # warning plus whole-config defaults (spec 01).
+    language: str = DEFAULT_LANGUAGE_CODE
+
+
+def game_config_path() -> Path:
+    """Location of game.json: inside the persistence directory (spec 00)."""
+    return persistence.resolve_persistence_dir() / GAME_CONFIG_FILENAME
+
+
+def load_game_config() -> GameConfig:
+    """Load game.json; on ANY config error, warn and return defaults (spec 01)."""
+    try:
+        return config.load_config(game_config_path(), GAME_CONFIG_ENV_VAR, GameConfig)
+    except ConfigError as exc:
+        logger.warning(
+            "game configuration unavailable ({}); proceeding with default values",
+            type(exc).__name__,
+        )
+        return GameConfig()
+
+
+def save_game_config_section(section_name: str, section_data: BaseModel) -> None:
+    """Shallow-merge one top-level section into game.json (spec 01).
+
+    ``section_data`` is dumped with ``exclude_none=True`` so fields the
+    caller omits drop out of the file (spec 01: stale-key semantics).
+
+    Raises:
+        ConfigError subclasses on location/validation problems, ``OSError``
+        on filesystem problems. Callers decide the recovery behavior (spec 02
+        says: log a warning and continue).
+    """
+    top_level: Mapping[str, Any] = {
+        section_name: section_data.model_dump(exclude_none=True)
+    }
+    config.save_config(game_config_path(), GAME_CONFIG_ENV_VAR, top_level)
+
+
+def set_theme(theme: str | None) -> None:
+    """Persist the ``theme`` config key (spec 04, added by spec 13).
+
+    ``None``, a blank/empty string, or the literal "default" all store
+    the ``DEFAULT_THEME_VALUE`` sentinel; any other value is stored
+    verbatim. Never raises: a persistence failure is logged as a warning
+    and swallowed (spec 04: the game keeps running with whatever IS on
+    disk; the next screen instantiation rebuilds its Theme from there).
+    """
+    _set_config_string("theme", theme, DEFAULT_THEME_VALUE)
+
+
+def set_font(font: str | None) -> None:
+    """Persist the ``font`` config key (spec 04, added by spec 13).
+
+    Same normalization and never-raises rules as :func:`set_theme`, with
+    ``DEFAULT_FONT_VALUE`` as the sentinel.
+    """
+    _set_config_string("font", font, DEFAULT_FONT_VALUE)
+
+
+def set_language(language: str | None) -> None:
+    """Persist the ``language`` config key (spec 16: LanguageManager).
+
+    Same never-raises rules as :func:`set_theme`, but the blank/None
+    normalization target is ``DEFAULT_LANGUAGE_CODE`` ("en-us"), not a
+    "default" sentinel: the language system has no second sentinel
+    meaning (spec 16: Configuration).
+    """
+    _set_config_string("language", language, DEFAULT_LANGUAGE_CODE)
+
+
+def _set_config_string(key: str, value: str | None, default_value: str) -> None:
+    """Patch one top-level string key into game.json (spec 04, added by
+    spec 13).
+
+    ``config.save_config`` already loads the existing file and shallow-
+    merges the given top-level keys (spec 01), so a single-key dict IS
+    the whole patch. A literal "default" needs no special-casing: it is
+    stored verbatim and lands on the same sentinel value.
+    """
+    normalized = default_value if value is None or not value.strip() else value
+    try:
+        config.save_config(game_config_path(), GAME_CONFIG_ENV_VAR, {key: normalized})
+    except (ConfigError, OSError) as exc:
+        # Spec 04: log a warning and continue - an options-screen change
+        # stays in effect in memory even when it cannot be persisted.
+        logger.warning(
+            "failed to persist {} configuration ({}); continuing without it",
+            key,
+            type(exc).__name__,
+        )

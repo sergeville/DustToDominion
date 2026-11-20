@@ -7,11 +7,13 @@ status: active
 
 ## 1. Start here
 
-**Latest:** [Camera and framing pass](2026-11-20-camera/review.md): following
-camera, adjustable 1×/1.5×/2× zoom, inverse mouse aim and offscreen navigation.
+**Latest:** [Artwork and lighting pass](2026-11-20-art-lighting/review.md): six
+additional assets, hull-shaped separation, quieter overlays and bounded mining,
+thrust and impact effects. The [camera pass](2026-11-20-camera/review.md) retains
+following, adjustable 1×/1.5×/2× zoom, inverse mouse aim and offscreen navigation.
 Human visual/physical/audio acceptance remains open; internal world rendering
-remains 1920×1080. The prior [realistic polish](2026-11-20-realistic-polish.md)
-and later sections retain their dated evidence.
+remains 1920×1080 and native 4K world rendering is unimplemented. The prior
+[realistic polish](2026-11-20-realistic-polish.md) and later sections retain dated evidence.
 
 This handoff records work authorized by Serge on 2026-11-20: update the requested
 checkout, start the app, then build a complete small game with mining, trade,
@@ -35,7 +37,7 @@ checkout; do not assume those changes are present.
 | Need | Source |
 | --- | --- |
 | Rules, balance, scope and acceptance | [Campaign spec](../19-complete-small-game.md) |
-| Current validation and remaining acceptance | [Camera report](2026-11-20-camera/review.md) |
+| Current validation and remaining acceptance | [Artwork and lighting report](2026-11-20-art-lighting/review.md) |
 | Executable player-input acceptance | [Acceptance tests](../../tests/test_campaign_acceptance.py) |
 | Progression and stress numbers | [Probe results](campaign-validation.json) |
 | Scaled bilingual UI checks | [Visual records](fleet-visual-validation.json) |

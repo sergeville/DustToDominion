@@ -2,7 +2,8 @@
 
 ## Local campaign work — start here
 
-- [Current camera pass](reviews/2026-11-20-camera/review.md): following camera, zoom, inverse aiming, navigation indicators, matched before/after captures and remaining acceptance.
+- [Current artwork and lighting pass](reviews/2026-11-20-art-lighting/review.md): varied rocks, improved materials, restrained overlays, bounded effects and matching gameplay evidence; visual acceptance open.
+- [Prior camera pass](reviews/2026-11-20-camera/review.md): following camera, zoom, inverse aiming, navigation indicators and matched before/after captures.
 
 - [Actual versus reference comparison](reviews/2026-11-20-reference-comparison/review.md): four paired image sheets, three largest gaps, proposed camera mapping and output/internal resolution limits; human visual acceptance open.
 - [Prior realistic polish validation](reviews/2026-11-20-realistic-polish.md): label/rival fixes, stronger station/fleet art, 1,860 tests, updated captures and distinct native/offscreen evidence.

@@ -1,0 +1,71 @@
+{
+  "reference": "docs/concepts/realistic-visual-target-2026-11-20.png",
+  "reference_sha256": "a56d78322dc740d308091049adb9e3ffaa10b4f32c31d9b428acec27aeb84aef",
+  "artifacts": [
+    {
+      "path": "baseline/mining.png",
+      "sha256": "21f5d735b8cea0b7579c488236ce92d727d81cbbf28c00ecac8e4f5058c2b617",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-1920-mining-z1.5.png",
+      "sha256": "72ef02350e68b2999fb716c6a96e1f44a952fed03a19d628bc14d80583697b47",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "mining-before-after.png",
+      "sha256": "6c90c15aa927cb030b5f945ae72b419e287d99ecbe8390696819a03162312ac4",
+      "pixels": [
+        1920,
+        615
+      ]
+    },
+    {
+      "path": "mining-reference.png",
+      "sha256": "e9250f59254d12b09ae8f6305937ce5c86b32e9d3c9d7e5318aa6e98f411fc14",
+      "pixels": [
+        1920,
+        615
+      ]
+    },
+    {
+      "path": "baseline/combat.png",
+      "sha256": "41dbdf25634eb2955d28ed830bfc73bc34eb7072f64b8d2edf37f695f1b2cb96",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-1920-combat-z1.5.png",
+      "sha256": "c8684a34cac73be106ea9d90fd21cd8110cd6bc89fd99beaa6bb85e6f77d4c92",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "combat-before-after.png",
+      "sha256": "783d98ecdff36920f654a6bf97792aa341b471c12679a8326b56ce709d415e8b",
+      "pixels": [
+        1920,
+        615
+      ]
+    },
+    {
+      "path": "combat-reference.png",
+      "sha256": "6a4fdc882d01a3657fca70a942a5478b2609a3eabce9af4a588845baa5323660",
+      "pixels": [
+        1920,
+        615
+      ]
+    }
+  ],
+  "note": "Review layouts, not native game framebuffers; originals preserved."
+}

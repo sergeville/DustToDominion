@@ -15,12 +15,15 @@ from pathlib import Path
 import pygame
 
 from dtd import campaign_art
+from dtd.campaign_effects import light_sprite
 
 ASSET_ROOT = Path(__file__).resolve().parents[2] / "resources/campaign/realistic"
 SHIP_NAMES = ("prospector", "hauler", "refinery", "rival")
 ROCK_NAMES = ("asteroid_iron", "asteroid_gold", "asteroid_crystal")
-ASSET_NAMES = SHIP_NAMES + ROCK_NAMES + ("asteroid_iron_b", "station", "miner", "engineer", "dock", "background")
-WORLD_NAMES = SHIP_NAMES + ROCK_NAMES + ("asteroid_iron_b", "station",)
+ART_VARIANTS = ("asteroid_iron_c", "asteroid_gold_b", "asteroid_crystal_b",
+                "prospector_v2", "rival_v2", "station_v2")
+ASSET_NAMES = SHIP_NAMES + ROCK_NAMES + ("asteroid_iron_b", "station", "miner", "engineer", "dock", "background") + ART_VARIANTS
+WORLD_NAMES = SHIP_NAMES + ROCK_NAMES + ("asteroid_iron_b", "station",) + ART_VARIANTS
 MAX_CACHE_ENTRIES = 128
 MAX_CACHE_BYTES = 32 * 1024 * 1024
 
@@ -161,8 +164,10 @@ class CampaignSprites:
         image = pygame.transform.smoothscale(self._sources[name], size)
         if angle:
             image = pygame.transform.rotate(image, angle)
-        if name == "rival":
+        if name in ("rival", "rival_v2"):
             image = self._separate_rival(image)
+        elif name in ("prospector", "prospector_v2"):
+            image = self._separate_hull(image, (84, 178, 192, 110))
         if name in WORLD_NAMES:
             # Guard the physical artwork footprint against antialias fringes and
             # rotation rounding; this affects presentation, never hit geometry.
@@ -191,9 +196,14 @@ class CampaignSprites:
         Stroke pixels remain within the original transform canvas and the
         normal circular footprint guard; gameplay size is not enlarged.
         """
+        return CampaignSprites._separate_hull(image, (235, 116, 111, 210))
+
+    @staticmethod
+    def _separate_hull(image, rim):
+        # Follow actual alpha, preserving transparent hull gaps and the scenery.
         mask = pygame.mask.from_surface(image, 32)
         separated = pygame.Surface(image.get_size(), pygame.SRCALPHA)
-        for distance, color in ((2, (4, 9, 16, 255)), (1, (235, 116, 111, 210))):
+        for distance, color in ((2, (4, 9, 16, 220)), (1, rim)):
             silhouette = mask.to_surface(setcolor=color, unsetcolor=(0, 0, 0, 0))
             for dx, dy in ((-distance, 0), (distance, 0), (0, -distance), (0, distance),
                            (-distance, -distance), (-distance, distance),
@@ -221,24 +231,31 @@ class CampaignSprites:
             raise ValueError(f"Unknown ship kind: {kind}")
         if size <= 0:
             return
-        if kind not in self._sources:
+        name = kind+"_v2" if kind+"_v2" in self._sources else kind
+        if name not in self._sources:
             campaign_art.draw_ship(surface, x, y, heading, kind, size, thrust, phase, color)
             return
         if thrust:
             self._exhaust(surface, x, y, heading, size, phase,
                           color or ((242, 111, 101) if kind == "rival" else (79, 217, 228)))
-        self._world(surface, kind, x, y, size, -90-math.degrees(heading))
+        self._world(surface, name, x, y, size, -90-math.degrees(heading))
 
-    @staticmethod
-    def _exhaust(surface, x, y, heading, size, phase, accent):
+    def _exhaust(self, surface, x, y, heading, size, phase, accent):
         # Fixed two jets: no particle allocation, simulation changes or wall time.
         cosine, sine = math.cos(heading), math.sin(heading)
         def point(forward, lateral):
             return (round(x+size*(forward*cosine-lateral*sine)),
                     round(y+size*(forward*sine+lateral*cosine)))
         length = .35+.12*(1+math.sin(phase*23))/2
+        glow_radius = max(1, min(64, round(size*.25)))
+        key = ("exhaust:"+str(tuple(accent)), glow_radius, glow_radius, 0)
+        glow = self._cache.get(key)
+        if glow is None:
+            glow = self._remember(key, light_sprite(glow_radius, accent))
         for side in (-.4, .4):
-            pygame.draw.polygon(surface, (25, 65, 86),
+            surface.blit(glow, glow.get_rect(center=point(-.82, side)),
+                         special_flags=pygame.BLEND_RGB_ADD)
+            pygame.draw.polygon(surface, (43, 148, 181),
                                 [point(-.67, side-.11), point(-.78-length, side),
                                  point(-.67, side+.11)])
             pygame.draw.polygon(surface, accent,
@@ -248,7 +265,8 @@ class CampaignSprites:
                              point(-.83, side), max(1, round(size/40)))
 
     def draw_station(self, surface, x, y, size=100):
-        if not self._world(surface, "station", x, y, size):
+        name = "station_v2" if "station_v2" in self._sources else "station"
+        if not self._world(surface, name, x, y, size):
             if size == 100:
                 campaign_art.draw_station(surface, x, y)
             elif size > 0:
@@ -261,12 +279,24 @@ class CampaignSprites:
                     image = self._remember(key, pygame.transform.smoothscale(source, (diameter, diameter)))
                 surface.blit(image, image.get_rect(center=(round(x), round(y))))
 
+    def _rock_name(self, rock):
+        name = ROCK_NAMES[rock.ore]
+        newest = ("asteroid_iron_c", "asteroid_gold_b", "asteroid_crystal_b")[rock.ore]
+        if newest in self._sources:
+            variants = [newest]
+            if rock.ore == 0 and "asteroid_iron_b" in self._sources:
+                variants.append("asteroid_iron_b")
+            if name in self._sources:
+                variants.append(name)
+            name = variants[rock.id % len(variants)]
+        elif rock.ore == 0 and rock.id % 2 and "asteroid_iron_b" in self._sources:
+            name = "asteroid_iron_b"
+        return name
+
     def draw_asteroid(self, surface, rock, camera=None):
         if rock.radius <= 0:
             return
-        name = ROCK_NAMES[rock.ore]
-        if rock.ore == 0 and rock.id % 2 and "asteroid_iron_b" in self._sources:
-            name = "asteroid_iron_b"
+        name = self._rock_name(rock)
         x, y = camera.world_to_screen((rock.x, rock.y)) if camera is not None else (rock.x, rock.y)
         radius = camera.scale_length(rock.radius) if camera is not None else rock.radius
         if not self._world(surface, name, x, y, radius, (rock.id % 17)*21):
@@ -276,6 +306,44 @@ class CampaignSprites:
                 from types import SimpleNamespace
                 campaign_art.draw_asteroid(surface, SimpleNamespace(
                     x=x, y=y, radius=radius, id=rock.id, ore=rock.ore))
+
+    def mining_contact(self, ship, rock, camera=None):
+        """First solid artwork pixel on the beam ray, in world coordinates.
+
+        Uses the exact displayed variant/rotation; a concave edge or central
+        transparent hole cannot become a false contact. The scan is capped at
+        512 samples and uses cached transforms, with no pixel array allocation.
+        Missing artwork or a ray through empty space returns None for the
+        caller's ordinary geometric fallback. This never alters collision data.
+        """
+        name = self._rock_name(rock)
+        if name not in self._sources or rock.radius <= 0:
+            return None
+        project = camera.world_to_screen if camera is not None else lambda p: p
+        origin = project((ship.x+math.cos(ship.heading)*27,
+                          ship.y+math.sin(ship.heading)*27))
+        center = project((rock.x, rock.y))
+        radius = camera.scale_length(rock.radius) if camera is not None else rock.radius
+        diameter = max(1, round(radius*2))
+        image = self._transformed(name, (diameter, diameter), (rock.id % 17)*21)
+        bounds = image.get_rect(center=(round(center[0]), round(center[1])))
+        dx, dy = center[0]-origin[0], center[1]-origin[1]
+        distance = math.hypot(dx, dy)
+        if distance < 1e-6:
+            dx, dy, distance = math.cos(ship.heading), math.sin(ship.heading), 1.
+        dx, dy = dx/distance, dy/distance
+        start = max(0., distance-radius-2)
+        end = distance+radius+2
+        steps = max(1, min(511, math.ceil((end-start)*2)))
+        for index in range(steps+1):
+            along = start+(end-start)*index/steps
+            x, y = round(origin[0]+dx*along), round(origin[1]+dy*along)
+            local = (x-bounds.x, y-bounds.y)
+            if (0 <= local[0] < image.get_width() and
+                    0 <= local[1] < image.get_height() and
+                    image.get_at(local).a >= 96):
+                return camera.screen_to_world((x, y)) if camera is not None else (x, y)
+        return None
 
     def draw_image(self, surface, name, rect):
         """Fit a panel asset without distortion; return False if unavailable."""

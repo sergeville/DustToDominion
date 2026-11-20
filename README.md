@@ -6,13 +6,33 @@ ships, hire two crew members and build a three-ship operation. Win with both
 crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
 This local continuation includes a complete playable ruleset, textured artwork
-and a player-following camera. The [camera validation report](docs/reviews/2026-11-20-camera/review.md)
+and a player-following camera. The [artwork and lighting report](docs/reviews/2026-11-20-art-lighting/review.md)
 records the latest checks and matching before/after images. Physical play, audio,
 balance and **Serge's visual acceptance remain open**. The
 [campaign specification](docs/19-complete-small-game.md) and
 [team handoff](docs/reviews/TEAM-HANDOFF.md) retain the rules and implementation history.
 
-## Camera and framing
+## Artwork and lighting
+
+**1,958 tests passed** in the final suite. One known dummy-display renderer
+warning remains; see the current report for recorded play and performance evidence.
+
+Six new reusable assets add angular iron, broken gold and crystal rock forms,
+clearer ship materials and a brighter station. The player uses a hull-shaped
+contour instead of a dark circular backing. Mining contact follows the visible
+rock surface; bounded chips, thruster light and impact bursts respond to play.
+Quieter range rings and targeting corners preserve essential navigation cues.
+The camera, hitboxes, rules, economy and saves are unchanged.
+
+![Matching mining frames before and after the artwork pass](docs/reviews/2026-11-20-art-lighting/mining-before-after.png)
+
+Both originals are 1920×1080 actual renderer fixtures at the same 1.5× zoom and
+model state, equally reduced here. [Combat comparison](docs/reviews/2026-11-20-art-lighting/combat-before-after.png)
+and [reference comparisons, recordings and QA](docs/reviews/2026-11-20-art-lighting/review.md)
+separate evidence from concept art. Lighting remains a 2D approximation; these
+images do not establish a match to the cinematic reference.
+
+## Camera and framing (prior pass)
 
 **1,928 tests pass**, including an earned mining/sale trip and rival defeat.
 Native graphics passed at 3440×1440 desktop fullscreen with a 1080p backbuffer.
@@ -39,7 +59,7 @@ separate task. Camera zoom samples each sprite at its projected size inside the
 
 [Actual versus reference: four side-by-side image sheets and camera evaluation](docs/reviews/2026-11-20-reference-comparison/review.md). **Visual acceptance remains open for Serge’s review.**
 
-The campaign now uses 13 standalone artwork assets: four ships, Kepler Station,
+The initial upgrade introduced 13 standalone artwork assets: four ships, Kepler Station,
 four mineral asteroid forms, two crew portraits, a docking bay and a starfield.
 Mining beams, contact sparks, exhaust, projectile trails and hit flashes respond
 to play. A broad docking panorama and larger fleet previews show the artwork
@@ -101,7 +121,7 @@ On this Mac, double-click **Open Dust to Dominion.command**, then choose
 - Sector 1 has no enemies. Sectors 2 and 3 unlock after 300 and 1,000 credits in sales.
 - Defeat or confirmed abandonment loses cargo and returns you with half hull for free.
 
-Your ship has a bright segmented marker in the flight view; rivals use red accents. At the
+Your ship has a thin cyan hull contour in the flight view; rivals use red accents. At the
 station, choose **View fleet** to inspect all three vessel silhouettes, ownership
 and bonuses. Support ships provide passive ore-sale bonuses and do not fly
 alongside you. The station shield locks your weapons and absorbs all shots;

@@ -1,0 +1,24 @@
+{
+  "python": "3.12.13",
+  "pygame": "2.5.8",
+  "SDL": [
+    2,
+    32,
+    10
+  ],
+  "packages": {
+    "packaging": "26.3",
+    "Pygments": "2.21.0",
+    "pydantic_core": "2.46.5",
+    "iniconfig": "2.3.1",
+    "pluggy": "1.7.0",
+    "typing-inspection": "0.4.5",
+    "pytest": "9.1.1",
+    "loguru": "0.7.3",
+    "pydantic": "2.13.5",
+    "annotated-types": "0.8.0",
+    "typing_extensions": "4.16.0",
+    "pygame-ce": "2.5.8"
+  },
+  "scope": "disposable local validation venv; all12 distribution versions match original .venv metadata; project environment unchanged"
+}

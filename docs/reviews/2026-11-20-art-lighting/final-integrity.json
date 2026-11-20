@@ -1,0 +1,39 @@
+{
+  "source_sha256": 38,
+  "resource_sha256": 33,
+  "source_art_sha256": 14,
+  "original_capture_and_recording_hashes": 43,
+  "recording_probes": [
+    {
+      "file": "earned-mining-trip.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "duration": "6.400000",
+          "nb_read_frames": "192"
+        }
+      ]
+    },
+    {
+      "file": "earned-combat.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "30/1",
+          "duration": "6.700000",
+          "nb_read_frames": "201"
+        }
+      ]
+    }
+  ],
+  "native_and_stress_source_match": true
+}

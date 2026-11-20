@@ -1,0 +1,4 @@
+2026-11-20 13:53:35.404 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 31 resource(s) total (including 0 override(s)) from the resource search path
+2026-11-20 13:53:44.668 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 31 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+{"output": "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/docs/reviews/2026-11-20-art-lighting/interim", "captures": 24, "layout_warnings": 0, "world_bounds_warnings": 0}

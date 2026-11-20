@@ -1,0 +1,29 @@
+..............................................F......................    [100%]
+=================================== FAILURES ===================================
+____ test_rival_has_cached_separation_outside_hull_without_expanding_radius ____
+
+tmp_path = PosixPath('/private/var/folders/xw/6_rxwxw5457c1y0c6bb71vr80000gn/T/pytest-of-sergevilleneuve/pytest-99/test_rival_has_cached_separati0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c45e8a0>
+
+    def test_rival_has_cached_separation_outside_hull_without_expanding_radius(tmp_path, monkeypatch):
+        arrow(tmp_path, 'rival')
+        arrow(tmp_path, 'prospector')
+        renderer = CampaignSprites(tmp_path)
+        original = pixels(renderer._sources['rival'])
+        plain, rival = canvas(), canvas()
+        renderer.draw_ship(plain, 200, 200, .7, kind='prospector', size=24)
+        renderer.draw_ship(rival, 200, 200, .7, kind='rival', size=24)
+        body = pygame.mask.from_surface(plain, 32)
+        red_rim = pygame.mask.from_threshold(rival, (235, 116, 111, 210), (8, 8, 8, 48))
+        dark_edge = pygame.mask.from_threshold(rival, (4, 9, 16, 255), (3, 3, 3, 3))
+>       assert red_rim.count() > red_rim.overlap_area(body, (0, 0)) + 10
+E       assert 57 > (57 + 10)
+E        +  where 57 = <built-in method count of pygame.mask.Mask object at 0x10c627b30>()
+E        +    where <built-in method count of pygame.mask.Mask object at 0x10c627b30> = <Mask(400x400)>.count
+E        +  and   57 = <built-in method overlap_area of pygame.mask.Mask object at 0x10c627b30>(<Mask(400x400)>, (0, 0))
+E        +    where <built-in method overlap_area of pygame.mask.Mask object at 0x10c627b30> = <Mask(400x400)>.overlap_area
+
+tests/test_campaign_sprites.py:261: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_campaign_sprites.py::test_rival_has_cached_separation_outside_hull_without_expanding_radius
+1 failed, 68 passed in 10.05s

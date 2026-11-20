@@ -1,0 +1,315 @@
+"""Main game window creation and management (spec 02: Window handling).
+
+This module owns the ``mainWindow`` section of game.json: the pydantic model
+for it, window creation, F11 toggling, programmatic mode switching, and the
+config saves that follow a successful switch. The window caption comes from
+the ``main_window.caption`` language key via the LanguageManager (spec 02,
+as amended by spec 16) - applied on open, and refreshed on every real
+language change by the LanguageManager itself.
+"""
+from __future__ import annotations
+
+from typing import Literal
+
+import pygame
+from loguru import logger
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from dtd import game_constants
+from dtd.errors import ConfigError
+
+
+class MainWindowConfig(BaseModel):
+    """The ``mainWindow`` section of game.json (spec 02).
+
+    ``mode`` is required. ``resolution`` is a validated legacy field, ignored
+    by desktop fullscreen. Display existence is checked at runtime.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    mode: Literal["windowed", "fullscreen"]
+    # One of game_constants.SUPPORTED_RESOLUTIONS (the single source of truth
+    # per spec 00) - validated by field validator rather than a Literal,
+    # which would duplicate that list in this file.
+    resolution: str | None = None
+    # strict=True so non-integer values (1.5, "1") are a config error
+    # (spec 02: "Non-integer values... should result in an InvalidConfigError").
+    display: int | None = Field(default=None, strict=True)
+
+    @field_validator("resolution")
+    @classmethod
+    def _require_supported_resolution(cls, value: str | None) -> str | None:
+        if value is not None and value not in game_constants.SUPPORTED_RESOLUTIONS:
+            supported = ", ".join(game_constants.SUPPORTED_RESOLUTIONS)
+            raise ValueError(f"unsupported resolution {value!r} (supported: {supported})")
+        return value
+
+
+def default_main_window_config() -> MainWindowConfig:
+    """Windowed mode is the default when the section is absent (spec 02)."""
+    return MainWindowConfig(mode="windowed")
+
+
+def parse_resolution(resolution: str) -> tuple[int, int]:
+    """Parse a ``WxH`` resolution string into a (width, height) tuple."""
+    width, _, height = resolution.partition("x")
+    return int(width), int(height)
+
+
+class MainWindow:
+    """Creates and manages the main game window (spec 02)."""
+
+    def __init__(self) -> None:
+        self._is_fullscreen = False
+        self._resolution: str | None = None
+        self._display_index = 0
+
+    # ------------------------------------------------------------------ #
+    # lifecycle
+    # ------------------------------------------------------------------ #
+    def open(self, config: MainWindowConfig | None = None) -> None:
+        """Create the window in the configured mode (spec 02).
+
+        If desktop fullscreen cannot be created, fall back to windowed mode
+        with a log warning (spec 02).
+        A startup fallback is NOT persisted: only mode switches save config.
+        """
+        if config is None:
+            config = default_main_window_config()
+        if not pygame.display.get_init():
+            pygame.display.init()
+        self._apply_window_caption()
+        self._display_index = self._resolve_display_index(config.display)
+        if config.mode == "windowed":
+            self._enter_windowed(self._display_index, persist=False)
+        else:
+            if not self._enter_fullscreen(config.resolution, self._display_index, persist=False):
+                logger.warning(
+                    "desktop fullscreen unavailable; falling back to windowed mode"
+                )
+                self._enter_windowed(self._display_index, persist=False)
+
+    def close(self) -> None:
+        """Release the window and shut down all pygame modules.
+
+        A full ``pygame.quit`` (not just ``display.quit``) keeps the shutdown
+        symmetric with the full ``pygame.init`` of startup (spec 03 step 2),
+        so the mixer does not linger initialized until process exit.
+        """
+        pygame.quit()
+
+    # ------------------------------------------------------------------ #
+    # mode switching
+    # ------------------------------------------------------------------ #
+    def on_f11(self) -> bool:
+        """Handle an F11 key press (spec 02). True if the mode changed."""
+        if self._is_fullscreen:
+            return self.switch_to_windowed()
+        return self.switch_to_fullscreen()
+
+    def switch_mode(
+        self,
+        mode: str,
+        resolution: str | None = None,
+        display: int | None = None,
+    ) -> bool:
+        """Programmatic mode switch (spec 02). True if it succeeded.
+
+        Raises ``ValueError`` for unknown mode names.
+        """
+        if mode == "fullscreen":
+            return self.switch_to_fullscreen(resolution, display)
+        if mode == "windowed":
+            return self.switch_to_windowed(display)
+        raise ValueError(f"unknown display mode: {mode!r}")
+
+    def switch_to_fullscreen(
+        self,
+        resolution: str | None = None,
+        display: int | None = None,
+    ) -> bool:
+        """Use native desktop fullscreen; legacy resolution is ignored."""
+        if display is None:
+            display = self._current_window_display()
+        target_display = self._resolve_display_index(display)
+        return self._enter_fullscreen(resolution, target_display, persist=True)
+
+    def switch_to_windowed(self, display: int | None = None) -> bool:
+        """Return to the desktop-appropriate windowed size (spec 02).
+
+        With no explicit display, the window's current display is used so an
+        F11 toggle returns the window to the display it was on.
+        """
+        if display is None:
+            display = self._current_window_display()
+        target_display = self._resolve_display_index(display)
+        return self._enter_windowed(target_display, persist=True)
+
+    # ------------------------------------------------------------------ #
+    # internals
+    # ------------------------------------------------------------------ #
+    def _apply_window_caption(self) -> None:
+        """Set the caption from the ``main_window.caption`` language key
+        (spec 02: Window title, as amended by spec 16: Language support).
+
+        Best-effort, mirroring the language-change refresh in
+        ``LanguageManager``: an uninitialized singleton or a display
+        refusing the update is a warning, never an exception - the
+        window opens regardless (spec 16: "Caption update is
+        best-effort, and should not raise on failure").
+
+        Local import of ``dtd.language``: that module imports
+        ``dtd.game_config``, which imports this module at module level -
+        the same cycle the ``_persist_config`` import works around.
+        """
+        try:
+            from dtd import language
+
+            caption = language.get_language_manager().get_string(
+                game_constants.WINDOW_TITLE
+            )
+            pygame.display.set_caption(caption)
+        except Exception as exc:
+            # Broad on purpose (spec 02: caption failure is logged, the
+            # window survives): RuntimeError from an uninitialized
+            # singleton, pygame.error from a refusing display, ...
+            logger.warning(
+                "failed to set the window caption from language key {}: {}",
+                game_constants.WINDOW_TITLE,
+                exc,
+            )
+
+    def _enter_windowed(self, display_index: int, persist: bool) -> bool:
+        try:
+            # Keep room for window decorations and desktop controls.
+            pygame.display.set_mode(
+                self._windowed_size(display_index),
+                display=display_index,
+            )
+        except pygame.error as exc:
+            logger.warning("failed to enter windowed mode on display {}: {}", display_index, exc)
+            return False
+        self._is_fullscreen = False
+        self._resolution = None
+        self._display_index = display_index
+        if persist:
+            self._persist_config()
+        return True
+
+    def _windowed_size(self, display_index: int) -> tuple[int, int]:
+        desktop = self._display_current_resolution(display_index)
+        margin = game_constants.WINDOWED_DESKTOP_MARGIN
+        size = (game_constants.WINDOWED_WIDTH, game_constants.WINDOWED_HEIGHT)
+        if desktop and desktop[0] >= size[0] + margin and desktop[1] >= size[1] + margin:
+            return size
+        return game_constants.WINDOWED_FALLBACK_SIZE
+
+    def _enter_fullscreen(self, resolution: str | None, display_index: int, persist: bool) -> bool:
+        # SCALED selects SDL_WINDOW_FULLSCREEN_DESKTOP, never an exclusive
+        # mode change. SDL owns aspect-preserving scaling and mouse mapping.
+        try:
+            pygame.display.set_mode(
+                (game_constants.DESIGN_W, game_constants.DESIGN_H),
+                pygame.FULLSCREEN | pygame.SCALED,
+                display=display_index,
+            )
+        except pygame.error as exc:
+            logger.warning("failed to enter desktop fullscreen on display {}: {}", display_index, exc)
+            return False
+        self._is_fullscreen = True
+        self._resolution = None
+        self._display_index = display_index
+        if persist:
+            self._persist_config()
+        return True
+
+    def _persist_config(self) -> None:
+        """Save the new mode/resolution/display (spec 02).
+
+        A failed save must not interrupt the game: log a warning and
+        continue (spec 02: Configuration).
+        """
+        try:
+            # Local import: dtd.game_config imports this module (for
+            # MainWindowConfig), so a module-level import would be circular.
+            from dtd import game_config
+
+            game_config.save_game_config_section("mainWindow", self._current_config())
+        except (ConfigError, OSError) as exc:
+            # OSError included: the persistence dir can vanish or the disk can
+            # fill mid-game; a failed save must never take the game down
+            # (spec 02: log a warning and continue).
+            logger.warning("failed to persist main window configuration: {}", exc)
+
+    def _current_config(self) -> MainWindowConfig:
+        """Persist the mode, not a stale monitor resolution."""
+        return MainWindowConfig(
+            mode="fullscreen" if self._is_fullscreen else "windowed",
+            display=self._display_index,
+        )
+
+    def _current_window_display(self) -> int:
+        """The display the window physically occupies right now (spec 02).
+
+        ``self._display_index`` is only updated by our own mode switches, so
+        it goes stale the moment the user drags the window; this method asks
+        the OS (via pygame) instead. pygame-ce exposes no direct "which
+        display is this window on" API, so we map the window's center point
+        (virtual desktop coordinates) against the x-spans derived from
+        ``get_desktop_sizes()``. The left-to-right scan assumes displays are
+        arranged side by side: pygame exposes no per-display origins, so
+        staggered/vertical layouts are unrepresentable with this API. If the
+        window position cannot be determined at all, fall back to the last
+        display this class knows about.
+        """
+        try:
+            position = pygame.display.get_window_position()
+            size = pygame.display.get_window_size()
+            desktop_sizes = pygame.display.get_desktop_sizes()
+        except pygame.error:
+            return self._display_index
+        if not desktop_sizes:
+            return self._display_index
+        # The window's center, so a window straddling two displays is
+        # attributed to the one it mostly occupies.
+        center_x = position[0] + size[0] // 2
+        origin_x = 0
+        for display_index, (width, _height) in enumerate(desktop_sizes):
+            if center_x < origin_x + width:
+                return display_index
+            origin_x += width
+        # The center is past the right edge of the last display (e.g. the
+        # window is mid-drag off the desktop edge); the last display is the
+        # closest reasonable attribution.
+        return len(desktop_sizes) - 1
+
+    def _resolve_display_index(self, display: int | None) -> int:
+        """Runtime display check (spec 02): an index that does not exist
+        falls back to the primary display (0) with a log warning."""
+        if display is None:
+            return 0
+        if not _display_exists(display):
+            logger.warning(
+                "display index {} does not exist; defaulting to primary display (0)", display
+            )
+            return 0
+        return display
+
+    def _display_current_resolution(self, display_index: int) -> tuple[int, int] | None:
+        """Best-effort current resolution of a display, or None if unknown."""
+        try:
+            sizes = pygame.display.get_desktop_sizes()
+        except pygame.error:
+            return None
+        if 0 <= display_index < len(sizes):
+            return (sizes[display_index][0], sizes[display_index][1])
+        return None
+
+
+def _display_exists(display_index: int) -> bool:
+    """True if ``display_index`` is a valid pygame display index right now."""
+    try:
+        return 0 <= display_index < pygame.display.get_num_displays()
+    except pygame.error:
+        return False

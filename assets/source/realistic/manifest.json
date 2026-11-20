@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "status": "All 13 commissioned assets delivered; integration and independent visual/native acceptance tracked by lead.",
+  "status": "19 retained generated originals: 13 initial assets plus 6 artwork/lighting siblings. Integration and human acceptance tracked by lead.",
   "source_kind": "Generated raster originals and exact generation prompts; no layered or 3D source was produced.",
   "provenance": "New artwork generated with the built-in imagegen tool for the user-authorized DustToDominion visual upgrade. Reference board used only as art direction, not cropped or copied into runtime assets.",
   "usage": "Intended for use and modification in this game under the applicable image-generation service terms. No third-party asset package or external license was imported; no claim of exclusive copyright or legal clearance.",
-  "lighting_compromise": "Soft baked overhead lighting/occlusion rotates with sprites; no runtime relighting or 3D geometry.",
+  "lighting_compromise": "Baked directional material lighting and local occlusion rotate with sprites. Runtime contact lighting is separate; no physical 3D relighting, normals or geometry are supplied.",
   "assets": [
     {
       "id": "asteroid_crystal",
@@ -512,6 +512,261 @@
       ],
       "forward": null,
       "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "asteroid_iron_c",
+      "source": "assets/source/realistic/asteroid_iron_c.png",
+      "runtime": "resources/campaign/realistic/asteroid_iron_c.png",
+      "prompt_file": "assets/source/realistic/asteroid_iron_c.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "13bb26203a4d2af7c7d7da107e927e5907d330cfc2ac9c6ed1a10d8a861972e1",
+      "runtime_sha256": "13bb26203a4d2af7c7d7da107e927e5907d330cfc2ac9c6ed1a10d8a861972e1",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fully_transparent_pixels": 664681,
+      "alpha128_bounds": [
+        37,
+        44,
+        1166,
+        1171
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": null
+    },
+    {
+      "id": "asteroid_gold_b",
+      "source": "assets/source/realistic/asteroid_gold_b.png",
+      "runtime": "resources/campaign/realistic/asteroid_gold_b.png",
+      "prompt_file": "assets/source/realistic/asteroid_gold_b.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "3137c5da32220c514415dd265d4b15d618fd4cad84010103990d54f2b7dfbb17",
+      "runtime_sha256": "3137c5da32220c514415dd265d4b15d618fd4cad84010103990d54f2b7dfbb17",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fully_transparent_pixels": 575713,
+      "alpha128_bounds": [
+        14,
+        29,
+        1225,
+        1201
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": null
+    },
+    {
+      "id": "asteroid_crystal_b",
+      "source": "assets/source/realistic/asteroid_crystal_b.png",
+      "runtime": "resources/campaign/realistic/asteroid_crystal_b.png",
+      "prompt_file": "assets/source/realistic/asteroid_crystal_b.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "c4784045150dbcfcc05b4c76965d9c7befff7de7db8a69eab794ef6d21111c7c",
+      "runtime_sha256": "c4784045150dbcfcc05b4c76965d9c7befff7de7db8a69eab794ef6d21111c7c",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fully_transparent_pixels": 708632,
+      "alpha128_bounds": [
+        27,
+        26,
+        1203,
+        1201
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": null
+    },
+    {
+      "id": "prospector_v2",
+      "source": "assets/source/realistic/prospector_v2.png",
+      "runtime": "resources/campaign/realistic/prospector_v2.png",
+      "prompt_file": "assets/source/realistic/prospector_v2.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "6bf26d5f063b35f15151d14a95ff1c8f83071f232d6d2f3688ed0ffbaab2649d",
+      "runtime_sha256": "6bf26d5f063b35f15151d14a95ff1c8f83071f232d6d2f3688ed0ffbaab2649d",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fully_transparent_pixels": 912496,
+      "alpha128_bounds": [
+        147,
+        13,
+        961,
+        1198
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": "assets/source/realistic/prospector.png",
+      "edit_reference_sha256": "03adfa480cf0e4984b83d36bb6fda049c90522012463111dd29630f82024fac7"
+    },
+    {
+      "id": "rival_v2",
+      "source": "assets/source/realistic/rival_v2.png",
+      "runtime": "resources/campaign/realistic/rival_v2.png",
+      "prompt_file": "assets/source/realistic/rival_v2.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "6ad1c70c14870a6f4ab2c78a514c0803580a59a0498d9d5fa25b64d8d6e2193c",
+      "runtime_sha256": "6ad1c70c14870a6f4ab2c78a514c0803580a59a0498d9d5fa25b64d8d6e2193c",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "fully_transparent_pixels": 978494,
+      "alpha128_bounds": [
+        12,
+        13,
+        1229,
+        1228
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": "assets/source/realistic/rival.png",
+      "edit_reference_sha256": "723f3c25580014724d5733fafb2bc79cecaabd78c71167c61fc2f05d976a8157"
+    },
+    {
+      "id": "station_v2",
+      "source": "assets/source/realistic/station_v2.png",
+      "runtime": "resources/campaign/realistic/station_v2.png",
+      "prompt_file": "assets/source/realistic/station_v2.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "21fbaba1b1564cdd9fec2dd9cc0e91467e62b7014b2d2423fbab43f52b176cb0",
+      "runtime_sha256": "21fbaba1b1564cdd9fec2dd9cc0e91467e62b7014b2d2423fbab43f52b176cb0",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "fully_transparent_pixels": 325964,
+      "alpha128_bounds": [
+        12,
+        10,
+        1230,
+        1229
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Original visually inspected for broad material groups, overhead geometry and transparent isolation. Rival v2 bottom corners retain alpha1 residue below renderer threshold8; source is preserved. Actual integration and human acceptance remain separate.",
+      "generation_pass": "2026-11-20-art-lighting",
+      "edit_reference": "assets/source/realistic/station.png",
+      "edit_reference_sha256": "bfd36a4d28ba5d1e85d82902f62596e3d5bb54a020c474f0cc8d7d60b7b713bd"
     }
   ],
   "resolution_note": "Sprites and portraits1254x1254; dock2172x724; backdrop1672x941. These are generated source dimensions, not native4K art. Runtime may scale them; UI is separate."

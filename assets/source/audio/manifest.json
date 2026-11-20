@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_width_bytes": 2,
+  "encoding": "signed16 little-endian PCM WAV",
+  "license": "MIT; repository LICENSE",
+  "source": "generate.py",
+  "generator_sha256": "8f9e6bb25917c95c116e7d109a32d60a39c2188a3d3a141deaca7e73ccc36b31",
+  "origin": "Original procedural synthesis for Dust to Dominion; no external recordings, samples, models or services.",
+  "listening_status": "Unverified: metrics and dummy-mixer decoding are not human listening.",
+  "reproducibility": "Python standard library; fixed seeds and parameters. SHA comparison is authoritative on supported Python 3.12 environment; libm rounding can vary across platforms.",
+  "assets": [
+    {
+      "id": "audio/campaign/thrust_loop.wav",
+      "parameters": {
+        "seconds": 2.0,
+        "peak": 0.035,
+        "seed": 2201,
+        "loop": true
+      },
+      "sha256": "1235a6675cb161702fbf044f39b039b338f16f4058dea1a301abef94cc668470",
+      "bytes": 176444,
+      "measurements": {
+        "frames": 88200,
+        "duration_seconds": 2.0,
+        "peak_fs": 0.03497314,
+        "rms_fs": 0.01299506,
+        "dc_fs": 0.0,
+        "first_sample": 0,
+        "last_sample": -8,
+        "seam_step_fs": 0.00024414,
+        "max_adjacent_step_fs": 0.00088501,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/mining_loop.wav",
+      "parameters": {
+        "seconds": 2.0,
+        "peak": 0.045,
+        "seed": 2202,
+        "loop": true
+      },
+      "sha256": "69da16a70489a3981ce2f2ad37acf46e5e40018f923585b655ff19f0223d414b",
+      "bytes": 176444,
+      "measurements": {
+        "frames": 88200,
+        "duration_seconds": 2.0,
+        "peak_fs": 0.04498291,
+        "rms_fs": 0.01340783,
+        "dc_fs": 0.0,
+        "first_sample": 0,
+        "last_sample": 39,
+        "seam_step_fs": 0.00119019,
+        "max_adjacent_step_fs": 0.00457764,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/ore_pickup.wav",
+      "parameters": {
+        "seconds": 0.24,
+        "peak": 0.065,
+        "seed": 2203,
+        "loop": false
+      },
+      "sha256": "4ae85eca10924a7c065ed2d02494556fbdab77698967a79201b673b7372ad156",
+      "bytes": 21212,
+      "measurements": {
+        "frames": 10584,
+        "duration_seconds": 0.24,
+        "peak_fs": 0.06497192,
+        "rms_fs": 0.01868101,
+        "dc_fs": -1.067e-07,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.00921631,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/weapon.wav",
+      "parameters": {
+        "seconds": 0.18,
+        "peak": 0.075,
+        "seed": 2204,
+        "loop": false
+      },
+      "sha256": "c434569f366e9bdd0e3b07fd17f49ad5c1ea771aab8743729638ef68b0c67eb1",
+      "bytes": 15920,
+      "measurements": {
+        "frames": 7938,
+        "duration_seconds": 0.18,
+        "peak_fs": 0.07498169,
+        "rms_fs": 0.0174026,
+        "dc_fs": 5.77e-08,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.01339722,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/impact.wav",
+      "parameters": {
+        "seconds": 0.28,
+        "peak": 0.075,
+        "seed": 2205,
+        "loop": false
+      },
+      "sha256": "25fd37c179da72901a3fd6522bffaeb91ef23fd14b09c7dfb1c289edb82cda47",
+      "bytes": 24740,
+      "measurements": {
+        "frames": 12348,
+        "duration_seconds": 0.28,
+        "peak_fs": 0.07498169,
+        "rms_fs": 0.00777822,
+        "dc_fs": 6.92e-08,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.01486206,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/destruction.wav",
+      "parameters": {
+        "seconds": 0.9,
+        "peak": 0.075,
+        "seed": 2206,
+        "loop": false
+      },
+      "sha256": "816e9935e3453670aae05df5fc1731e24c954c170ccf02bdff61ca9152f5f55e",
+      "bytes": 79424,
+      "measurements": {
+        "frames": 39690,
+        "duration_seconds": 0.9,
+        "peak_fs": 0.07498169,
+        "rms_fs": 0.00842204,
+        "dc_fs": 1.038e-07,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.02435303,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/docking.wav",
+      "parameters": {
+        "seconds": 0.72,
+        "peak": 0.065,
+        "seed": 2207,
+        "loop": false
+      },
+      "sha256": "409fdea8a64bf4d944594fd8b4427ef02d80d5016044754d997a688d8c8ce88f",
+      "bytes": 63548,
+      "measurements": {
+        "frames": 31752,
+        "duration_seconds": 0.72,
+        "peak_fs": 0.06497192,
+        "rms_fs": 0.01784743,
+        "dc_fs": 4.23e-08,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.01486206,
+        "seam_slope_change_fs": 0.0
+      }
+    },
+    {
+      "id": "audio/campaign/selling.wav",
+      "parameters": {
+        "seconds": 0.54,
+        "peak": 0.065,
+        "seed": 2208,
+        "loop": false
+      },
+      "sha256": "3e171df11c78cd41a5c1e86f1e1412f9f6664aee2f6d249fc26239a994555fad",
+      "bytes": 47672,
+      "measurements": {
+        "frames": 23814,
+        "duration_seconds": 0.54,
+        "peak_fs": 0.06497192,
+        "rms_fs": 0.01772456,
+        "dc_fs": -6.54e-08,
+        "first_sample": 0,
+        "last_sample": 0,
+        "seam_step_fs": 0.0,
+        "max_adjacent_step_fs": 0.00778198,
+        "seam_slope_change_fs": 0.0
+      }
+    }
+  ]
+}

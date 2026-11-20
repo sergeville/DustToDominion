@@ -14,6 +14,7 @@ import pygame
 from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
                           DOCK_RADIUS, SAFE_RADIUS)
 from dtd.campaign_sprites import CampaignSprites
+from dtd.campaign_audio import CampaignAudio
 from dtd.campaign_camera import Camera
 from dtd.camera_indicators import offscreen_indicators, draw_indicators
 from dtd.campaign_effects import (DamageFlashes, EffectLights, MiningFragments,
@@ -68,6 +69,7 @@ class CampaignScreen(Screen):
         self._ui = UIManager(theme)
         self._canvas = pygame.Surface((1920, 1080))
         self._art = CampaignSprites(loader=loader)
+        self._sound = CampaignAudio()
         self._impacts = DamageFlashes()
         self._lights = EffectLights()
         self._fragments = MiningFragments()
@@ -89,7 +91,11 @@ class CampaignScreen(Screen):
     def _t(self, key: str, **values) -> str:
         return get_language_manager().get_string("campaign." + key).format(**values)
 
+    def close(self) -> None:
+        self._sound.stop()
+
     def _clear_input(self) -> None:
+        self._sound.stop()
         self._keys.clear()
         self._firing = False
         self._pending_shot = None
@@ -163,6 +169,8 @@ class CampaignScreen(Screen):
             return
         if action == "sell":
             amount = self.campaign.sell()
+            if amount > 0:
+                self._sound.cue("selling")
             self.message = self._t("sold", value=amount)
         elif action == "repair":
             self.campaign.repair()
@@ -212,6 +220,8 @@ class CampaignScreen(Screen):
         run = self.expedition
         if run is None:
             return
+        destroyed = run.defeated
+        docked = run.finished and not defeated and not destroyed
         self.campaign.finish_run(run, defeated=defeated)
         self.message = self._t("defeat_body" if defeated or run.defeated else "docked_body")
         self.mode = "result"
@@ -220,6 +230,8 @@ class CampaignScreen(Screen):
             self.campaign.won = True
             self.mode = "victory"
         self._clear_input()
+        if destroyed or docked:
+            self._sound.cue("destruction" if destroyed else "docking")
         notice = self.message
         self._save()
         self.message = notice
@@ -243,6 +255,7 @@ class CampaignScreen(Screen):
 
     def _title(self) -> None:
         if self._save():
+            self._sound.stop()
             self._pending_action = ScreenAction.SHOW_TITLE_SCREEN
 
     def _sync_camera(self) -> None:
@@ -338,7 +351,9 @@ class CampaignScreen(Screen):
             self._visual_time += _STEP
             before = self._impacts.snapshot(self.expedition)
             before_rocks = self._fragments.snapshot(self.expedition)
+            before_sound = self._sound.snapshot(self.expedition)
             self.expedition.step(_STEP, controls)
+            self._sound.after_step(before_sound, self.expedition, controls, _STEP)
             self._sync_camera()
             self._impacts.advance(_STEP, before, self.expedition)
             self._fragments.advance(_STEP, before_rocks, self.expedition,

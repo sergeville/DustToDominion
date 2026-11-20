@@ -61,6 +61,13 @@ The pydantic model will be `AudioConfig` in `dtd/game_config.py`.
   Numeric values outside the 0-100 range raise `InvalidConfigError`.
   Non-numeric values raise `InvalidConfigError` (pydantic will coerce values such as `true` to 1 and `"50"` to 50 - this is fine).
 
+## Silent sessions (spec 22)
+
+`AudioManager.available` reports whether this session initialized a mixer and
+whether it remains initialized. Without one, playback/lifecycle calls are safe
+no-ops and existing settings still validate and persist. Restart with a working
+device to recover; no dummy-device substitution or hot-plug recovery is implied.
+
 ## AudioManager
 
 A simple API for playing sfx and music is presented to client code:
@@ -429,3 +436,21 @@ The following dev plan is suggested for this amendment:
    **Completed 2026-10-09** - full suite green (659 passed); Testing section and
    Acceptance criteria verified item by item; document flipped to `active`.
 
+
+### Amendment 2026-11-20 — gameplay audio availability
+
+Per spec 22, initialize AudioManager in a silent mode when mixer/device startup
+fails. Playback, stop, looping and volume operations must safely no-op for audio
+while configuration validation/persistence continues normally. Do not change
+existing category budgets or claim a dummy device represents audible output.
+Tests must cover unavailable mixer, lifecycle calls and settings, and preserve
+all normal enabled-device behavior. Restore this spec to active after validation.
+
+### Zero-volume mute clarification — 2026-11-20
+
+Game-SFX volume zero is mute: stop existing game voices/loops and suppress new
+game one-shots at zero volume. Restoring positive volume must not reveal old
+one-shot tails. Valid desired loops can start on the next gameplay update.
+This applies only to the game-SFX category; other category contracts are unchanged.
+Test zero→positive during a long destruction cue and while input holds a loop,
+as well as settings persistence and channel-category independence.

@@ -99,7 +99,7 @@ class ResourceStore:
     """
 
     images: dict[str, pygame.Surface] = field(default_factory=dict)
-    sound_effects: dict[str, pygame.mixer.Sound] = field(default_factory=dict)
+    sound_effects: dict[str, pygame.mixer.Sound | None] = field(default_factory=dict)
     music: dict[str, bytes] = field(default_factory=dict)
     texts: dict[str, str] = field(default_factory=dict)
     json_resources: dict[str, Any] = field(default_factory=dict)
@@ -197,7 +197,8 @@ class ResourceStore:
 # game's resource loader)
 # ------------------------------------------------------------------ #
 
-def load_resource_from_bytes(resource_id: str, data: bytes) -> tuple[str, Any]:
+def load_resource_from_bytes(resource_id: str, data: bytes, *,
+                             allow_unavailable_audio: bool = False) -> tuple[str, Any]:
     """Decode one resource from raw bytes.
 
     Returns ``(type_name, value)`` where ``type_name`` is one of
@@ -225,6 +226,13 @@ def load_resource_from_bytes(resource_id: str, data: bytes) -> tuple[str, Any]:
         return "image", surface
 
     if ext in game_constants.AUDIO_RESOURCE_EXTENSIONS:
+        if allow_unavailable_audio and not pygame.mixer.get_init():
+            # Explicit game-runtime silent mode only. Package structure/hash
+            # verification still runs; audio decode is deferred until restart.
+            # Packaging/standalone validation keep their strict default.
+            if resource_id.startswith(game_constants.MUSIC_RESOURCE_ID_PREFIX):
+                return "music", data
+            return "sfx", None
         # Validate by attempting a full decode into a Sound object.
         # pygame.mixer.Sound(BytesIO) content-sniffs the format (verified
         # against pygame-ce 2.5.8 - see resource_loader module docstring).
@@ -477,7 +485,7 @@ def create_pak(
 # Loading and validating pak files
 # ------------------------------------------------------------------ #
 
-def load_pak(pak_path: Path) -> ResourceStore:
+def load_pak(pak_path: Path, *, allow_unavailable_audio: bool = False) -> ResourceStore:
     """Validate and load all resources from a pak file.
 
     Validation steps (in order; first failure raises):
@@ -568,7 +576,8 @@ def load_pak(pak_path: Path) -> ResourceStore:
                 )
 
             raw_bytes = xor_bytes(encrypted_bytes)
-            type_name, value = load_resource_from_bytes(resource_id, raw_bytes)
+            type_name, value = load_resource_from_bytes(
+                resource_id, raw_bytes, allow_unavailable_audio=allow_unavailable_audio)
             # A single pak's manifest forbids duplicate IDs, so store() can
             # never warn here; it routes the value to the right cache.
             loaded.store(type_name, resource_id, value)

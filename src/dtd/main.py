@@ -5,7 +5,7 @@ Startup order per spec 03 as amended by specs 04, 05, and 13:
 1. Boot the persistence directory (spec 00; fatal on failure).
 2. Load the game configuration (spec 01; never fatal).
 3. Initialize pygame, including the mixer and the font module (spec 03
-   step 2; fatal if the required display, mixer, or font module fails).
+   step 2; display/font failures are fatal, unavailable audio is silent).
 4. Invoke the resource loader (spec 03 step 3; any ``ResourceError`` is
    fatal).
 5. Initialize the AudioManager (spec 05, amending spec 03 step 5): sets
@@ -68,9 +68,8 @@ def run() -> int:
     config = game_config.load_game_config()
 
     # Spec 03 step 2: pygame (including the mixer and the font module) must
-    # be initialized before any resource loading, so audio resources can be
-    # loaded and fonts can be served. Failure is fatal: log and stop
-    # (exit code 1).
+    # be initialized before resource loading. Display/font failure is fatal;
+    # unavailable audio warns and defers audio decoding for this session.
     try:
         _init_pygame()
     except pygame.error as exc:
@@ -121,7 +120,7 @@ def _init_pygame() -> None:
     """Initialize pygame, including the mixer and the font module (spec 03
     step 2).
 
-    The game requires only the display, mixer, and font modules; failures of
+    Display and font are required; audio is optional (spec 22). Failures of
     unrelated built-in modules (joystick, midi, ...) are logged and
     tolerated (spec 03: startup order). ``pygame.init`` never raises for
     per-module failures - it only reports how many failed - so the required
@@ -133,15 +132,15 @@ def _init_pygame() -> None:
     if failures:
         logger.warning(
             "{} pygame module(s) failed to initialize; continuing because "
-            "only display, mixer, and font are required",
+            "only display and font are required",
             failures,
         )
-    # Verify the three modules the game actually depends on rather than
-    # trusting the aggregate success count.
+    # Verify required modules rather than trusting the aggregate count.
+    # A missing sound device must not prevent playable silent operation.
     if not pygame.display.get_init():
         raise pygame.error("pygame display failed to initialize")
     if not pygame.mixer.get_init():
-        raise pygame.error("pygame mixer failed to initialize")
+        logger.warning("Audio mixer/device unavailable; continuing silently. Restart to retry audio.")
     if not pygame.font.get_init():
         raise pygame.error("pygame font failed to initialize")
 
@@ -219,6 +218,7 @@ def _run_event_loop(
             if action is ScreenAction.QUIT:
                 return
             if action is ScreenAction.SHOW_CAMPAIGN:
+                current_screen.close()
                 audio.get_audio_manager().stop_music()
                 audio.get_audio_manager().stop_loops()
                 config = game_config.load_game_config()
@@ -230,6 +230,7 @@ def _run_event_loop(
                 clock.tick(60)
                 continue
             if action in _SCREEN_FACTORIES:
+                current_screen.close()
                 audio.get_audio_manager().stop_music()
                 audio.get_audio_manager().stop_loops()
                 current_screen = _create_screen(action, resource_loader)
@@ -260,6 +261,7 @@ def _run_event_loop(
         # Precedent for every screen (spec 08: Integration, as amended by
         # spec 13): leaving a screen by any means - Exit Game, its ESC
         # shortcut, or the window close - stops the screen's music.
+        current_screen.close()
         audio.get_audio_manager().stop_music()
         audio.get_audio_manager().stop_loops()
 

@@ -24,8 +24,15 @@ be executed before the resource loader is invoked. So, the game's startup order 
 
 1. General configuration loading
 2. Pygame initialization (including `mixer.init()` so we can load audio resources).
-   The game requires only the display, mixer, and font modules; initialization of
-   those three must succeed. Raise `pygame.error` if any fails and stop.
+   The display and font modules must initialize; raise `pygame.error` if either
+   fails. Per spec 22, unavailable mixer/device logs a warning and permits silent
+   play. Audio resources are unavailable for playback in that session; normal
+   audio-enabled decoding and integrity validation remain unchanged. The runtime
+   loader explicitly opts into deferred audio decode only when the mixer is
+   unavailable: SFX entries are retained as unavailable (`None`) and music bytes
+   retained without playback. Package structure/SHA checks still run. Packager
+   and standalone decoder defaults remain strict, even without a mixer. Restart
+   with an available device reloads and decodes the resources normally.
    Failures of unrelated modules (e.g. joystick or midi on a headless box)
    are not fatal: log a warning and continue.
 3. ResourceLoader is invoked.
@@ -534,7 +541,9 @@ Notes for font validation:
   - inspection happy path: valid packages can be inspected and report an accurate count of resources. All SHA hashes match.
   - inspection unhappy path: invalid packages report an error on stderr and exit code 1.
 - pygame initialization: failing unrelated modules (e.g. joystick, midi) must
-  not abort startup; a failing display or mixer must abort with exit code 1.
+  not abort startup; failing display/font must abort with exit code 1. A failing
+  mixer must warn and allow silent play (spec 22), including resource loading
+  and no-op audio/settings/lifecycle calls.
 - A valid `.ttf` font file can be loaded as a resource, either from a resource directory or from a `.pak` file.
 - A zero-byte `.ttf` font file is rejected as invalid, regardless of where it was loaded from.
 - An invalid `.ttf` file (wrong header) is rejected as invalid, regardless of where it was loaded from.
@@ -684,3 +693,9 @@ The spec is too large to implement all at once. The following staged dev plan is
     language test suite (`tests/test_language.py`) all landed; doc
     flipped back to `active` with the full suite green at 1411 tests.
 
+
+### Amendment 2026-11-20 — gameplay audio availability
+
+Implement and test spec 22 silent startup when no mixer/device is available;
+retain fatal display/font errors and normal resource-integrity validation.
+After validation, restore this specification to active.

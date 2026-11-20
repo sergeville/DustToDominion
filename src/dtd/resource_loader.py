@@ -80,7 +80,7 @@ class ResourceLoader:
     ``(resource_id, size)`` pair and cached (spec 03: Consumer API).
 
     ``load`` is called exactly once per process, at startup (spec 03), and
-    must run after pygame (including the mixer and the font module) is
+    must run after pygame startup (font required; mixer optional per spec 22) is
     initialized - the application entry point enforces that order.
     """
 
@@ -465,7 +465,7 @@ class ResourceLoader:
             UnsupportedResourceVersionError: as documented on ``load``.
         """
         try:
-            loaded_pak = pak.load_pak(pak_path)
+            loaded_pak = pak.load_pak(pak_path, allow_unavailable_audio=True)
         except OSError as exc:
             # An unreadable package file (permissions, vanished between
             # check and open) is a load failure, not a crash (spec 03).
@@ -502,7 +502,8 @@ class ResourceLoader:
             raise ResourceLoadError(
                 f"could not load resource {resource_id!r}: {exc}"
             ) from exc
-        type_name, value = pak.load_resource_from_bytes(resource_id, data)
+        type_name, value = pak.load_resource_from_bytes(
+            resource_id, data, allow_unavailable_audio=True)
         return self._store.store(type_name, resource_id, value)
 
 

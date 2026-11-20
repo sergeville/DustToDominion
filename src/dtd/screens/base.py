@@ -88,3 +88,6 @@ class Screen:
 
     def draw(self, surface: pygame.Surface) -> None:
         """Render the screen: background first, then its widgets."""
+
+    def close(self) -> None:
+        """Release screen-owned transient resources before removal (spec 22)."""

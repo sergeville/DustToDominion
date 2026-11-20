@@ -895,7 +895,7 @@ class TestInitPygame:
         with pytest.raises(pygame.error, match="display"):
             app_main._init_pygame()
 
-    def test_when_mixer_fails_to_initialize_should_raise_pygame_error(
+    def test_when_mixer_fails_to_initialize_should_continue_silently(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         # GIVEN pygame whose mixer module fails to initialize (spec 03: the
@@ -904,9 +904,8 @@ class TestInitPygame:
         monkeypatch.setattr(pygame.mixer, "get_init", lambda: False)
 
         # WHEN _init_pygame is invoked:
-        # THEN a pygame.error naming the mixer is raised:
-        with pytest.raises(pygame.error, match="mixer"):
-            app_main._init_pygame()
+        # Spec 22: no-device audio is optional; display/font remain required.
+        app_main._init_pygame()
 
     def test_when_font_fails_to_initialize_should_raise_pygame_error(
         self, monkeypatch: pytest.MonkeyPatch

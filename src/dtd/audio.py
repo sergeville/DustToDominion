@@ -5,9 +5,8 @@ it asks the module-level :class:`AudioManager` singleton (spec 05). The
 singleton is created once at startup between UI initialization and main
 window creation (spec 03 startup order, as amended by spec 05).
 
-All playback goes through pygame's mixer. The mixer must already be
-initialized (spec 03 startup step 2 guarantees this at real startup); the
-constructor then sets the channel budget (spec 05: Channel budget).
+All playback goes through pygame's mixer. When the mixer is available the constructor sets the channel budget.
+Unavailable audio remains silent while configuration still works (spec 22).
 """
 from __future__ import annotations
 
@@ -61,8 +60,7 @@ class _ChannelAllocator:
 
     def find_free(self) -> pygame.mixer.Channel | None:
         """The lowest-index idle channel in the range, or ``None``."""
-        for index in self._index_range:
-            channel = pygame.mixer.Channel(index)
+        for channel in self.channels():
             if not channel.get_busy():
                 return channel
         return None
@@ -91,6 +89,8 @@ class _ChannelAllocator:
     def channels(self) -> Iterator[pygame.mixer.Channel]:
         """Every channel in the range, busy or not - category-scoped
         volume changes and stop-all iterate over this."""
+        if not pygame.mixer.get_init():
+            return
         for index in self._index_range:
             yield pygame.mixer.Channel(index)
 
@@ -190,7 +190,11 @@ class AudioManager:
         # Must happen AFTER mixer.init(); verified against pygame-ce 2.5.8
         # that calling it earlier raises "mixer not initialized" (spec 05:
         # Channel budget).
-        pygame.mixer.set_num_channels(AUDIO_CHANNEL_BUDGET)
+        self._available = bool(pygame.mixer.get_init())
+        if self._available:
+            pygame.mixer.set_num_channels(AUDIO_CHANNEL_BUDGET)
+        else:
+            logger.warning("AudioManager is silent: no initialized mixer/device")
         # Category ranges are fixed and contiguous (spec 05: Channel
         # budget); the offsets come from the single ranges constant so
         # they can never drift from the counts.
@@ -205,6 +209,11 @@ class AudioManager:
         # starts at the configured level (spec 05: startup applies config).
         self._apply_music_volume()
 
+    @property
+    def available(self) -> bool:
+        """Session audio availability; no automatic hot-plug recovery."""
+        return self._available and bool(pygame.mixer.get_init())
+
     # ------------------------------------------------------------------ #
     # sound effects
     # ------------------------------------------------------------------ #
@@ -217,7 +226,8 @@ class AudioManager:
         is fully occupied the request is a no-op - game sfx never steal
         a busy channel (spec 05: Channel budget).
         """
-        if not self._config.game_sfx_enabled:
+        if (not self.available or not self._config.game_sfx_enabled
+                or self._config.game_sfx_volume == 0):
             return
         sound = self._loader.get_sfx_resource(resource_id)
         if sound is None:
@@ -237,7 +247,7 @@ class AudioManager:
         fully occupied the request is a no-op - UI sfx never steal a
         busy channel (spec 05: Channel budget).
         """
-        if not self._config.ui_sfx_enabled:
+        if not self.available or not self._config.ui_sfx_enabled:
             return
         sound = self._loader.get_sfx_resource(resource_id)
         if sound is None:
@@ -258,7 +268,7 @@ class AudioManager:
         single reserved speech channel, a new clip terminates the
         in-progress one (spec 05: Channel budget).
         """
-        if not self._config.speech_enabled:
+        if not self.available or not self._config.speech_enabled:
             return
         sound = self._loader.get_sfx_resource(resource_id)
         if sound is None:
@@ -278,9 +288,12 @@ class AudioManager:
         exhaustion - is simply not marked active and is retried on
         subsequent frames. A disabled game-sfx setting is a silent no-op.
         """
+        if not self.available:
+            self._loops.clear()
+            return
         if not self._config.game_sfx_enabled:
             return
-        desired = set(resource_ids)
+        desired = set(resource_ids) if self._config.game_sfx_volume > 0 else set()
         for resource_id in self._loops.active_ids() - desired:
             self._loops.stop(resource_id)
         for resource_id in desired - self._loops.active_ids():
@@ -300,7 +313,7 @@ class AudioManager:
         channels, so this may also silence another consumer playing the
         same sound - acceptable per spec 06.
         """
-        sound = self._loader.get_sfx_resource(resource_id)
+        sound = self._loader.get_sfx_resource(resource_id) if self.available else None
         if sound is not None:
             sound.stop()
         # The stop() above already silenced any loop of this sound on every
@@ -327,7 +340,7 @@ class AudioManager:
         already playing is a no-op - the track is NOT restarted. A
         disabled music setting is a silent no-op.
         """
-        if not self._config.music_enabled:
+        if not self.available or not self._config.music_enabled:
             return
         if resource_id == self._current_music_id and pygame.mixer.music.get_busy():
             return
@@ -346,7 +359,7 @@ class AudioManager:
 
         No-op when no music is playing or when music is disabled.
         """
-        if not self._config.music_enabled:
+        if not self.available or not self._config.music_enabled:
             return
         self._stop_current_music()
 
@@ -363,7 +376,7 @@ class AudioManager:
         ``play_music``. An exhausted candidate list is a no-op, and a
         disabled music setting is a silent no-op.
         """
-        if not self._config.music_enabled:
+        if not self.available or not self._config.music_enabled:
             return
         for resource_id in ids:
             if self._loader.get_music_resource(resource_id) is None:
@@ -372,7 +385,8 @@ class AudioManager:
             return
 
     def _stop_current_music(self) -> None:
-        pygame.mixer.music.stop()
+        if self.available:
+            pygame.mixer.music.stop()
         self._current_music_id = None
 
     # ------------------------------------------------------------------ #
@@ -490,7 +504,8 @@ class AudioManager:
 
     def _apply_music_volume(self) -> None:
         """Music lives in its own mixer lane, not the channel pool."""
-        pygame.mixer.music.set_volume(self._music_volume_fraction())
+        if self.available:
+            pygame.mixer.music.set_volume(self._music_volume_fraction())
 
     def _apply_category_volume(
         self, allocator: _ChannelAllocator, fraction: float
@@ -503,7 +518,10 @@ class AudioManager:
             channel.set_volume(fraction)
 
     def _apply_game_sfx_volume(self) -> None:
-        # Immediate effect on currently playing sfx and loops (spec 05).
+        # Zero is a hard mute: raising volume must not reveal old tails.
+        if self._config.game_sfx_volume == 0:
+            self._stop_all_sfx()
+        # Keep category channel levels current even after stopping voices.
         self._apply_category_volume(
             self._game_sfx_allocator, self._game_sfx_volume_fraction()
         )

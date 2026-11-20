@@ -1,0 +1,5 @@
+2026-11-20 17:14:29.614 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+Earned trip/combat/save/reload passed at (2560, 1440)
+Earned trip/combat/save/reload passed at (3840, 2160)
+{"captures": 58, "layout_warnings": 0, "world_bounds_warnings": 0}

@@ -1,0 +1,78 @@
+..FF.........................................                            [100%]
+=================================== FAILURES ===================================
+_ test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale[combat-size0] _
+
+player_factory = <function player_factory.<locals>.create at 0x10ca5ec00>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c3cf590>
+size = (2560, 1440), mode = 'combat'
+
+    @pytest.mark.parametrize('size', [(2560, 1440), (3840, 2160)])
+    @pytest.mark.parametrize('mode', ['mining', 'combat', 'station', 'fleet'])
+    def test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale(
+            player_factory, monkeypatch, size, mode):
+        player = start(player_factory, size)
+        if mode in ('mining', 'combat'):
+            if mode == 'combat':
+                # Explicit synthetic unlock only for this draw-purity fixture.
+                player.screen.campaign.lifetime_sales = 300
+>           player.click('launch', sector=2 if mode == 'combat' else 1)
+
+tests/test_native_resolution_acceptance.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_campaign_acceptance.PlayerClient object at 0x10c3cff20>
+key = 'launch', values = {'sector': 2}
+
+    def click(self, key, **values):
+        label = self.text(key, **values)
+        buttons = [button for button in self.screen._ui.widgets if button.text == label]
+        assert len(buttons) == 1, label
+        button = buttons[0]
+>       assert button.enabled, label
+E       AssertionError: Launch / Sector 2
+E       assert False
+E        +  where False = <dtd.widgets.button.Button object at 0x10c903bc0>.enabled
+
+tests/test_campaign_acceptance.py:57: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 17:05:45.716 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+_ test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale[combat-size1] _
+
+player_factory = <function player_factory.<locals>.create at 0x10ca5f2e0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c938b30>
+size = (3840, 2160), mode = 'combat'
+
+    @pytest.mark.parametrize('size', [(2560, 1440), (3840, 2160)])
+    @pytest.mark.parametrize('mode', ['mining', 'combat', 'station', 'fleet'])
+    def test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale(
+            player_factory, monkeypatch, size, mode):
+        player = start(player_factory, size)
+        if mode in ('mining', 'combat'):
+            if mode == 'combat':
+                # Explicit synthetic unlock only for this draw-purity fixture.
+                player.screen.campaign.lifetime_sales = 300
+>           player.click('launch', sector=2 if mode == 'combat' else 1)
+
+tests/test_native_resolution_acceptance.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_campaign_acceptance.PlayerClient object at 0x10c938b60>
+key = 'launch', values = {'sector': 2}
+
+    def click(self, key, **values):
+        label = self.text(key, **values)
+        buttons = [button for button in self.screen._ui.widgets if button.text == label]
+        assert len(buttons) == 1, label
+        button = buttons[0]
+>       assert button.enabled, label
+E       AssertionError: Launch / Sector 2
+E       assert False
+E        +  where False = <dtd.widgets.button.Button object at 0x10c3cb6b0>.enabled
+
+tests/test_campaign_acceptance.py:57: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 17:05:46.329 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+=========================== short test summary info ============================
+FAILED tests/test_native_resolution_acceptance.py::test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale[combat-size0]
+FAILED tests/test_native_resolution_acceptance.py::test_every_campaign_view_rasterizes_into_native_target_without_completed_scene_upscale[combat-size1]
+2 failed, 43 passed in 29.58s

@@ -1,0 +1,420 @@
+{
+  "kind": "native graphics smoke; synthetic state; no OS input; audio disabled",
+  "base_revision": "696c3bc4c5f3bbb599d5b75bec0cf9518eea7c49",
+  "source_sha256": {
+    "src/dtd/__init__.py": "1b8c56e6bbee84931706ba956907d57a451bcd47ec1f2c9acd00f256d8b1e60d",
+    "src/dtd/audio.py": "cadd336817160fde15923b5c1165446232af7e007432adc0ca56af0b781088a3",
+    "src/dtd/camera_indicators.py": "b255731cb07ab01867a0c1f53ff908607250e38f8dce8957ee99089c32aef23d",
+    "src/dtd/campaign.py": "ad70bff81d295572ca60f047193e9060bc49caa8abab52ae72ff20b6e38a03e0",
+    "src/dtd/campaign_art.py": "46c9f181e18d15f338c87d24ba7e5acda633a8ca804685c39124ae7c900d6614",
+    "src/dtd/campaign_audio.py": "1392c2c84419cf319eccb7963eeff66fba4aac7ce9e8c2ec3b6b15cd5c74b521",
+    "src/dtd/campaign_camera.py": "37f7881ef54bd09271c995f70ef0e114bba53ce924d7895594879b9af01d5766",
+    "src/dtd/campaign_effects.py": "c98ed687e7b9ee3eb0c9bb2a77b9474102c708a22b9c8c8132ba1795ab3da217",
+    "src/dtd/campaign_guidance.py": "a069fe9e5fbc5bde37e55e4dd310dea6834af0f1871e12d41e6ecb49ae8d4d70",
+    "src/dtd/campaign_sprites.py": "d64989bc6f56d4032d5543cd8b17a45a43b1ab7ce4fd8314b923cc6abcee09dd",
+    "src/dtd/campaign_store.py": "1f2dab3ad609daf60f0594fcba9b3fb3cf976a4981d9186aafca4a9e377b0fe8",
+    "src/dtd/config.py": "81fd3978cbed880289aa58f98420270e7d755f49b2a6e58d547078d6593b305d",
+    "src/dtd/errors.py": "3160702088d262df650239065f1304a6a89bc38a0c9b9c2cc4e1eb63499a154e",
+    "src/dtd/game_config.py": "d2f5e6891d931d7c200cdaf60eaa2ddf8d8df75ff6efe0b81661966a40bb6850",
+    "src/dtd/game_constants.py": "6c967f35037f9b2eb3efdbd199ada53a263b699579d710c9dc71f8d1e5bce5bd",
+    "src/dtd/language.py": "25ec6ac218c857e969a62e5805df523069be33a290d799e4e6bc91bb36a3499e",
+    "src/dtd/main.py": "5dd4cfb722ab10355e66d3035932646da69f4e66f84fe6d957b7855eb268cee9",
+    "src/dtd/main_window.py": "68e715a35a79837f492a1d2905a006fd8a87a2ef4511412b9dfa6f8a62b3c294",
+    "src/dtd/native_render.py": "dd22f89dccfbc5c91cc668e35f80f00974cf087f4db1b41e355a3efa00a9756b",
+    "src/dtd/pak.py": "a61193f20e90b339fadad9541a35b9e52b221f3e54f0379e3189c074e9aae827",
+    "src/dtd/persistence.py": "17fe341f19c80b66d6b6902d3974a58930443365e95878a4910e1eaf9bc49ccb",
+    "src/dtd/resource_loader.py": "8048682ab48bfa2ebc7051b562e7a5e38fd7135f6d9839fc8104629153655434",
+    "src/dtd/screens/__init__.py": "f036d95e3dd72815222765d31d15cf3cbe226ec15aecd15ce5c7beaef8c74dcd",
+    "src/dtd/screens/background.py": "ed2a3f5c3605d76fc7a90a2e8fe89ef27e92fcf66c4c7bb6aad5db42ebb3bd7f",
+    "src/dtd/screens/base.py": "b19c96c3e0f4e64e2712ec88a927289247b035f78611426c90095215be7d3b2d",
+    "src/dtd/screens/campaign.py": "16115f0d6f0ade3609a9a4dfc2a22c2fc542c90eb8a4e57b2f2e604649611b89",
+    "src/dtd/screens/options.py": "2c0b19c1c6040d721b77e9ec044ef80a045f5e3737a4b3f123bf995a10d1e346",
+    "src/dtd/screens/starfield.py": "0506e840b12302d94045971a74cf17bf547f71b13ce95accb5107f9d40ee852f",
+    "src/dtd/screens/title.py": "d4e8cca6fb3735dab7bac9eec2b08774c18b11d2afad7f51cfe88bc30fd16359",
+    "src/dtd/ui.py": "e59e7802882820746764461ee6cbfa1b5844704873a1458dc48720554f598661",
+    "src/dtd/widgets/__init__.py": "b885d26d2f831c76cf67fd545120cb6217463f00d8c9b90cf92f8161e77d385f",
+    "src/dtd/widgets/button.py": "f4a9d63c77c2599ef75b475bb484fb1eb97c0690c20448f2ed40badf6e9f9f13",
+    "src/dtd/widgets/checkbox.py": "5efa322110fe8c03ec59bab620a79a58810ec76271ea92e5442e2c51dbffafe0",
+    "src/dtd/widgets/choice_list.py": "b75f1e7b4d8ce0b26bfde4cbded17b6a2b7bf89fab5ef9029ab78d8b73f53a6b",
+    "src/dtd/widgets/label.py": "a733ae31093279c90ac6879707b8fec4d63bd1f407bf9fe955c0eaf4c7059e72",
+    "src/dtd/widgets/progress_bar.py": "b9cf6205c391c6be24af374a4de33f2ed3da1736ed193587df4bc95ec65dfe82",
+    "src/dtd/widgets/slider.py": "5b521c7c42fc013b9da0b0103606020e898857b8520bf3acee5b517cc5d76662",
+    "src/dtd/widgets/text_layout.py": "fc69af0177e5780dd6d45fdeea5aad60bfb2dd7e508ae03de08af251b51f7f94",
+    "src/dtd/widgets/text_panel.py": "785a60c1283cdc4bfabd25a05186cc6459130203481dd48fad365eeb6cb985ef",
+    "src/dtd/widgets/value_layout.py": "d28699fb703f716710322c42fdcbffcf4ee63e045e71c6775b4cfa31e42c9d13"
+  },
+  "desktop_before": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "phases": [
+    {
+      "phase": "windowed-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          1920,
+          1080
+        ],
+        "logical_size": [
+          0,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "content_origin_in_window": [
+          0.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          1920.0,
+          1080.0
+        ]
+      },
+      "fullscreen": false,
+      "render_flip_p50_ms": 6.554770981892943,
+      "render_flip_p95_ms": 8.884290931746364,
+      "render_flip_max_ms": 10.268707992509007,
+      "paced_interval_p50_ms": 16.848708444740623,
+      "paced_interval_max_ms": 17.943790997378528,
+      "cache": {
+        "entries": 8,
+        "bytes": 1085672,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "windowed-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          1920,
+          1080
+        ],
+        "logical_size": [
+          0,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "content_origin_in_window": [
+          0.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          1920.0,
+          1080.0
+        ]
+      },
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.504791487008333,
+      "render_flip_p95_ms": 9.514292003586888,
+      "render_flip_max_ms": 11.292250012047589,
+      "paced_interval_p50_ms": 16.794416471384466,
+      "paced_interval_max_ms": 17.89395895320922,
+      "cache": {
+        "entries": 12,
+        "bytes": 842292,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "fullscreen-normal",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        2560,
+        1440
+      ],
+      "canvas_pixels": [
+        2560,
+        1440
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          3440,
+          1440
+        ],
+        "logical_size": [
+          2560,
+          1440
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          440,
+          0,
+          2560,
+          1440
+        ],
+        "content_origin_in_window": [
+          440.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          3000.0,
+          1440.0
+        ]
+      },
+      "fullscreen": true,
+      "render_flip_p50_ms": 6.495146022643894,
+      "render_flip_p95_ms": 7.846332970075309,
+      "render_flip_max_ms": 9.510749951004982,
+      "paced_interval_p50_ms": 16.9087084941566,
+      "paced_interval_max_ms": 17.935791984200478,
+      "cache": {
+        "entries": 8,
+        "bytes": 1934380,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "fullscreen-heavy",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        2560,
+        1440
+      ],
+      "canvas_pixels": [
+        2560,
+        1440
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          3440,
+          1440
+        ],
+        "logical_size": [
+          2560,
+          1440
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          440,
+          0,
+          2560,
+          1440
+        ],
+        "content_origin_in_window": [
+          440.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          3000.0,
+          1440.0
+        ]
+      },
+      "fullscreen": true,
+      "render_flip_p50_ms": 7.198083971161395,
+      "render_flip_p95_ms": 8.58912500552833,
+      "render_flip_max_ms": 9.518499951809645,
+      "paced_interval_p50_ms": 16.970020486041903,
+      "paced_interval_max_ms": 17.90870795957744,
+      "cache": {
+        "entries": 12,
+        "bytes": 1499800,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "returned-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          1920,
+          1080
+        ],
+        "logical_size": [
+          0,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "content_origin_in_window": [
+          0.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          1920.0,
+          1080.0
+        ]
+      },
+      "fullscreen": false,
+      "render_flip_p50_ms": 5.218646489083767,
+      "render_flip_p95_ms": 7.486583082936704,
+      "render_flip_max_ms": 8.56333295814693,
+      "paced_interval_p50_ms": 16.506124986335635,
+      "paced_interval_max_ms": 17.786708078347147,
+      "cache": {
+        "entries": 8,
+        "bytes": 1085672,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "returned-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_pixels": [
+        1920,
+        1080
+      ],
+      "canvas_is_output": true,
+      "renderer": {
+        "output_pixels": [
+          1920,
+          1080
+        ],
+        "logical_size": [
+          0,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "viewport": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "content_origin_in_window": [
+          0.0,
+          0.0
+        ],
+        "content_end_in_window": [
+          1920.0,
+          1080.0
+        ]
+      },
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.457832980435342,
+      "render_flip_p95_ms": 10.230874991975725,
+      "render_flip_max_ms": 12.906040996313095,
+      "paced_interval_p50_ms": 16.808771004434675,
+      "paced_interval_max_ms": 17.94125000014901,
+      "cache": {
+        "entries": 12,
+        "bytes": 842292,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 113228712,
+        "field_detail_bytes": 6200
+      }
+    }
+  ],
+  "native_input": "Not exercised by this probe; physical keyboard/mouse acceptance remains pending",
+  "driver": "cocoa",
+  "desktop_after": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "source_hashes_unchanged": true,
+  "passed": true
+}

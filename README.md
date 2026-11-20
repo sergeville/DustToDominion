@@ -7,15 +7,35 @@ crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
 This local continuation includes a complete playable ruleset, textured artwork
 and a player-following camera. The new gameplay sound pass builds on reviewed
-artwork revision `844ad1d`. Native controls/listening, balance and **Serge's visual
-acceptance remain open**. The
+artwork revision `844ad1d`. Serge has confirmed the core native controls and
+principal sound cues; remaining listening checks, balance and **visual acceptance
+remain open**. The
 [campaign specification](docs/19-complete-small-game.md) and
 [team handoff](docs/reviews/TEAM-HANDOFF.md) retain the rules and implementation history.
+
+## Native-resolution fullscreen
+
+Local product **`696c3bc`** passes **2,061 automated tests**.
+Fullscreen now draws the campaign directly at the display-fitting resolution.
+On Serge’s 3440×1440 monitor, the game area is **2560×1440 at 1:1 pixels**,
+centered with side bars. It previously enlarged a 1920×1080 world image.
+A 3840×2160 drawing path is also implemented; physical 4K hardware remains
+unverified. Logical geometry, camera zoom, game rules and saves are unchanged.
+The fullscreen transition also refreshes stationary mouse aiming to account for
+SDL’s changed content position.
+
+[Native-resolution report and before/after images](docs/reviews/2026-11-20-native-resolution/review.md)
+separate actual native-display measurements, offscreen rendering and pending
+human review. Save at the station, close the old game, reopen **Open Dust to
+Dominion.command**, choose **Continue**, and use **Control+Command+F**.
 
 ## Gameplay sound and controls
 
 Local product **`e46970f`**: **2,010 automated tests passed**, including independent
-audio lifecycle/device checks. Native input and listening remain pending.
+audio lifecycle/device checks. Serge subsequently confirmed movement/engine,
+mining/pickup, docking/selling, zoom aiming, pause/resume, rival combat and
+save → title → Continue. See the [human-play addendum](docs/reviews/2026-11-20-gameplay-audio/manual-results.md)
+for exact evidence and unperformed checks.
 
 Eight original synthesized sounds cover thrust, mining contact, ore pickup,
 weapons, impacts, destruction, docking and selling. Loops follow valid activity;
@@ -34,8 +54,9 @@ with human loudness/timbre acceptance still pending.
 Reopen **Open Dust to Dominion.command → Continue → Launch / Sector 1**.
 Use Options to enable/adjust **game sound effects**. Space mines rocks; weapons
 hit rival ships outside the shield. Sector 1 has no rivals. Existing saves,
-artwork, camera, hitboxes, combat and economy are preserved. Internal world
-rendering remains **1920×1080**; native 4K is deferred until this milestone review.
+artwork, camera, hitboxes, combat and economy are preserved. The audio baseline
+used a 1920×1080 world canvas; the new rendering milestone is documented in the
+[native-resolution review](docs/reviews/2026-11-20-native-resolution/review.md).
 
 ## Artwork and lighting
 
@@ -76,10 +97,9 @@ retained between trips; existing saves and gameplay geometry are unchanged.
 Both source images are 1920×1080 actual renderer captures of the same synthetic
 model state, shown at equal size. See [earned mining](docs/reviews/2026-11-20-camera/final/trip-mining.png)
 and [earned combat](docs/reviews/2026-11-20-camera/final/combat-firing.png) for
-input-driven gameplay. The internal world canvas is still **1920×1080**.
-Offscreen 3840×2160 output scales that world; native 4K world rendering remains a
-separate task. Camera zoom samples each sprite at its projected size inside the
-1080p world canvas; it does not turn that canvas into 4K.
+input-driven gameplay. These historical camera captures use a **1920×1080**
+world canvas. Their offscreen 3840×2160 output scales that world and must not be
+confused with the later direct native-resolution rendering evidence.
 
 ## Earlier realistic visual upgrade
 
@@ -123,7 +143,7 @@ Updated screenshots: [mining](docs/reviews/2026-11-20-realistic-polish/final/en-
 [station](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-station.png),
 [fleet](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-fleet.png).
 
-Remaining: physical mouse/keyboard play, audio, human judgment of balance and art,
+Remaining at that earlier review: physical mouse/keyboard play, audio, human judgment of balance and art,
 and other displays/platforms. Distant framing, baked lighting and prominent HUD
 panels remain differences from the reference. Detailed evidence and limitations:
 [validation report](docs/reviews/2026-11-20-realistic-polish.md) and
@@ -135,7 +155,8 @@ Earlier [vector-art screenshots](docs/reviews/2026-11-20-feedback.md) and the
 
 ## Play
 
-On this Mac, double-click **Open Dust to Dominion.command**, then choose
+On this Mac, double-click **Open Dust to Dominion.command** on the Desktop
+(or the original in this project folder), then choose
 **New Game → Launch / Sector 1**. The launcher uses the project's existing
 `.venv`; setup instructions below apply on a new installation.
 
@@ -220,7 +241,7 @@ Environment variables:
 | `resolution` | optional legacy setting | accepted but ignored; fullscreen uses the monitor resolution |
 | `display`    | never (optional)                               | numeric display index, defaults to the primary display (`0`)       |
 
-Windowed mode prefers a fixed, non-resizable 1920x1080 window, falling back to 1280x720 on smaller displays. Fullscreen uses the current desktop resolution with proportional scaling and black bars where needed. On macOS, Ctrl+Cmd+F also toggles fullscreen. Press `F11` at
+Windowed mode prefers a fixed, non-resizable 1920x1080 window, falling back to 1280x720 on smaller displays. Fullscreen uses the current desktop mode with the largest exact 16:9 content surface that fits it. On a 3440×1440 desktop, game content renders at 2560×1440 with side bars; a 3840×2160 desktop uses 3840×2160. Graphics and text render directly at that content resolution. Unknown desktop dimensions retain a warned 1080p fallback. On macOS, Ctrl+Cmd+F also toggles fullscreen. Press `F11` at
 runtime to toggle between windowed and fullscreen modes; switching to
 fullscreen always uses the monitor's current desktop resolution. Successful switches
 are written back to `game.json`.

@@ -2,6 +2,9 @@
 
 ## Local campaign work — start here
 
+- [Native-resolution rendering review](reviews/2026-11-20-native-resolution/review.md): current implementation, exact content/window sizes, independent checks and open physical/visual acceptance.
+- [Human controls/audio results](reviews/2026-11-20-gameplay-audio/manual-results.md): Serge’s baseline play observations, separate from automated evidence.
+
 - [Gameplay audio milestone](22-gameplay-audio.md): eight original sounds, event-based playback, silent-device handling and separate controls/listening acceptance.
 - [Audio review and controls checklist](reviews/2026-11-20-gameplay-audio/review.md): current validation and recording provenance.
 

@@ -136,3 +136,17 @@ unavailable-driver startup and earned mining/combat/save-reload passed silently.
 Active status identifies the implemented contract; native input, listening and
 Serge's subjective acceptance remain pending. See the dated gameplay-audio review
 under `docs/reviews/` for recordings, exact revision and evidence limits.
+
+
+## Human review and next milestone — 2026-11-20
+
+Serge subsequently confirmed core movement/engine, mining/contact, pickup,
+docking/selling, zoom aiming, pause/resume, combat/weapon/destruction and
+save→title→Continue behavior. See the [dated human-play addendum](reviews/2026-11-20-gameplay-audio/manual-results.md)
+for precise evidence and remaining checks. Volume/mute UI, app restart,
+focus loss, individual impact cues and subjective mix acceptance remain pending.
+This updates the earlier all-pending assessment without rewriting frozen QA.
+
+Serge explicitly authorized native-resolution rendering after observing soft
+fullscreen output. This supersedes the deferral above; specs02 and21 define
+that implementation. Audio behavior and original recordings remain unchanged.

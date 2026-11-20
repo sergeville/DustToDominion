@@ -1,0 +1,16 @@
+2026-11-20 17:13:59.052 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+Earned trip/combat/save/reload passed at (2560, 1440)
+Traceback (most recent call last):
+  File "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/docs/reviews/2026-11-20-native-resolution/validate.py", line 188, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/docs/reviews/2026-11-20-native-resolution/validate.py", line 158, in main
+    report['earned'][str(size[0])]=earned_play(loader,folder,size)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/docs/reviews/2026-11-20-native-resolution/validate.py", line 43, in earned_play
+    player.click('launch', sector=1)
+  File "/Users/sergevilleneuve/Library/CloudStorage/GoogleDrive-villeneuve.serge@gmail.com/My Drive/Dev Project Archives - 2026-10-30/DustToDominion/tests/test_campaign_acceptance.py", line 55, in click
+    assert len(buttons) == 1, label
+           ^^^^^^^^^^^^^^^^^
+AssertionError: Launch / Sector 1

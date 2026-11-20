@@ -1,0 +1,3 @@
+2026-11-20 17:16:02.549 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 39 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+Benchmark appended; same source hashes verified

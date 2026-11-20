@@ -207,3 +207,13 @@ Serge's newer [realistic target](../concepts/realistic-visual-target-2026-11-20.
 is preserved separately from actual game renders. Textured assets, crew portraits
 and human play/balance acceptance remain open. No independent agent review was
 run for this focused amendment; scoped self-review and regression tests were run.
+
+
+## Firing correction — 2026-11-20
+
+[Reproduction and validation](2026-11-20-firing.md): quick press/release events
+could be lost before a simulation step. Pending click/aim now survives to one
+step, with pause/focus clearing and unchanged shield/cooldown rules. Full suite
+**1,805 passed in 35.70s**, focused screen/acceptance **57 passed**. EN/DE safe-zone
+hints now explicitly say to leave the shield. Running game preserved; save/reopen
+to load the fix. Native physical-click acceptance remains unverified.

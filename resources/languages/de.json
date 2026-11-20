@@ -94,7 +94,7 @@
     "pilot_benefit": "Ihr steuerbares Bergbauschiff",
     "support_benefit": "+{bonus}% Erzverkaufswert",
     "fleet_total": "Aktueller Verkaufsbonus der Flotte: +{bonus}%",
-    "weapons_locked": "SICHER / Waffen gesperrt",
+    "weapons_locked": "SCHUTZFELD / Zum Feuern verlassen",
     "guide_dock": "ANLEGEN / E drücken: Fracht an der Station sichern",
     "guide_return_full": "FRACHT VOLL / Zurück zur Stationsmarkierung",
     "guide_return_damaged": "HÜLLE KRITISCH / Zurück zum Schutz der Station",

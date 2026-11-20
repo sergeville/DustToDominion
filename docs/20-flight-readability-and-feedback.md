@@ -104,3 +104,15 @@ every generated fixture. Preserve the user's running session/checkpoint.
    identification, target guidance and compact HUD.
 6. Validate gameplay regressions and rendered fixtures; save review/evidence,
    commit locally, and provide the updated build without discarding live play.
+
+
+## Firing feedback amendment — 2026-11-20
+
+The safe-zone HUD explicitly says to leave the station shield to fire, in EN/DE.
+Space remains mining; left click fires weapons outside the shield. Font sizes
+and shield geometry are unchanged.
+
+### Additional dev stage
+
+7. Clarify the safe-zone firing restriction alongside spec19's click-input fix;
+   verify both translated hints fit the existing HUD and retain regression tests.

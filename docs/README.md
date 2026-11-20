@@ -13,6 +13,8 @@
 
 - [Readability validation](reviews/2026-11-20-readability.md): separated launch position, visible station, clearer markers and compact HUD.
 
+- [Firing correction](reviews/2026-11-20-firing.md): quick clicks retained until a simulation tick; shield instructions clarified.
+
 ## Specification workflow
 
 Architecture documents for the project go here.

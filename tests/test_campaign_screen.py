@@ -375,3 +375,88 @@ def test_bottom_edge_player_label_does_not_overlap_direction_arrow(screen, monke
     assert len(labels) == 1
     for point in screen._direction_points(guidance(screen.campaign, screen.expedition)):
         assert not labels[0].inflate(12, 6).collidepoint(point)
+
+
+@pytest.mark.parametrize('split_updates', [False, True])
+@pytest.mark.parametrize('size', [(1280, 720), (1920, 1080), (2560, 1440)])
+def test_quick_fire_click_survives_release_before_simulation_tick(screen, split_updates, size):
+    pygame.display.set_mode(size)
+    screen._launch(1)
+    run = screen.expedition
+    run.x, run.y = 600, 300  # Well outside the station shield.
+    point = (round(900 * size[0] / 1920), round(300 * size[1] / 1080))
+    down = pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=point, button=1)
+    up = pygame.event.Event(pygame.MOUSEBUTTONUP, pos=point, button=1)
+    if split_updates:
+        screen.update([down])
+        screen.advance(1 / 240)  # No fixed simulation tick yet.
+        screen.update([up])
+    else:
+        screen.update([down, up])
+    screen.advance(1 / 60)
+    assert len(run.projectiles) == 1
+    assert run.projectiles[0].friendly and run.projectiles[0].vx > 0
+    screen.advance(.25)
+    assert len(run.projectiles) == 1  # A tap must not become held autofire.
+
+
+def fire_click(screen, held=False):
+    events = [pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=(600, 200), button=1)]
+    if not held:
+        events.append(pygame.event.Event(pygame.MOUSEBUTTONUP, pos=(600, 200), button=1))
+    screen.update(events)
+
+
+def test_held_fire_repeats_at_cooldown_and_release_stops(screen):
+    screen._launch(1)
+    screen.expedition.x, screen.expedition.y = 600, 300
+    fire_click(screen, held=True)
+    screen.advance(.25)
+    assert len(screen.expedition.projectiles) == 2
+    screen.update([pygame.event.Event(pygame.MOUSEBUTTONUP, pos=(600, 200), button=1)])
+    screen.advance(.25)
+    assert len(screen.expedition.projectiles) == 2
+
+
+def test_click_during_cooldown_does_not_fire_later_or_bypass_limit(screen):
+    screen._launch(1)
+    screen.expedition.x, screen.expedition.y = 600, 300
+    fire_click(screen)
+    screen.advance(1 / 60)
+    fire_click(screen)
+    screen.advance(1 / 60)
+    screen.advance(.25)
+    assert len(screen.expedition.projectiles) == 1
+
+
+def test_click_blocked_by_shield_is_not_carried_outside(screen):
+    screen._launch(1)
+    fire_click(screen)
+    screen.advance(1 / 60)
+    assert not screen.expedition.projectiles
+    screen.expedition.x, screen.expedition.y = 600, 300
+    screen.advance(.25)
+    assert not screen.expedition.projectiles
+
+
+@pytest.mark.parametrize('event', [pygame.event.Event(pygame.WINDOWFOCUSLOST),
+                                   key(pygame.K_ESCAPE)])
+def test_pending_click_is_cleared_by_pause_or_focus_loss(screen, event):
+    screen._launch(1)
+    screen.expedition.x, screen.expedition.y = 600, 300
+    fire_click(screen)
+    screen.update([event])
+    assert screen.mode == 'paused'
+    screen._resume()
+    screen.advance(.25)
+    assert not screen.expedition.projectiles
+
+
+def test_released_click_uses_click_aim_after_mouse_moves(screen):
+    screen._launch(1)
+    screen.expedition.x, screen.expedition.y = 600, 300
+    fire_click(screen)
+    screen.update([pygame.event.Event(pygame.MOUSEMOTION, pos=(400, 400))])
+    screen.advance(1 / 60)
+    shot = screen.expedition.projectiles[0]
+    assert shot.vx > 0 and shot.vy == pytest.approx(0)

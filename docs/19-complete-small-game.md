@@ -206,3 +206,27 @@ unchanged. Tests cover launch safety, travel back to dock and earned progression
 
 Implement this geometry alongside spec 20's readability amendment, then run
 campaign/model/UI/acceptance tests and visual layout checks.
+
+
+## Firing input correction — 2026-11-20
+
+A complete left-button click can arrive before a fixed simulation step. Retain
+one pending fire attempt (with click aim) until the next consumed step, even if
+the button has been released. Coalesce multiple taps before a step; do not bypass
+the existing fire cooldown. Holding left click continues automatic fire.
+
+Clear pending input on pause/focus loss, launch, docking and overlays. Consume
+blocked attempts at the next step rather than deferring them past the shield or
+cooldown. Shield protection and station-sniping prevention remain unchanged.
+
+### Testing and acceptance
+
+Reproduce a press/release in one event batch and across batches before a step;
+both must fire once outside the shield. Check click aim, held fire/release,
+cooldown, safe-zone blocking, pause/focus clearing and earned combat acceptance.
+Tests isolate settings and saves.
+
+### Additional dev stage
+
+8. Fix lost quick-click input, clarify the localized safe-zone hint, run focused
+   and full regression checks, document results and commit locally.

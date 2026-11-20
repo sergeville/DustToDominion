@@ -45,6 +45,7 @@ class CampaignScreen(Screen):
         self.error = ""
         self._keys: set[int] = set()
         self._firing = False
+        self._pending_shot = None
         self._aim = (960.0, 350.0)
         self._accumulator = 0.0
         self._visual_time = 0.0
@@ -73,6 +74,7 @@ class CampaignScreen(Screen):
     def _clear_input(self) -> None:
         self._keys.clear()
         self._firing = False
+        self._pending_shot = None
         self._accumulator = 0.0
 
     def _button(self, rect, text, callback, enabled=True) -> None:
@@ -258,6 +260,8 @@ class CampaignScreen(Screen):
                 elif event.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP) and event.button == 1:
                     self._aim = current_scale().mouse(event.pos)
                     self._firing = event.type == pygame.MOUSEBUTTONDOWN
+                    if self._firing:
+                        self._pending_shot = self._aim
             else:
                 self._ui.update([event])
             if self.mode != before:
@@ -269,14 +273,19 @@ class CampaignScreen(Screen):
         if not math.isfinite(dt) or dt <= 0:
             return
         keys = self._keys
-        controls = InputState(
-            move_x=int(bool(keys & {pygame.K_d, pygame.K_RIGHT})) - int(bool(keys & {pygame.K_a, pygame.K_LEFT})),
-            move_y=int(bool(keys & {pygame.K_s, pygame.K_DOWN})) - int(bool(keys & {pygame.K_w, pygame.K_UP})),
-            mining=pygame.K_SPACE in keys, firing=self._firing,
-            aim_x=self._aim[0], aim_y=self._aim[1])
         self._accumulator += min(dt, 0.25)
         while self._accumulator + 1e-10 >= _STEP:
             self._accumulator -= _STEP
+            # Preserve a tap until a real step, then consume it even when the
+            # model rejects firing (shield/cooldown). Held fire uses current aim.
+            aim = self._aim if self._firing or self._pending_shot is None else self._pending_shot
+            controls = InputState(
+                move_x=int(bool(keys & {pygame.K_d, pygame.K_RIGHT})) - int(bool(keys & {pygame.K_a, pygame.K_LEFT})),
+                move_y=int(bool(keys & {pygame.K_s, pygame.K_DOWN})) - int(bool(keys & {pygame.K_w, pygame.K_UP})),
+                mining=pygame.K_SPACE in keys,
+                firing=self._firing or self._pending_shot is not None,
+                aim_x=aim[0], aim_y=aim[1])
+            self._pending_shot = None
             self._visual_time += _STEP
             self.expedition.step(_STEP, controls)
             if self.expedition.finished:

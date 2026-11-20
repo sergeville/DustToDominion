@@ -134,6 +134,9 @@ The [capture log](2026-11-20-realistic-polish/final-capture.log) and
 [native probe log](2026-11-20-realistic-polish/native-probe.log) contain resource
 load information and measurements, with no warning/error messages. The known
 Windows window-drag/audio issue in the README was not retested on this Mac.
+Git's whitespace check flags trailing spaces in the retained raw baseline pytest
+failure log. Those original diagnostic bytes are preserved; the check passes
+for source, tests and documentation when raw `.log` evidence is excluded.
 
 Completed: scoped visual fixes, reference comparison, all four capture types,
 offscreen 4K output, automated playable regression, independent QA and art review,

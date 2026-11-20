@@ -9,6 +9,8 @@
 - [Flight presentation review](reviews/2026-11-20-feedback.md): current art, guidance and tests.
 - [Visual goal concept](concepts/README.md): intended look and feel, separate from current implementation.
 
+- [Display validation](reviews/2026-11-20-display.md): larger default window and native desktop fullscreen.
+
 ## Specification workflow
 
 Architecture documents for the project go here.

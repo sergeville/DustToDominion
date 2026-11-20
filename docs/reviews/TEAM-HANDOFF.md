@@ -188,3 +188,10 @@ The earlier validation counts above describe the previous implementation.
 
 Latest full suite: **1,768 passed in 36.44s**; independent scoped gate: 67 passed.
 Native play acceptance remains open.
+
+
+## Display update — 2026-11-20
+
+Default window now prefers 1920x1080; fullscreen uses the monitor's desktop
+resolution with proportional text/art scaling. See [Display validation](2026-11-20-display.md)
+for 1,781 passing tests, native 3440x1440 toggles, and remaining multi-display limits.

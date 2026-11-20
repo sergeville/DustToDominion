@@ -33,6 +33,7 @@ spec 13).
 from __future__ import annotations
 
 import sys
+import os
 from collections.abc import Callable
 from typing import Final
 
@@ -126,6 +127,8 @@ def _init_pygame() -> None:
     per-module failures - it only reports how many failed - so the required
     modules are verified explicitly afterwards.
     """
+    if sys.platform == "darwin":
+        os.environ.setdefault("SDL_VIDEO_MAC_FULLSCREEN_SPACES", "0")
     _success, failures = pygame.init()
     if failures:
         logger.warning(
@@ -271,8 +274,14 @@ def _pump_app_events(window: MainWindow, events: list[pygame.event.Event]) -> bo
     for event in events:
         if event.type == pygame.QUIT:
             return True
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-            window.on_f11()
+        if event.type == pygame.KEYDOWN:
+            mac_fullscreen = (
+                sys.platform == "darwin" and event.key == pygame.K_f
+                and getattr(event, "mod", 0) & pygame.KMOD_CTRL
+                and getattr(event, "mod", 0) & pygame.KMOD_GUI
+            )
+            if event.key == pygame.K_F11 or mac_fullscreen:
+                window.on_f11()
     return False
 
 

@@ -66,7 +66,7 @@ source .venv/bin/activate
 python main.py
 ```
 
-A 1280x720 window appears (or fullscreen, depending on your configuration).
+The game opens at 1920x1080, or 1280x720 on smaller displays, unless fullscreen is saved in your settings.
 `F11` toggles windowed/fullscreen. Closing the window quits; `Esc` quits from
 the title screen and pauses during an expedition.
 
@@ -87,7 +87,6 @@ Environment variables:
 {
   "mainWindow": {
     "mode": "fullscreen",
-    "resolution": "1920x1080",
     "display": 1
   }
 }
@@ -96,13 +95,12 @@ Environment variables:
 | Key          | Required when `mainWindow` is present          | Description                                                        |
 | ------------ | ---------------------------------------------- | ------------------------------------------------------------------ |
 | `mode`       | always                                         | `windowed` (default) or `fullscreen`                               |
-| `resolution` | in fullscreen mode                             | one of `1280x720`, `1920x1080`, `2560x1440`                        |
+| `resolution` | optional legacy setting | accepted but ignored; fullscreen uses the monitor resolution |
 | `display`    | never (optional)                               | numeric display index, defaults to the primary display (`0`)       |
 
-Windowed mode is a fixed, non-resizable 1280x720 window. Press `F11` at
+Windowed mode prefers a fixed, non-resizable 1920x1080 window, falling back to 1280x720 on smaller displays. Fullscreen uses the current desktop resolution with proportional scaling and black bars where needed. On macOS, Ctrl+Cmd+F also toggles fullscreen. Press `F11` at
 runtime to toggle between windowed and fullscreen modes; switching to
-fullscreen uses the display's current resolution if it is one of the
-supported ones, otherwise it falls back to `1920x1080`. Successful switches
+fullscreen always uses the monitor's current desktop resolution. Successful switches
 are written back to `game.json`.
 
 ## Known issues

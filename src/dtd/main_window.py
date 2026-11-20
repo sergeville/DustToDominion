@@ -13,7 +13,7 @@ from typing import Literal
 
 import pygame
 from loguru import logger
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from dtd import game_constants
 from dtd.errors import ConfigError
@@ -22,12 +22,8 @@ from dtd.errors import ConfigError
 class MainWindowConfig(BaseModel):
     """The ``mainWindow`` section of game.json (spec 02).
 
-    ``mode`` is required whenever the ``mainWindow`` key is present, and
-    ``resolution`` is required in fullscreen mode. Both ``resolution`` and
-    ``display`` are always validated when present, even in a mode that
-    ignores them (spec 02). ``display`` only gets an integer check here; the
-    display-count check happens at runtime, where it can fall back to the
-    primary display with a log warning (spec 02).
+    ``mode`` is required. ``resolution`` is a validated legacy field, ignored
+    by desktop fullscreen. Display existence is checked at runtime.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -48,12 +44,6 @@ class MainWindowConfig(BaseModel):
             supported = ", ".join(game_constants.SUPPORTED_RESOLUTIONS)
             raise ValueError(f"unsupported resolution {value!r} (supported: {supported})")
         return value
-
-    @model_validator(mode="after")
-    def _require_resolution_for_fullscreen(self) -> MainWindowConfig:
-        if self.mode == "fullscreen" and self.resolution is None:
-            raise ValueError("'resolution' is required when 'mode' is 'fullscreen'")
-        return self
 
 
 def default_main_window_config() -> MainWindowConfig:
@@ -81,8 +71,8 @@ class MainWindow:
     def open(self, config: MainWindowConfig | None = None) -> None:
         """Create the window in the configured mode (spec 02).
 
-        If the configured fullscreen resolution is not supported by the
-        display, fall back to windowed mode with a log warning (spec 02).
+        If desktop fullscreen cannot be created, fall back to windowed mode
+        with a log warning (spec 02).
         A startup fallback is NOT persisted: only mode switches save config.
         """
         if config is None:
@@ -94,12 +84,9 @@ class MainWindow:
         if config.mode == "windowed":
             self._enter_windowed(self._display_index, persist=False)
         else:
-            # resolution is guaranteed by the model validator.
             if not self._enter_fullscreen(config.resolution, self._display_index, persist=False):
                 logger.warning(
-                    "fullscreen resolution {} is not supported on the current display; "
-                    "falling back to windowed mode",
-                    config.resolution,
+                    "desktop fullscreen unavailable; falling back to windowed mode"
                 )
                 self._enter_windowed(self._display_index, persist=False)
 
@@ -142,23 +129,14 @@ class MainWindow:
         resolution: str | None = None,
         display: int | None = None,
     ) -> bool:
-        """Enter fullscreen mode (spec 02). True if the switch succeeded.
-
-        With no explicit resolution the F11 auto-determination rules apply:
-        the display's current resolution if it is one of the supported ones,
-        otherwise the 1920x1080 default. With no explicit display, the
-        window's current display is used (spec 02: the display the window is
-        located on) - F11 must not drag the window to the primary display.
-        """
+        """Use native desktop fullscreen; legacy resolution is ignored."""
         if display is None:
             display = self._current_window_display()
         target_display = self._resolve_display_index(display)
-        if resolution is None:
-            resolution = self._determine_f11_resolution(target_display)
         return self._enter_fullscreen(resolution, target_display, persist=True)
 
     def switch_to_windowed(self, display: int | None = None) -> bool:
-        """Return to the fixed-size 1280x720 windowed mode (spec 02).
+        """Return to the desktop-appropriate windowed size (spec 02).
 
         With no explicit display, the window's current display is used so an
         F11 toggle returns the window to the display it was on.
@@ -204,9 +182,9 @@ class MainWindow:
 
     def _enter_windowed(self, display_index: int, persist: bool) -> bool:
         try:
-            # No RESIZABLE flag: spec 02 mandates a fixed 1280x720 window.
+            # Keep room for window decorations and desktop controls.
             pygame.display.set_mode(
-                (game_constants.WINDOWED_WIDTH, game_constants.WINDOWED_HEIGHT),
+                self._windowed_size(display_index),
                 display=display_index,
             )
         except pygame.error as exc:
@@ -219,26 +197,28 @@ class MainWindow:
             self._persist_config()
         return True
 
-    def _enter_fullscreen(self, resolution: str, display_index: int, persist: bool) -> bool:
-        if not self._resolution_supported(resolution, display_index):
-            # Spec 02: requesting an unavailable fullscreen mode is a no-op
-            # (with a log warning), never a crash.
-            logger.warning(
-                "fullscreen mode {} is not available on display {}; no mode switch performed",
-                resolution,
-                display_index,
-            )
-            return False
-        width, height = parse_resolution(resolution)
+    def _windowed_size(self, display_index: int) -> tuple[int, int]:
+        desktop = self._display_current_resolution(display_index)
+        margin = game_constants.WINDOWED_DESKTOP_MARGIN
+        size = (game_constants.WINDOWED_WIDTH, game_constants.WINDOWED_HEIGHT)
+        if desktop and desktop[0] >= size[0] + margin and desktop[1] >= size[1] + margin:
+            return size
+        return game_constants.WINDOWED_FALLBACK_SIZE
+
+    def _enter_fullscreen(self, resolution: str | None, display_index: int, persist: bool) -> bool:
+        # SCALED selects SDL_WINDOW_FULLSCREEN_DESKTOP, never an exclusive
+        # mode change. SDL owns aspect-preserving scaling and mouse mapping.
         try:
-            pygame.display.set_mode((width, height), pygame.FULLSCREEN, display=display_index)
-        except pygame.error as exc:
-            logger.warning(
-                "failed to enter fullscreen {} on display {}: {}", resolution, display_index, exc
+            pygame.display.set_mode(
+                (game_constants.DESIGN_W, game_constants.DESIGN_H),
+                pygame.FULLSCREEN | pygame.SCALED,
+                display=display_index,
             )
+        except pygame.error as exc:
+            logger.warning("failed to enter desktop fullscreen on display {}: {}", display_index, exc)
             return False
         self._is_fullscreen = True
-        self._resolution = resolution
+        self._resolution = None
         self._display_index = display_index
         if persist:
             self._persist_config()
@@ -263,25 +243,11 @@ class MainWindow:
             logger.warning("failed to persist main window configuration: {}", exc)
 
     def _current_config(self) -> MainWindowConfig:
-        """The config section describing the window's current actual state."""
-        if self._is_fullscreen:
-            # resolution is guaranteed non-None whenever _is_fullscreen is set.
-            return MainWindowConfig(
-                mode="fullscreen",
-                resolution=self._resolution,
-                display=self._display_index,
-            )
-        return MainWindowConfig(mode="windowed", display=self._display_index)
-
-    def _determine_f11_resolution(self, display_index: int) -> str:
-        """F11 rule (spec 02): the display's current resolution if it matches
-        one of the supported ones, else the 1920x1080 default."""
-        current = self._display_current_resolution(display_index)
-        if current is not None:
-            for candidate in game_constants.SUPPORTED_RESOLUTIONS:
-                if parse_resolution(candidate) == current:
-                    return candidate
-        return game_constants.DEFAULT_FULLSCREEN_RESOLUTION
+        """Persist the mode, not a stale monitor resolution."""
+        return MainWindowConfig(
+            mode="fullscreen" if self._is_fullscreen else "windowed",
+            display=self._display_index,
+        )
 
     def _current_window_display(self) -> int:
         """The display the window physically occupies right now (spec 02).
@@ -332,8 +298,6 @@ class MainWindow:
 
     def _display_current_resolution(self, display_index: int) -> tuple[int, int] | None:
         """Best-effort current resolution of a display, or None if unknown."""
-        if self._is_fullscreen and self._display_index == display_index:
-            return parse_resolution(self._resolution)
         try:
             sizes = pygame.display.get_desktop_sizes()
         except pygame.error:
@@ -341,18 +305,6 @@ class MainWindow:
         if 0 <= display_index < len(sizes):
             return (sizes[display_index][0], sizes[display_index][1])
         return None
-
-    def _resolution_supported(self, resolution: str, display_index: int) -> bool:
-        """Whether the display can run ``resolution`` in fullscreen mode."""
-        if not _display_exists(display_index):
-            return False
-        width, height = parse_resolution(resolution)
-        if display_index == 0:
-            return bool(pygame.display.mode_ok((width, height)))
-        # pygame exposes no per-display mode list; best effort: the display's
-        # current (desktop) size must match the requested resolution.
-        current = self._display_current_resolution(display_index)
-        return current is not None and current == (width, height)
 
 
 def _display_exists(display_index: int) -> bool:

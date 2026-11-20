@@ -83,7 +83,10 @@ def display_spy(monkeypatch: pytest.MonkeyPatch) -> _DisplaySpy:
 
     def set_mode(size, flags=0, *args, **kwargs):
         spy.set_mode_calls.append((tuple(size), flags, kwargs.get("display", 0)))
-        return real_set_mode(size, flags, *args, **kwargs)
+        # Dummy SDL cannot create a scaled renderer; record the real request
+        # and exercise surface lifecycle without SCALED. Native smoke tests
+        # separately verify the renderer and physical window.
+        return real_set_mode(size, flags & ~pygame.SCALED, *args, **kwargs)
 
     monkeypatch.setattr(pygame.display, "set_mode", set_mode)
     return spy
@@ -162,7 +165,7 @@ def _mode_ok_only(*allowed: tuple[int, int]) -> ModeOk:
 
 def _windowed_request(display_index: int = 0) -> tuple[tuple[int, int], int, int]:
     return (
-        (game_constants.WINDOWED_WIDTH, game_constants.WINDOWED_HEIGHT),
+        ((1920, 1080) if display_index == 1 else (1280, 720)),
         0,
         display_index,
     )
@@ -170,7 +173,7 @@ def _windowed_request(display_index: int = 0) -> tuple[tuple[int, int], int, int
 
 def _fullscreen_request(resolution: str, display_index: int = 0) -> tuple[tuple[int, int], int, int]:
     width, _, height = resolution.partition("x")
-    return ((int(width), int(height)), pygame.FULLSCREEN, display_index)
+    return ((1920, 1080), pygame.FULLSCREEN | pygame.SCALED, display_index)
 
 
 class TestMainWindowConfigModel:
@@ -180,15 +183,8 @@ class TestMainWindowConfigModel:
         with pytest.raises(InvalidConfigError):
             config.load_config(path, None, GameConfig)
 
-    def test_fullscreen_without_resolution_should_raise_invalid_config_error(
-        self, tmp_path: Path
-    ) -> None:
-        path = tmp_path / "cfg.json"
-        path.write_text(
-            json.dumps({"mainWindow": {"mode": "fullscreen"}}), encoding="utf-8"
-        )
-        with pytest.raises(InvalidConfigError):
-            config.load_config(path, None, GameConfig)
+    def test_fullscreen_without_resolution_uses_desktop(self):
+        assert MainWindowConfig(mode="fullscreen").resolution is None
 
     def test_non_integer_display_should_raise_invalid_config_error(
         self, tmp_path: Path
@@ -242,22 +238,40 @@ class TestOpen:
         finally:
             handle.close()
 
-    def test_with_unsupported_fullscreen_config_should_fall_back_to_windowed(
-        self,
-        display_spy: _DisplaySpy,
-        hermetic_persistence: Path,
-        monkeypatch: pytest.MonkeyPatch,
-    ) -> None:
-        _stub_display(monkeypatch, lambda size, depth=0, flags=0: 0)
+    def test_fullscreen_creation_failure_falls_back_without_saving(
+        self, display_spy, monkeypatch, hermetic_persistence
+    ):
+        original = pygame.display.set_mode
+        def failing_fullscreen(size, flags=0, **kwargs):
+            if flags & pygame.FULLSCREEN:
+                raise pygame.error("fullscreen unavailable")
+            return original(size, flags, **kwargs)
+        monkeypatch.setattr(pygame.display, "set_mode", failing_fullscreen)
         handle = MainWindow()
-        handle.open(MainWindowConfig(mode="fullscreen", resolution="2560x1440"))
-        try:
-            assert not pygame.display.is_fullscreen()
-            assert display_spy.last_request == _windowed_request()
-            # The startup fallback must NOT be persisted (spec 02).
-            assert _read_saved_main_window(hermetic_persistence) is None
-        finally:
-            handle.close()
+        handle.open(MainWindowConfig(mode="fullscreen"))
+        assert display_spy.last_request == _windowed_request()
+        assert _read_saved_main_window(hermetic_persistence) is None
+
+    @pytest.mark.parametrize("desktop, expected", [
+        ((3440, 1440), (1920, 1080)),
+        ((2560, 1440), (1920, 1080)),
+        ((1920, 1080), (1280, 720)),
+        ((1710, 1107), (1280, 720)),
+        ((1984, 1144), (1920, 1080)),
+        ((1983, 1144), (1280, 720)),
+        ((1984, 1143), (1280, 720)),
+    ])
+    def test_default_window_fits_desktop(self, desktop, expected, monkeypatch, display_spy):
+        _stub_display(monkeypatch, lambda *a: 0, (desktop,))
+        MainWindow().open()
+        assert display_spy.last_request == (expected, 0, 0)
+
+    def test_unknown_desktop_uses_small_window(self, monkeypatch, display_spy):
+        def unavailable():
+            raise pygame.error("unavailable")
+        monkeypatch.setattr(pygame.display, "get_desktop_sizes", unavailable)
+        MainWindow().open()
+        assert display_spy.last_request == ((1280, 720), 0, 0)
 
 
 class TestOpenCaption:
@@ -343,9 +357,9 @@ class TestF11Toggle:
         saved = _read_saved_main_window(bootstrapped_persistence)
         assert saved is not None
         assert saved["mode"] == "fullscreen"
-        assert saved["resolution"] == "1920x1080"
+        assert "resolution" not in saved
 
-    def test_from_windowed_should_fall_back_to_1920x1080_when_current_unsupported(
+    def test_from_windowed_uses_desktop_even_when_not_a_legacy_resolution(
         self,
         display_spy: _DisplaySpy,
         window: MainWindow,
@@ -358,21 +372,20 @@ class TestF11Toggle:
         assert display_spy.last_request == _fullscreen_request("1920x1080")
         saved = _read_saved_main_window(bootstrapped_persistence)
         assert saved is not None
-        assert saved["resolution"] == "1920x1080"
+        assert "resolution" not in saved
 
-    def test_when_display_supports_no_supported_resolution_should_be_noop(
-        self,
-        display_spy: _DisplaySpy,
-        window: MainWindow,
-        hermetic_persistence: Path,
-        monkeypatch: pytest.MonkeyPatch,
-    ) -> None:
-        _stub_display(monkeypatch, lambda size, depth=0, flags=0: 0, ((800, 600),))
-        assert window.on_f11() is False
-        assert not pygame.display.is_fullscreen()
-        # Still in windowed mode; no mode switch request, no config save.
-        assert len(display_spy.set_mode_calls) == 1
-        assert _read_saved_main_window(hermetic_persistence) is None
+    @pytest.mark.parametrize("desktop", [(3440, 1440), (1710, 1107), (800, 600)])
+    def test_native_fullscreen_never_checks_exclusive_modes(
+        self, desktop, display_spy, window, monkeypatch, bootstrapped_persistence
+    ):
+        def forbidden(*args, **kwargs):
+            raise AssertionError("desktop fullscreen must not request an exclusive mode")
+        _stub_display(monkeypatch, forbidden, (desktop,))
+        assert window.on_f11()
+        assert display_spy.last_request == _fullscreen_request("desktop")
+        assert _read_saved_main_window(bootstrapped_persistence) == {
+            "mode": "fullscreen", "display": 0,
+        }
 
     def test_from_fullscreen_should_return_to_windowed_1280x720(
         self,
@@ -485,7 +498,7 @@ class TestProgrammaticSwitch:
         assert display_spy.last_request == _fullscreen_request("2560x1440")
         saved = _read_saved_main_window(bootstrapped_persistence)
         assert saved is not None
-        assert saved["resolution"] == "2560x1440"
+        assert "resolution" not in saved
 
     def test_to_fullscreen_without_resolution_should_use_display_current_when_supported(
         self,
@@ -498,7 +511,7 @@ class TestProgrammaticSwitch:
         assert window.switch_mode("fullscreen") is True
         assert display_spy.last_request == _fullscreen_request("2560x1440")
 
-    def test_to_fullscreen_without_resolution_should_fall_back_to_1920x1080(
+    def test_to_fullscreen_without_resolution_uses_scaled_desktop(
         self,
         display_spy: _DisplaySpy,
         window: MainWindow,
@@ -509,16 +522,14 @@ class TestProgrammaticSwitch:
         assert window.switch_mode("fullscreen") is True
         assert display_spy.last_request == _fullscreen_request("1920x1080")
 
-    def test_to_unsupported_requested_resolution_should_not_switch(
-        self,
-        display_spy: _DisplaySpy,
-        window: MainWindow,
-        hermetic_persistence: Path,
-        monkeypatch: pytest.MonkeyPatch,
-    ) -> None:
-        _stub_display(monkeypatch, lambda size, depth=0, flags=0: 0)
-        assert window.switch_mode("fullscreen", resolution="2560x1440") is False
-        assert not pygame.display.is_fullscreen()
+    def test_failed_fullscreen_switch_keeps_state_and_config(
+        self, window, hermetic_persistence, monkeypatch
+    ):
+        def fail(*args, **kwargs):
+            raise pygame.error("renderer unavailable")
+        monkeypatch.setattr(pygame.display, "set_mode", fail)
+        assert window.switch_mode("fullscreen") is False
+        assert window._current_config().mode == "windowed"
         assert _read_saved_main_window(hermetic_persistence) is None
 
     def test_switch_with_invalid_display_index_should_default_to_primary(
@@ -532,7 +543,7 @@ class TestProgrammaticSwitch:
         assert window.switch_to_fullscreen(resolution="1280x720", display=5) is True
         assert display_spy.last_request == _fullscreen_request("1280x720", display_index=0)
         saved = _read_saved_main_window(bootstrapped_persistence)
-        assert saved == {"mode": "fullscreen", "resolution": "1280x720", "display": 0}
+        assert saved == {"mode": "fullscreen", "display": 0}
 
     def test_unknown_mode_should_raise_value_error(self, window: MainWindow) -> None:
         with pytest.raises(ValueError):
@@ -549,3 +560,18 @@ class TestProgrammaticSwitch:
         monkeypatch.setattr(game_config, "save_game_config_section", boom)
         assert window.switch_to_fullscreen(resolution="1280x720") is True
         assert pygame.display.is_fullscreen()
+
+
+@pytest.mark.parametrize("platform, modifiers, expected", [
+    ("darwin", pygame.KMOD_CTRL | pygame.KMOD_GUI, 1),
+    ("darwin", pygame.KMOD_CTRL, 0),
+    ("linux", pygame.KMOD_CTRL | pygame.KMOD_GUI, 0),
+])
+def test_mac_fullscreen_shortcut(platform, modifiers, expected, monkeypatch):
+    from dtd import main
+    from unittest.mock import Mock
+    monkeypatch.setattr(main.sys, "platform", platform)
+    window = Mock()
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_f, mod=modifiers)
+    assert main._pump_app_events(window, [event]) is False
+    assert window.on_f11.call_count == expected

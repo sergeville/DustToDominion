@@ -1,0 +1,126 @@
+{
+  "desktop_before": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "phases": [
+    {
+      "phase": "windowed",
+      "window": [
+        1920,
+        1080
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "desktop": [
+        [
+          3440,
+          1440
+        ],
+        [
+          1710,
+          1107
+        ]
+      ]
+    },
+    {
+      "phase": "fullscreen-0",
+      "window": [
+        3440,
+        1440
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "desktop": [
+        [
+          3440,
+          1440
+        ],
+        [
+          1710,
+          1107
+        ]
+      ]
+    },
+    {
+      "phase": "returned-0",
+      "window": [
+        1920,
+        1080
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "desktop": [
+        [
+          3440,
+          1440
+        ],
+        [
+          1710,
+          1107
+        ]
+      ]
+    },
+    {
+      "phase": "fullscreen-1",
+      "window": [
+        3440,
+        1440
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "desktop": [
+        [
+          3440,
+          1440
+        ],
+        [
+          1710,
+          1107
+        ]
+      ]
+    },
+    {
+      "phase": "returned-1",
+      "window": [
+        1920,
+        1080
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "desktop": [
+        [
+          3440,
+          1440
+        ],
+        [
+          1710,
+          1107
+        ]
+      ]
+    }
+  ],
+  "mouse_logical_position_and_fleet_click": true,
+  "passed": true
+}

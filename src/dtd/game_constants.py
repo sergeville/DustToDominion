@@ -17,11 +17,13 @@ SIM_STEP = 1 / 60
 #: ``languages/en-us.json`` as ``main_window.caption``; the caption is
 #: resolved through ``LanguageManager.get_string`` (spec 16).
 WINDOW_TITLE = "main_window.caption"
-WINDOWED_WIDTH = 1280
-WINDOWED_HEIGHT = 720
-#: The only resolutions the game supports in fullscreen mode (spec 02).
+WINDOWED_WIDTH = 1920
+WINDOWED_HEIGHT = 1080
+WINDOWED_FALLBACK_SIZE = (1280, 720)
+WINDOWED_DESKTOP_MARGIN = 64
+#: Accepted legacy resolution settings (fullscreen now uses desktop mode).
 SUPPORTED_RESOLUTIONS = ("1280x720", "1920x1080", "2560x1440")
-#: F11 fallback when the display's current resolution is not one of ours
+#: Legacy resolution constant retained for compatibility
 #: (spec 02).
 DEFAULT_FULLSCREEN_RESOLUTION = "1920x1080"
 

@@ -9,6 +9,8 @@ This local continuation includes a complete playable ruleset. Native Mac
 playthrough, fullscreen behavior and final difficulty balance still need
 human acceptance. See [validation and screenshots](docs/reviews/2026-11-20-playable-game.md)
 and [campaign specification](docs/19-complete-small-game.md).
+The [team handoff](docs/reviews/TEAM-HANDOFF.md) records the design, decisions,
+validation commands, full screenshot archive and work still needing acceptance.
 
 ## Play
 

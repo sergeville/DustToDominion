@@ -1,0 +1,498 @@
+[
+  {
+    "file": "before-fleet/de-1280-flight.png",
+    "sha256": "437606f3a346dad951c1fa099e5811b7f7090809cc472934264fd83f81472273"
+  },
+  {
+    "file": "before-fleet/de-1280-load-error.png",
+    "sha256": "549132261c73ba88bc208221247d03926840a798aa36ebebfb6d6cba1efda0a2"
+  },
+  {
+    "file": "before-fleet/de-1280-owned-ships.png",
+    "sha256": "94a3cb56b44541c65688eeef01a9d589e5ca2522052276f9231e9a97d0d8901b"
+  },
+  {
+    "file": "before-fleet/de-1280-pause.png",
+    "sha256": "63f38cd170d8639a40bb4264f03e98a30c704cf5196e40b52c13a1870a2cc8d8"
+  },
+  {
+    "file": "before-fleet/de-1280-replace-confirm.png",
+    "sha256": "6f3fef706d2d3a543bb267e6eab6a4a3f7a16265d47bd5431aa633c5f2403585"
+  },
+  {
+    "file": "before-fleet/de-1280-save-error.png",
+    "sha256": "f5c071b6c405bfe1935a059ff22f99edb5b647d8afae57be9773396fcfd81efe"
+  },
+  {
+    "file": "before-fleet/de-1280-station-save-error.png",
+    "sha256": "8eba99599e6bab55217d09d8b8d18530c84822dfcfd64ec4b7ebcc5456d5d51a"
+  },
+  {
+    "file": "before-fleet/de-1280-title.png",
+    "sha256": "93d85f5a83917ef351b9babb3db7e1800e3d98d6332927d06af194203668a021"
+  },
+  {
+    "file": "before-fleet/de-1920-flight.png",
+    "sha256": "a321ff7b37149e85f1610fa9193d57d804b80ed22a3704157cebd172e7929e03"
+  },
+  {
+    "file": "before-fleet/de-1920-load-error.png",
+    "sha256": "b55911ef6bd11c5782c3d160052bf2ac8bafd456712d1e495c43d5f8e8132f03"
+  },
+  {
+    "file": "before-fleet/de-1920-owned-ships.png",
+    "sha256": "ae912f2f164d4830c729b9592d7a3dab16d399c08b5cde2fdb5e5898aae565f1"
+  },
+  {
+    "file": "before-fleet/de-1920-pause.png",
+    "sha256": "34e21704db0c6d0d2cfc6233e57293aabff3704320b8258bd5011d3fd9cf118d"
+  },
+  {
+    "file": "before-fleet/de-1920-replace-confirm.png",
+    "sha256": "adac93ed5990c1b9478f510abd605294f83d22137d4114f1a935effedbed43f4"
+  },
+  {
+    "file": "before-fleet/de-1920-save-error.png",
+    "sha256": "04a41ae0c960cab0b1c4251888279424ecb4a6d27e11df218beef998e9b5e115"
+  },
+  {
+    "file": "before-fleet/de-1920-station-save-error.png",
+    "sha256": "b577fced887b91586c5360ebb61ecf4a47fcfa40bb99cd419ea8f6422c210def"
+  },
+  {
+    "file": "before-fleet/de-1920-title.png",
+    "sha256": "97b6357bd5ccbff9beda26dce8b6e20ce77c6fa1a4b36c3d955b5855dd05c42d"
+  },
+  {
+    "file": "before-fleet/de-2560-flight.png",
+    "sha256": "2241361e2ee54f7221c1d8e1e064c3eb724d9a4958b4eedb42b39331507904c9"
+  },
+  {
+    "file": "before-fleet/de-2560-load-error.png",
+    "sha256": "0cf2a071779a3802dceef109e2323326c3501cbead739b8683c5475d6ee1e47e"
+  },
+  {
+    "file": "before-fleet/de-2560-owned-ships.png",
+    "sha256": "e6634eedd769a647cf60c7efd964a1942f734aa9b8dcc897da394df3c22b12be"
+  },
+  {
+    "file": "before-fleet/de-2560-pause.png",
+    "sha256": "d3b40cdc7891cff90f69477ebe1d0cfdf4dc2f474e07b95838edc8bd40d59a66"
+  },
+  {
+    "file": "before-fleet/de-2560-replace-confirm.png",
+    "sha256": "eaf6bb8892a602a2c146f38cd51b0f6b78b5a52b41066500cf7939b9d94d789f"
+  },
+  {
+    "file": "before-fleet/de-2560-save-error.png",
+    "sha256": "cd28833979f5f07376653ed501c369b91620e922ab875b5256c624a486a6f720"
+  },
+  {
+    "file": "before-fleet/de-2560-station-save-error.png",
+    "sha256": "992ad267eb90fb5b07d15552076814e58bd63f9bccf84c09e3f842aeb7ebfea5"
+  },
+  {
+    "file": "before-fleet/de-2560-title.png",
+    "sha256": "944b3ef70a2f5a4a2c071fcc4df2443203ebb54447f3a8f7c608c82515eecc9c"
+  },
+  {
+    "file": "before-fleet/en-us-1280-flight.png",
+    "sha256": "fd774d699c19c18e6c98fa616ca288a2e451762c6dc4c77130355bd1de46cc89"
+  },
+  {
+    "file": "before-fleet/en-us-1280-load-error.png",
+    "sha256": "63c33236aa20efe278508a6a0164fcaf0d023d3df48015ee7dae115d2f4afa19"
+  },
+  {
+    "file": "before-fleet/en-us-1280-owned-ships.png",
+    "sha256": "23a1ba34e0a790cb56e2d4413555bdf028937a0e3b84381e836e276a8bcca9f7"
+  },
+  {
+    "file": "before-fleet/en-us-1280-pause.png",
+    "sha256": "5f2086baaedb134fdb126d829e0ed1070d40fd63d81e256897ab0a128f3e160b"
+  },
+  {
+    "file": "before-fleet/en-us-1280-replace-confirm.png",
+    "sha256": "f027b4a535f95a3a4522e088dba30a4a666e357aeb486a16bc85d0d7b21135b8"
+  },
+  {
+    "file": "before-fleet/en-us-1280-save-error.png",
+    "sha256": "ec9ff2f11abb04e7bccc57934bc57e3ffc7ffaee282a46a435214481c9c9150f"
+  },
+  {
+    "file": "before-fleet/en-us-1280-station-save-error.png",
+    "sha256": "3e80c6da3f7bb954db787d2b0b77a3379267e1e19a47c7ac27e9b4153fdaf34c"
+  },
+  {
+    "file": "before-fleet/en-us-1280-title.png",
+    "sha256": "8d40b22201d7039e89fe89d89ec054194cc13e676f21cc2b3cf63c6b267e62cb"
+  },
+  {
+    "file": "before-fleet/en-us-1920-flight.png",
+    "sha256": "42efa77acf35677d4cb265f05bbe6f659c17f4adff14ff7c436e7d4ebfb514ea"
+  },
+  {
+    "file": "before-fleet/en-us-1920-load-error.png",
+    "sha256": "666d3d6628da3dcfffdb8856f80b0deb28f61efc92df30dc02c2d4eec27baec2"
+  },
+  {
+    "file": "before-fleet/en-us-1920-owned-ships.png",
+    "sha256": "80837195ee77ca17789a2d1fc6925f6b95d48b7fb12d4b25dac0e1a42c1d9ca2"
+  },
+  {
+    "file": "before-fleet/en-us-1920-pause.png",
+    "sha256": "117c5336810a27884e50e55fcf6a0f8e868b50756b2ae14a2974b563596e780f"
+  },
+  {
+    "file": "before-fleet/en-us-1920-replace-confirm.png",
+    "sha256": "1192200e761a9ed82ee447114758dcee742dbc5ff58c8c0fc6b1c11eb2d5955e"
+  },
+  {
+    "file": "before-fleet/en-us-1920-save-error.png",
+    "sha256": "10691b84cdc1c3bcaa60e81aee9d2546e3d4630ab118887624fbe941da5e5615"
+  },
+  {
+    "file": "before-fleet/en-us-1920-station-save-error.png",
+    "sha256": "a5e6f162dedd9f4a61fcf8379a7a6a7b256ff1d3183b1e4df96fc0c816ed1e7d"
+  },
+  {
+    "file": "before-fleet/en-us-1920-title.png",
+    "sha256": "90b2317f2d891029854d7f2a365226e8ed4656db93bb0e0082d1ec69ff2387c8"
+  },
+  {
+    "file": "before-fleet/en-us-2560-flight.png",
+    "sha256": "a4ffe77d8a888dfc09844c1d1be1751cdcf609ca1e8efbfdbce4fbb01bf235cc"
+  },
+  {
+    "file": "before-fleet/en-us-2560-load-error.png",
+    "sha256": "f69e257bb637f9db5bb66259202a9f65a19a91cf430c029796f1dc9162a91ff8"
+  },
+  {
+    "file": "before-fleet/en-us-2560-owned-ships.png",
+    "sha256": "b7bbd27183bbd759ae4c3cea7881ade1537eabb5710f8e0f79966ff5ed0830a1"
+  },
+  {
+    "file": "before-fleet/en-us-2560-pause.png",
+    "sha256": "5440d4e55069b8e588c68009f0a98481f053edbeae49f7d24ce3cf5dd44f74cc"
+  },
+  {
+    "file": "before-fleet/en-us-2560-replace-confirm.png",
+    "sha256": "3b3ef1d2078b694c839e78942191e933ce1e5531393e1259b91ca0f9216fb1cc"
+  },
+  {
+    "file": "before-fleet/en-us-2560-save-error.png",
+    "sha256": "b99d0da4b161df1552af11759b7c6fd51255a9ffecdb8f540144bbe7b9b76f3f"
+  },
+  {
+    "file": "before-fleet/en-us-2560-station-save-error.png",
+    "sha256": "15849811c1f7f7590a58b8ab2324dad7fb61f783a86533cca0e4cdc987842b4c"
+  },
+  {
+    "file": "before-fleet/en-us-2560-title.png",
+    "sha256": "7a438d0e9d33a7e1cb7d5da23314c798399f96bcad4573e62fb0aea87a762c34"
+  },
+  {
+    "file": "with-fleet/de-1280-fleet-0.png",
+    "sha256": "1091702e1b8a5ec48380c56c3b793c7451d086eb139bf14ac2ccc8e40c249874"
+  },
+  {
+    "file": "with-fleet/de-1280-fleet-1.png",
+    "sha256": "b6e5e55318fe4dbe32b60a97a541d68d246a85327aec622ceefd890b1dc602ed"
+  },
+  {
+    "file": "with-fleet/de-1280-fleet-2.png",
+    "sha256": "08ae6e824708938a13e134c1179e068a695022f8de9ae2890265b74746529b15"
+  },
+  {
+    "file": "with-fleet/de-1280-flight.png",
+    "sha256": "e40e0a641001dd5b21bcd4be8795424f3db5ee3fc2b3d24fb408189a3ce4d912"
+  },
+  {
+    "file": "with-fleet/de-1280-load-error.png",
+    "sha256": "b6dcb7a6cd5d60fe7302406ade5ab4bcac0a3e8735214f55cb99c392898a4f2e"
+  },
+  {
+    "file": "with-fleet/de-1280-owned-ships.png",
+    "sha256": "0b3c8612df9903100bada2769da2ac8d3f9ccbd94c206c3e317eaab5c66530b8"
+  },
+  {
+    "file": "with-fleet/de-1280-pause.png",
+    "sha256": "071028b16b96b6c39b4bcd659dbb2e1c68c69931099f8fee688b60502b9b1fbd"
+  },
+  {
+    "file": "with-fleet/de-1280-replace-confirm.png",
+    "sha256": "656291951bb12aea825fbf7a6e05097b6e9fad26246e9ddfc737f498c4f1c1d5"
+  },
+  {
+    "file": "with-fleet/de-1280-save-error.png",
+    "sha256": "3313e4fb2cb64c802ff429a3cb54228780749f0ffce4ac57072137e45b210a7d"
+  },
+  {
+    "file": "with-fleet/de-1280-station-save-error.png",
+    "sha256": "c414b8bc97b67462fc08ab7de725586bc34cc284fe917edf944cde0d62d472b6"
+  },
+  {
+    "file": "with-fleet/de-1280-title.png",
+    "sha256": "fe9a386f05f09df37085e19861a8d310593853a9d63a7a3f94c84c0282312e40"
+  },
+  {
+    "file": "with-fleet/de-1920-fleet-0.png",
+    "sha256": "2c3f0bc9c5acbeb157449244918144033136ef3abd3da9bf51c7564b5ee60621"
+  },
+  {
+    "file": "with-fleet/de-1920-fleet-1.png",
+    "sha256": "4f4555bf434461f074ac8236157aadeae6b26812deca239c607d84e27235b5f6"
+  },
+  {
+    "file": "with-fleet/de-1920-fleet-2.png",
+    "sha256": "caec0fd9adf9f51176c8d11f70edb90f6282924b90ae062e6f63be94bba82896"
+  },
+  {
+    "file": "with-fleet/de-1920-flight.png",
+    "sha256": "0ef749cf2d126d8c17f28affe69d82b5f14973fb6911990587d24e8e456080b2"
+  },
+  {
+    "file": "with-fleet/de-1920-load-error.png",
+    "sha256": "4b43273a03db19fe14e68ece297bda25707a7e0166271be63821261d4b7efe26"
+  },
+  {
+    "file": "with-fleet/de-1920-owned-ships.png",
+    "sha256": "8758a24b8627b37ebadccd73c780f7fd47266b4949e0287587826eab30c61d54"
+  },
+  {
+    "file": "with-fleet/de-1920-pause.png",
+    "sha256": "606e3f83af48e7a1b72924072645804c940e2a51a70dfbaaf0e365de611878ac"
+  },
+  {
+    "file": "with-fleet/de-1920-replace-confirm.png",
+    "sha256": "b038c43177abe9c4ea2e16b9203598fd08d163aba4e1a70fe92d683eb821e840"
+  },
+  {
+    "file": "with-fleet/de-1920-save-error.png",
+    "sha256": "9c42ffe7958d8297814660cf9c4bb526025f20a630f4d2d9aeac629172a17665"
+  },
+  {
+    "file": "with-fleet/de-1920-station-save-error.png",
+    "sha256": "33e1abe0de4acc62b573dd146c18157e2ab47c6442cb0acf162db4c5fb6a0db0"
+  },
+  {
+    "file": "with-fleet/de-1920-title.png",
+    "sha256": "a8e027678f4e58ada72e0575ba03e1722e5cadf9f0d35f3205b3efb71ed2587b"
+  },
+  {
+    "file": "with-fleet/de-2560-fleet-0.png",
+    "sha256": "034a75e3ccfd68a3ba97587054f6df303556607fbae15e341079a16a79627b02"
+  },
+  {
+    "file": "with-fleet/de-2560-fleet-1.png",
+    "sha256": "ff01c6f303370f32f573f6ccd60be6bcaf3280f9422bad5a81a34cf8d6c33624"
+  },
+  {
+    "file": "with-fleet/de-2560-fleet-2.png",
+    "sha256": "69ea6cdf8a5703eb3d32e989ee5f1e82089cf78cbd0d31f6c67198440856dae6"
+  },
+  {
+    "file": "with-fleet/de-2560-flight.png",
+    "sha256": "1e22f00e159e29f90cb17ea51bed8ab60ff0b8deedb10c46e6fe5239b1725b4c"
+  },
+  {
+    "file": "with-fleet/de-2560-load-error.png",
+    "sha256": "654e7f9c523f7e5eb4fa57943029f7c7e334df18da12d5341ebdb1003b076107"
+  },
+  {
+    "file": "with-fleet/de-2560-owned-ships.png",
+    "sha256": "24cc2d8d37a771b04d79773199f687f51db28cef8b982ba43564772d2b600cb8"
+  },
+  {
+    "file": "with-fleet/de-2560-pause.png",
+    "sha256": "b6ac6da44f1503ba66435acbb25c3239ab2ea14610a2ab479e2d0beb51628ef1"
+  },
+  {
+    "file": "with-fleet/de-2560-replace-confirm.png",
+    "sha256": "cd6306587038c7b63d78d13e9ef9abfd11cd3cfb19ddb714e4fbf3e02dea9ed0"
+  },
+  {
+    "file": "with-fleet/de-2560-save-error.png",
+    "sha256": "7c704167e7ca38c10b542efe93ecd7236aeefe2e03c8107cef895e16e0362617"
+  },
+  {
+    "file": "with-fleet/de-2560-station-save-error.png",
+    "sha256": "cf62c8363400ffad06f72a9e11aac534e57b5c747c4cd3ffef529a49dc34b1c5"
+  },
+  {
+    "file": "with-fleet/de-2560-title.png",
+    "sha256": "75676796667ddff53fb33a8f7a57615a5efe710c34fb40a5b0ea6608e087019a"
+  },
+  {
+    "file": "with-fleet/en-us-1280-fleet-0.png",
+    "sha256": "1059ee9cffe3b9940a0c10a60630ca90f79a45dc4b9b50b89a547dfe6e72fb41"
+  },
+  {
+    "file": "with-fleet/en-us-1280-fleet-1.png",
+    "sha256": "64d0b8cff6652c274139246cceb548753ed66b6369cdcd18ce1ec994a83b0882"
+  },
+  {
+    "file": "with-fleet/en-us-1280-fleet-2.png",
+    "sha256": "3fbad10ceccdb50718997c00b5a54c5c4dba59f8a93a0b1d63c447f6636c585e"
+  },
+  {
+    "file": "with-fleet/en-us-1280-flight.png",
+    "sha256": "2842ae4f602a183f8823f275d73263b646e146c51db6664a225fac64be04559f"
+  },
+  {
+    "file": "with-fleet/en-us-1280-load-error.png",
+    "sha256": "c0962fb330280d91dfd497822f9f88aab3da1153e6ae1774fd06a1040d78fbf2"
+  },
+  {
+    "file": "with-fleet/en-us-1280-owned-ships.png",
+    "sha256": "d9a87fe1bd0a81e87abed7f5bcb6e3d1b3fd7f32b03f0a08be8df2a347d2242d"
+  },
+  {
+    "file": "with-fleet/en-us-1280-pause.png",
+    "sha256": "4c09c4508d58c024e004365639ee6772b87bf269a50220f8e39bcc2240818d30"
+  },
+  {
+    "file": "with-fleet/en-us-1280-replace-confirm.png",
+    "sha256": "8be9bf5335c51081da3c1fe6ccb8dab879a7048234ccef93f01b7991f5d37e5c"
+  },
+  {
+    "file": "with-fleet/en-us-1280-save-error.png",
+    "sha256": "637ec3d03191e832778f283f113d9de41e3ac3b3a1b0b2142d06175dbe9a4cda"
+  },
+  {
+    "file": "with-fleet/en-us-1280-station-save-error.png",
+    "sha256": "a8be4768f30b524b7c104b0942b80d9b5255f8fdef89479758d549281f14b21f"
+  },
+  {
+    "file": "with-fleet/en-us-1280-title.png",
+    "sha256": "1250378544f82f74ca3993529ed1a006e719b1340360deebfdbd704a6dae87e3"
+  },
+  {
+    "file": "with-fleet/en-us-1920-fleet-0.png",
+    "sha256": "fdba268a76a1a9994b3addb4b8a64ff1c1cb4f82320a881a0169ae4c0f207cf6"
+  },
+  {
+    "file": "with-fleet/en-us-1920-fleet-1.png",
+    "sha256": "b455910dc6c12bfb42c85b58a227292a28a1e69a1c5390c7386e2aadba689f7b"
+  },
+  {
+    "file": "with-fleet/en-us-1920-fleet-2.png",
+    "sha256": "306fa433e0a9970b46314a40344c652e98720281fae6e8e22410d5f1d707e28b"
+  },
+  {
+    "file": "with-fleet/en-us-1920-flight.png",
+    "sha256": "5f4717a792b5deac9464443779096aa9748c46f3598e2f7e7709b0f79a25d4a5"
+  },
+  {
+    "file": "with-fleet/en-us-1920-load-error.png",
+    "sha256": "5ac96b227cf473e6ea36c2fa96bfde94c342613ec6174b41f0e81dfd83331eaa"
+  },
+  {
+    "file": "with-fleet/en-us-1920-owned-ships.png",
+    "sha256": "c2e6fd1509936ec5b1b18c79eb2196b4cbbf01ee34806df230d8a01010968ce4"
+  },
+  {
+    "file": "with-fleet/en-us-1920-pause.png",
+    "sha256": "1f7d4279c143876de2837acb56e0dc8dd8b2ca0501a1a32f34be89186c5adad4"
+  },
+  {
+    "file": "with-fleet/en-us-1920-replace-confirm.png",
+    "sha256": "4afb5cf82d5ba64a261dfa503a48b5bb1cf7725318c3425d142b38effc197275"
+  },
+  {
+    "file": "with-fleet/en-us-1920-save-error.png",
+    "sha256": "1a9e56efa6c4749ffd329a7d3f4f4648749568395d855dd30d7eebff17ac7899"
+  },
+  {
+    "file": "with-fleet/en-us-1920-station-save-error.png",
+    "sha256": "60689f4fbdbb055b56a8ef3cbcf28f29e5819973edc4f60adca718060d0e3803"
+  },
+  {
+    "file": "with-fleet/en-us-1920-title.png",
+    "sha256": "3206fbf026ae5276574f2c44dfbf2bfce6ce91cc76caf90a2581b0050509fe9c"
+  },
+  {
+    "file": "with-fleet/en-us-2560-fleet-0.png",
+    "sha256": "685c356f56dd43343eb4cc55bce2b1d1a5e36510c508b2fe610ca1f0b2eead43"
+  },
+  {
+    "file": "with-fleet/en-us-2560-fleet-1.png",
+    "sha256": "927bf11f8dd8750e77e38fe0a781332f01b532281e66acdb8c3c52179aad2338"
+  },
+  {
+    "file": "with-fleet/en-us-2560-fleet-2.png",
+    "sha256": "407e9c52c02a3578e9abe165fc7dfbc93aa0285a2e5c12668448846a3bf506dc"
+  },
+  {
+    "file": "with-fleet/en-us-2560-flight.png",
+    "sha256": "f51a9f71265f8107da7e61d7527bf9daa141537a411cc70f2f770ef032c44ba9"
+  },
+  {
+    "file": "with-fleet/en-us-2560-load-error.png",
+    "sha256": "7bbb28fd6093244296ba6f8fd11274417e50bc485b93a00797d5d0e435c8128c"
+  },
+  {
+    "file": "with-fleet/en-us-2560-owned-ships.png",
+    "sha256": "dd88b3e67825c235969ebba1e337e0e3074ecaf05f2c158fd8d8c2f5648d9965"
+  },
+  {
+    "file": "with-fleet/en-us-2560-pause.png",
+    "sha256": "18640e0f044527aef1b05e4504a3060203a5aae5a76d83870d1e4dd68d0fb103"
+  },
+  {
+    "file": "with-fleet/en-us-2560-replace-confirm.png",
+    "sha256": "9bb6aebb2ba6d45dfd59790cc127899d4243248b29497283bbb283c396cb7fb0"
+  },
+  {
+    "file": "with-fleet/en-us-2560-save-error.png",
+    "sha256": "f443a9399076ed3744de6242750e26f93e0be6d079fd865d6927ec3bc73c0dea"
+  },
+  {
+    "file": "with-fleet/en-us-2560-station-save-error.png",
+    "sha256": "86eda82804fe5391d026f7ceeb56feddaed802df3b62e069c69a8d22b8122781"
+  },
+  {
+    "file": "with-fleet/en-us-2560-title.png",
+    "sha256": "e8e6d3e41e0c95fa29effde1d5056a931f0081cdbb9be3aeb10a8c61ae99ef8f"
+  },
+  {
+    "file": "initial-build/dtd-abandon-en-us.png",
+    "sha256": "190bbb0b9a0a5239ff6426df24b803edaaade957756eac17de11b6bd6e129d8d"
+  },
+  {
+    "file": "initial-build/dtd-flight-en-us.png",
+    "sha256": "57737572ba03499fa5e6f8735bd548560ce90c3c3146ce2d36969ee39504ab50"
+  },
+  {
+    "file": "initial-build/dtd-paused-en-us.png",
+    "sha256": "bf87ced8048adf43646accf15394b2c135aca3d54512dfd272da6c38214f6edc"
+  },
+  {
+    "file": "initial-build/dtd-station-en-us.png",
+    "sha256": "ac9cfb5f73da512debce789aaa4d635af930d1dcc7d07cac9962822bc6f03b3d"
+  },
+  {
+    "file": "initial-build/dtd-victory-en-us.png",
+    "sha256": "67da2a5c654bb7376cfdd2bb5580c5b687a54166d9e2b6a444977be96d7c20df"
+  },
+  {
+    "file": "initial-build/dtd-abandon-de.png",
+    "sha256": "fa27720d7df600189614389aa8897aa3bef7f2aeeb997a353c2f99e4da7e67ae"
+  },
+  {
+    "file": "initial-build/dtd-flight-de.png",
+    "sha256": "7920b8f1571f02a2ce9422225d75ba5d2985c015113f607f886ea88fc1d2e084"
+  },
+  {
+    "file": "initial-build/dtd-paused-de.png",
+    "sha256": "01d75f4f648af9a8c2a1f55f5a4b5f5f98e6b8cf726c60e076bc775689c643a7"
+  },
+  {
+    "file": "initial-build/dtd-station-de.png",
+    "sha256": "8439c0c9c37f374723920baaf8f7fc458613f9e9c57f625c8bf8e4adb0c63cc6"
+  },
+  {
+    "file": "initial-build/dtd-victory-de.png",
+    "sha256": "a8f7e329ce363ddb056eb0bcfd05c4de39f07a863feb887913a8894869fa5510"
+  }
+]

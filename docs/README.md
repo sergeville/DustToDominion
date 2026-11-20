@@ -1,5 +1,13 @@
 # Docs
 
+## Local campaign work — start here
+
+- [Team handoff and evidence index](reviews/TEAM-HANDOFF.md): design rationale, team work, validation, screenshots and remaining acceptance.
+- [Complete small game specification](19-complete-small-game.md): implemented rules; native acceptance still pending.
+- [Validation report](reviews/2026-11-20-playable-game.md): results and limits.
+
+## Specification workflow
+
 Architecture documents for the project go here.
 
 This is an entirely **spec-driven project**.

@@ -107,7 +107,8 @@ Validation results for this revision:
   Reproduce from the project directory with
   `.venv/bin/python docs/reviews/validate_campaign.py`.
 - Offscreen draw-cost sample (120 frames/view/resolution): station/flight
-  95th-percentile rendering costs were 1.28–4.50 ms across the three sizes.
+  95th-percentile rendering costs were 1.48–4.77 ms across the three sizes
+  in the final replay; [raw results](2026-11-20-evidence/draw-benchmark.txt).
   This excludes presentation/audio and does not establish native frame rate.
 - `git diff --check` passed. No dependency or saved-state-format changes.
 
@@ -119,3 +120,17 @@ physics. Automated victory proves reachability, not fun, pacing or visual polish
 Native UI inspection remains blocked because the computer-use tool does not
 recognize the running uv Python executable as an app; direct executable lookup
 returned Invalid app. The existing running game was not interrupted.
+
+## 7. Reusable team documentation
+
+The [team handoff](TEAM-HANDOFF.md) records ownership, design assumptions,
+corrections, reproduction commands and remaining acceptance work. It links all
+124 retained screenshots and their SHA-256 manifest. The durable render and
+benchmark scripts were rerun successfully; all archived image hashes and
+documentation links were checked. These documentation additions do not change
+the product code tested by the final full suite above.
+
+The documentation reviewer caught retained expedition state in the initial draw
+benchmark. Each resolution/view now receives a fresh screen with assertions on
+mode and expedition presence. The linked raw measurements replace the earlier
+samples; product code and full-suite results are unaffected.

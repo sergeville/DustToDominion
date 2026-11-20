@@ -105,6 +105,11 @@
     "player_label": "YOUR SHIP",
     "ore_target": "ORE / {value} m",
     "distance": "{value} m",
-    "cut_progress": "CUT {value}%"
+    "cut_progress": "CUT {value}%",
+    "camera_station": "STATION / {value} m",
+    "camera_threat": "RIVAL / {value} m",
+    "camera_extra_threats": " +{count}",
+    "camera_zoom": "ZOOM {value}×",
+    "camera_controls": "Wheel / − +: zoom   Home: overview"
   }
 }

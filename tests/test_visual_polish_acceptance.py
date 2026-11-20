@@ -24,7 +24,7 @@ def cut_bounds(player, progress=0):
     scale_y = pygame.display.get_surface().get_height()/1080
     width, height = screen._theme.get_font(max(1, round(size*scale_y))).size(text)
     backing_width, backing_height = screen._theme.get_font(size).size(text)
-    # Map actual output-rasterized glyph dimensions back into world coordinates.
+    # Map actual output-rasterized glyph dimensions back into logical screen coordinates.
     return pygame.Rect(x, y, max(backing_width, math.ceil(width/scale_y)),
                        max(backing_height, math.ceil(height/scale_y))).inflate(12, 6)
 
@@ -32,10 +32,15 @@ def cut_bounds(player, progress=0):
 def assert_clear_cut(player, progress=0):
     bounds = cut_bounds(player, progress)
     run = player.screen.expedition
+    camera = player.screen._camera
+    def actor_rect(x, y, radius):
+        sx, sy = camera.world_to_screen((x, y))
+        r = camera.scale_length(radius)
+        return pygame.Rect(sx-r, sy-r, 2*r, 2*r)
     assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
-    assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+    assert not bounds.colliderect(actor_rect(run.x, run.y, 38)), 'Cut text/backing crosses pilot'
     for enemy in run.enemies:
-        assert not bounds.colliderect(pygame.Rect(enemy.x-30, enemy.y-30, 60, 60)), 'Cut text/backing crosses rival'
+        assert not bounds.colliderect(actor_rect(enemy.x, enemy.y, 30)), 'Cut text/backing crosses rival'
 
 
 @pytest.mark.parametrize('locale', ['en-us', 'de'])
@@ -105,17 +110,19 @@ def test_rival_over_each_rock_material_has_visible_red_separation_without_geomet
     monkeypatch.setattr(screen, '_bar', record_bar)
     screen.draw(surface)
     red_separation = 0
-    for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
-        for dx in range(-40, 41):
-            if not 24 < math.hypot(dx, dy) <= 40:
+    cx, cy = map(round, screen._camera.world_to_screen((400, 400)))
+    zoom = screen._camera.zoom
+    for dy in range(-round(40*zoom), round(30*zoom)):  # Exclude the existing lower health-bar region.
+        for dx in range(-round(40*zoom), round(40*zoom)+1):
+            if not 24*zoom < math.hypot(dx, dy) <= 40*zoom:
                 continue
-            actual = surface.get_at((400+dx, 400+dy))
-            prior = without.get_at((400+dx, 400+dy))
+            actual = surface.get_at((cx+dx, cy+dy))
+            prior = without.get_at((cx+dx, cy+dy))
             if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
                 red_separation += 1
     assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
     assert len(health_bars) == 1, 'The rival health bar must remain visible'
-    assert math.dist(health_bars[0].center, (rival.x, rival.y)) <= 150, 'A bar across the screen is not an understandable rival health indicator'
+    assert math.dist(health_bars[0].center, (cx, cy)) <= 150, 'A bar across the screen is not an understandable rival health indicator'
     assert rival.radius == 24
     assert (screen.campaign, run) == before
     assert random.getstate() == rng

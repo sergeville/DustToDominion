@@ -11,6 +11,11 @@ from typing import Final
 # accumulator that consumes this step lives in the test harness, not the game.
 SIM_STEP = 1 / 60
 
+# Session-only campaign framing; no model geometry or persistence settings.
+CAMERA_ZOOM_LEVELS = (1.0, 1.5, 2.0)
+CAMERA_DEFAULT_ZOOM = 1.5
+CAMERA_VIEWPORT = (0, 145, 1920, 875)
+
 # --- Window handling (spec 02) -------------------------------------------
 #: Language key for the game window's caption (spec 02: Window title, as
 #: amended by spec 16: Language support). The value lives in

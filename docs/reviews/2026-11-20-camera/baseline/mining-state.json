@@ -1,0 +1,107 @@
+{
+  "campaign": {
+    "credits": 80,
+    "hull": 100.0,
+    "cargo": [],
+    "upgrades": {
+      "cargo": 0,
+      "laser": 0,
+      "hull": 0
+    },
+    "support_ships": 0,
+    "miner": false,
+    "engineer": false,
+    "lifetime_sales": 0,
+    "won": false
+  },
+  "run": {
+    "sector": 1,
+    "x": 350,
+    "y": 550,
+    "heading": -2.896613990462929,
+    "asteroids": [
+      {
+        "id": 0,
+        "x": 350,
+        "y": 630,
+        "radius": 46,
+        "ore": 0,
+        "health": 2,
+        "max_health": 3
+      },
+      {
+        "id": 1,
+        "x": 660,
+        "y": 570,
+        "radius": 46,
+        "ore": 0,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 2,
+        "x": 1230,
+        "y": 570,
+        "radius": 46,
+        "ore": 0,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 3,
+        "x": 1550,
+        "y": 630,
+        "radius": 46,
+        "ore": 0,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 4,
+        "x": 430,
+        "y": 330,
+        "radius": 46,
+        "ore": 0,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 5,
+        "x": 1430,
+        "y": 330,
+        "radius": 46,
+        "ore": 0,
+        "health": 3,
+        "max_health": 3
+      }
+    ],
+    "pickups": [
+      {
+        "id": 1,
+        "x": 350,
+        "y": 630,
+        "ore": 0,
+        "radius": 12.0
+      }
+    ],
+    "enemies": [],
+    "projectiles": [],
+    "hull": 100.0,
+    "cargo": [],
+    "finished": false,
+    "defeated": false,
+    "bounty": 0,
+    "_mine_cooldown": 0.5166666666666664,
+    "_fire_cooldown": 0,
+    "_pickup_id": 1
+  },
+  "aim": [
+    350,
+    630
+  ],
+  "visual_time": 10,
+  "keys": [
+    32,
+    119
+  ]
+}

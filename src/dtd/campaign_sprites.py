@@ -247,19 +247,35 @@ class CampaignSprites:
             pygame.draw.line(surface, (224, 250, 255), point(-.70, side),
                              point(-.83, side), max(1, round(size/40)))
 
-    def draw_station(self, surface, x, y):
-        if not self._world(surface, "station", x, y, 100):
-            campaign_art.draw_station(surface, x, y)
+    def draw_station(self, surface, x, y, size=100):
+        if not self._world(surface, "station", x, y, size):
+            if size == 100:
+                campaign_art.draw_station(surface, x, y)
+            elif size > 0:
+                diameter = max(1, round(size*2))
+                key = ("vector_station", diameter, diameter, 0)
+                image = self._cache.get(key)
+                if image is None:
+                    source = pygame.Surface((200, 200), pygame.SRCALPHA)
+                    campaign_art.draw_station(source, 100, 100)
+                    image = self._remember(key, pygame.transform.smoothscale(source, (diameter, diameter)))
+                surface.blit(image, image.get_rect(center=(round(x), round(y))))
 
-    def draw_asteroid(self, surface, rock):
+    def draw_asteroid(self, surface, rock, camera=None):
         if rock.radius <= 0:
             return
         name = ROCK_NAMES[rock.ore]
         if rock.ore == 0 and rock.id % 2 and "asteroid_iron_b" in self._sources:
             name = "asteroid_iron_b"
-        if not self._world(surface, name, rock.x, rock.y, rock.radius,
-                           (rock.id % 17)*21):
-            campaign_art.draw_asteroid(surface, rock)
+        x, y = camera.world_to_screen((rock.x, rock.y)) if camera is not None else (rock.x, rock.y)
+        radius = camera.scale_length(rock.radius) if camera is not None else rock.radius
+        if not self._world(surface, name, x, y, radius, (rock.id % 17)*21):
+            if camera is None:
+                campaign_art.draw_asteroid(surface, rock)
+            else:
+                from types import SimpleNamespace
+                campaign_art.draw_asteroid(surface, SimpleNamespace(
+                    x=x, y=y, radius=radius, id=rock.id, ore=rock.ore))
 
     def draw_image(self, surface, name, rect):
         """Fit a panel asset without distortion; return False if unavailable."""
@@ -298,12 +314,23 @@ class CampaignSprites:
         surface.blit(image, rect)
         return True
 
-    def draw_field_detail(self, surface):
+    def draw_field_detail(self, surface, camera=None):
         """Draw static distant debris behind the world, in logical 1920x1080 space.
 
         Exactly 24 precomputed 6–10px images at most (<10KiB) are shared across
         frames. Missing rock artwork simply omits this decorative layer.
         """
-        for x, y, image in self._field_details:
-            surface.blit(image, (x, y))
+        for index, (x, y, image) in enumerate(self._field_details):
+            if camera is None:
+                surface.blit(image, (x, y))
+                continue
+            if not camera.is_visible((x, y), 10):
+                continue
+            point = camera.world_to_screen((x, y))
+            size = tuple(max(1, round(camera.scale_length(v))) for v in image.get_size())
+            key = ("debris:"+str(index), *size, 0)
+            scaled = self._cache.get(key)
+            if scaled is None:
+                scaled = self._remember(key, pygame.transform.smoothscale(image, size))
+            surface.blit(scaled, point)
         return bool(self._field_details)

@@ -1,0 +1,113 @@
+{
+  "status": "Awaiting Serge visual review",
+  "product_revision": "957e96b8c4ddf99a59bcfb308dcdeb7d73761ce9",
+  "current_source_hashes_match": 36,
+  "evidence": "Existing actual SDL dummy renderer captures, synthetic fixtures; reference panels are concept art. No new gameplay capture or camera implementation.",
+  "reference": {
+    "path": "docs/concepts/realistic-visual-target-2026-11-20.png",
+    "sha256": "a56d78322dc740d308091049adb9e3ffaa10b4f32c31d9b428acec27aeb84aef"
+  },
+  "comparisons": [
+    {
+      "view": "mining",
+      "actual": "docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-mining.png",
+      "sha256": "87882bca029dfa6c0c9100ed8f813b873b893b86e42aca06042c9bfc77faf1be",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "reference_panel": "01 / Mining & exploration",
+      "reference_rect_xywh": [
+        5,
+        65,
+        1130,
+        497
+      ],
+      "comparison_sheet": {
+        "file": "mining-comparison.png",
+        "pixels": [
+          1920,
+          740
+        ],
+        "sha256": "0b225f54df05f14a7eebac92857425613e11011b4ff9ee5fdd0535ed11e3bce3",
+        "kind": "Review layout of original screenshots and reference panel; not a game framebuffer"
+      }
+    },
+    {
+      "view": "combat",
+      "actual": "docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-combat.png",
+      "sha256": "1123f0b2038bdd8e2fb09f1051d18bc521f564105029fb802f97eaedc03ca6e8",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "reference_panel": "04 / Rival combat",
+      "reference_rect_xywh": [
+        630,
+        574,
+        494,
+        353
+      ],
+      "comparison_sheet": {
+        "file": "combat-comparison.png",
+        "pixels": [
+          1920,
+          740
+        ],
+        "sha256": "4fa4ffeba4516dae75de861d0925d4dc3c03940391e27caec85ef01237d750fa",
+        "kind": "Review layout of original screenshots and reference panel; not a game framebuffer"
+      }
+    },
+    {
+      "view": "station",
+      "actual": "docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-station.png",
+      "sha256": "6cc088d0a00eb90cf14411a835e3ff80a87e3a2fdb68d6ddd74a38dc1f122d9b",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "reference_panel": "03 / Kepler Station",
+      "reference_rect_xywh": [
+        5,
+        574,
+        616,
+        353
+      ],
+      "comparison_sheet": {
+        "file": "station-comparison.png",
+        "pixels": [
+          1920,
+          740
+        ],
+        "sha256": "abb52d08819f0af6dc8d7767f0c27f8976c80b78a5707a0c3279f17e3044ca17",
+        "kind": "Review layout of original screenshots and reference panel; not a game framebuffer"
+      }
+    },
+    {
+      "view": "fleet",
+      "actual": "docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-fleet.png",
+      "sha256": "12c41e34d7ad8be0448932920db134fefd23655f668350b77b505e15694bf342",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "reference_panel": "02 / Ship designs",
+      "reference_rect_xywh": [
+        1143,
+        65,
+        525,
+        497
+      ],
+      "comparison_sheet": {
+        "file": "fleet-comparison.png",
+        "pixels": [
+          1920,
+          740
+        ],
+        "sha256": "6e8040141f55f81602bc612f0c1de10b9e1469147332b23bff583579adf4f032",
+        "kind": "Review layout of original screenshots and reference panel; not a game framebuffer"
+      }
+    }
+  ],
+  "hash_verification_scope": "Pre-camera review checkpoint only; current camera source differs. See ../2026-11-20-camera/review.md."
+}

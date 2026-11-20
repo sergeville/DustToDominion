@@ -8,9 +8,9 @@ Direction: readable top-down industrial spacecraft, slate metal, cyan navigation
 and mining, amber dock lights, ore veins, a recognizable home station, and distinct
 fleet silhouettes. Keep interface information compact and easy to read.
 
-Current spec 20 implements a first procedural-vector step: detailed hulls, station,
-rocks and contextual mining guidance. Painted sprite textures, large station
-berths and docked support vessels in the concept are future work. The image places
+Spec 20 established the earlier procedural-vector step: detailed hulls, station,
+rocks and contextual mining guidance. Spec 21 subsequently added textured sprites,
+crew portraits and docking artwork. Docked support vessels are not implemented. The image places
 a hostile craft under a Sector 01 heading; this is artistic composition only:
 the actual first sector remains safe, with no enemies. The roster inset is a
 concept presentation; the implemented roster remains a separate station view.
@@ -24,6 +24,9 @@ The image is a direction to discuss, not human approval of the final art style.
 `goals.png` supplied on 2026-11-20. It is the newer visual direction: textured
 industrial hulls, a substantial docking bay, fractured ore, restrained cyan
 lighting and compact information panels. It is reference art, not a screenshot
-of the current build. Its crew portraits and painted materials are future work.
-The current readability pass establishes clear ship/target identification and
-station composition before replacing procedural artwork.
+of the current build. Textured materials and crew portraits are now implemented;
+framing, lighting and artwork fidelity still differ. See the
+[actual-versus-reference review](../reviews/2026-11-20-reference-comparison/review.md)
+for the pre-camera pairs and rationale, and the
+[camera report](../reviews/2026-11-20-camera/review.md) for the implemented framing
+and updated images. Human visual acceptance remains open.

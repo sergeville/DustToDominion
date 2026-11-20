@@ -1,0 +1,1092 @@
+{
+  "revision": "b268b1a979e38d6afe8920f4c3f5803152fe1049",
+  "driver": "dummy",
+  "phase": "final",
+  "source_sha256": {
+    "src/dtd/__init__.py": "1b8c56e6bbee84931706ba956907d57a451bcd47ec1f2c9acd00f256d8b1e60d",
+    "src/dtd/audio.py": "7906bbab333eb7bbba1bde93dc58c82aa627b84cc7d68855b456decd0da70d8e",
+    "src/dtd/camera_indicators.py": "5abc10595e6b9a84786090bc20964cb0d95c0206954300fac5c538ff7e0eb83b",
+    "src/dtd/campaign.py": "ad70bff81d295572ca60f047193e9060bc49caa8abab52ae72ff20b6e38a03e0",
+    "src/dtd/campaign_art.py": "a5cec91a5d0cb0ba13a65f54aba3b215b7b00e849a2ebbba7fdf8d6c98d3e1bb",
+    "src/dtd/campaign_camera.py": "37f7881ef54bd09271c995f70ef0e114bba53ce924d7895594879b9af01d5766",
+    "src/dtd/campaign_effects.py": "4b65eefc40e3963daa109ebe5740cad210830d6a15565f2cbd1392ea904fc071",
+    "src/dtd/campaign_guidance.py": "a069fe9e5fbc5bde37e55e4dd310dea6834af0f1871e12d41e6ecb49ae8d4d70",
+    "src/dtd/campaign_sprites.py": "0621ac8e4532a9881868c26a616ee19361177a05030ef7e004ac4ea0607eefa5",
+    "src/dtd/campaign_store.py": "1f2dab3ad609daf60f0594fcba9b3fb3cf976a4981d9186aafca4a9e377b0fe8",
+    "src/dtd/config.py": "81fd3978cbed880289aa58f98420270e7d755f49b2a6e58d547078d6593b305d",
+    "src/dtd/errors.py": "3160702088d262df650239065f1304a6a89bc38a0c9b9c2cc4e1eb63499a154e",
+    "src/dtd/game_config.py": "d2f5e6891d931d7c200cdaf60eaa2ddf8d8df75ff6efe0b81661966a40bb6850",
+    "src/dtd/game_constants.py": "6c967f35037f9b2eb3efdbd199ada53a263b699579d710c9dc71f8d1e5bce5bd",
+    "src/dtd/language.py": "25ec6ac218c857e969a62e5805df523069be33a290d799e4e6bc91bb36a3499e",
+    "src/dtd/main.py": "a422f2d1aeaaa236d7b5ff817d8e43a6020f54bd50aaddca58697eff63f81871",
+    "src/dtd/main_window.py": "0b3afa3387e56ddc7a425fc22d1af84bef806ec537b14edfe0791f58422d6177",
+    "src/dtd/pak.py": "741d6432942b43d6286702f54e34b8f3c869c867378547ea93c99ac4b00041c1",
+    "src/dtd/persistence.py": "17fe341f19c80b66d6b6902d3974a58930443365e95878a4910e1eaf9bc49ccb",
+    "src/dtd/resource_loader.py": "1252e777ef0fcf230f7027369168e7535d07c84173a5275a32292513610cbcb0",
+    "src/dtd/screens/__init__.py": "f036d95e3dd72815222765d31d15cf3cbe226ec15aecd15ce5c7beaef8c74dcd",
+    "src/dtd/screens/background.py": "ed2a3f5c3605d76fc7a90a2e8fe89ef27e92fcf66c4c7bb6aad5db42ebb3bd7f",
+    "src/dtd/screens/base.py": "60cef670f2b66a0502d719e6b54109395b011255779a895bf9f6364d5fcb335b",
+    "src/dtd/screens/campaign.py": "3823db94b6ec7dbb6c0c028cd5fd757c15ada10e6e1c90989287df6f75bc8a0b",
+    "src/dtd/screens/options.py": "2c0b19c1c6040d721b77e9ec044ef80a045f5e3737a4b3f123bf995a10d1e346",
+    "src/dtd/screens/starfield.py": "0506e840b12302d94045971a74cf17bf547f71b13ce95accb5107f9d40ee852f",
+    "src/dtd/screens/title.py": "d4e8cca6fb3735dab7bac9eec2b08774c18b11d2afad7f51cfe88bc30fd16359",
+    "src/dtd/ui.py": "e59e7802882820746764461ee6cbfa1b5844704873a1458dc48720554f598661",
+    "src/dtd/widgets/__init__.py": "b885d26d2f831c76cf67fd545120cb6217463f00d8c9b90cf92f8161e77d385f",
+    "src/dtd/widgets/button.py": "f4a9d63c77c2599ef75b475bb484fb1eb97c0690c20448f2ed40badf6e9f9f13",
+    "src/dtd/widgets/checkbox.py": "5efa322110fe8c03ec59bab620a79a58810ec76271ea92e5442e2c51dbffafe0",
+    "src/dtd/widgets/choice_list.py": "b75f1e7b4d8ce0b26bfde4cbded17b6a2b7bf89fab5ef9029ab78d8b73f53a6b",
+    "src/dtd/widgets/label.py": "a733ae31093279c90ac6879707b8fec4d63bd1f407bf9fe955c0eaf4c7059e72",
+    "src/dtd/widgets/progress_bar.py": "b9cf6205c391c6be24af374a4de33f2ed3da1736ed193587df4bc95ec65dfe82",
+    "src/dtd/widgets/slider.py": "5b521c7c42fc013b9da0b0103606020e898857b8520bf3acee5b517cc5d76662",
+    "src/dtd/widgets/text_layout.py": "fc69af0177e5780dd6d45fdeea5aad60bfb2dd7e508ae03de08af251b51f7f94",
+    "src/dtd/widgets/text_panel.py": "785a60c1283cdc4bfabd25a05186cc6459130203481dd48fad365eeb6cb985ef",
+    "src/dtd/widgets/value_layout.py": "d28699fb703f716710322c42fdcbffcf4ee63e045e71c6775b4cfa31e42c9d13"
+  },
+  "provenance": "actual SDL dummy renderer; synthetic matched fixtures separate from event-earned play",
+  "world_canvas": [
+    1920,
+    1080
+  ],
+  "offscreen_4k_only": true,
+  "captures": [
+    {
+      "file": "en-us-1280-mining-z1.png",
+      "sha256": "3354ee8b06b40d871f917707af09ddc28d7ff71931ae53d05e9c47fdd0822533",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1280-combat-z1.png",
+      "sha256": "cc5ad7636a07c772aa83898d0d859c3085048a3d6bdbc6a28c688004c2d688c0",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1280-mining-z1.5.png",
+      "sha256": "9624d144859ec3cd4151c30c5f2bf1c6fa802a36e6beec29a8d51dcbc8de9008",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1280-combat-z1.5.png",
+      "sha256": "a90c4e0cc8e1609b34b350eb2af20ba041920edc180976941bb8f2ee4fcf0186",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1280-mining-z2.png",
+      "sha256": "8fe3ef431b453d47a5eaaf7770810ebafe895874fa44e07671d6bf1c10d40386",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1280-combat-z2.png",
+      "sha256": "4542f748412888974136f633c1bb92d00d0a8152ab7fb92a631fd7e4e6172738",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-mining-z1.png",
+      "sha256": "b4301fd0d623ff4189c09e4e2cca77cc626afa97fe43cf819fe2971dc5bd5f81",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-combat-z1.png",
+      "sha256": "d6d2f7081a339fa2167716f8803190720d2d3547023726a4fe02c883c27d5354",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-mining-z1.5.png",
+      "sha256": "21f5d735b8cea0b7579c488236ce92d727d81cbbf28c00ecac8e4f5058c2b617",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-combat-z1.5.png",
+      "sha256": "41dbdf25634eb2955d28ed830bfc73bc34eb7072f64b8d2edf37f695f1b2cb96",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-mining-z2.png",
+      "sha256": "a6c11894c560bedaec2c35512fc8a43287b5bf9b3f4458dbd1edf1364f90b4ce",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-combat-z2.png",
+      "sha256": "77cc9c00f08d78c6d846a6ea75f138769dca1dadc12d8a56264f7bb973f8c2b6",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-mining-z1.png",
+      "sha256": "9df459ba8f4bc2a78e3945d8834c1477a64989f856401c1235c41df196cfac5f",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-combat-z1.png",
+      "sha256": "71b081fea07e2e35b148f285729368fd9d8cfca7a11d312e56d11ace2db6dd11",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-mining-z1.5.png",
+      "sha256": "58cd33d47bf05d414481016910b4c2d0a5ac4906d007f9a971a9d2fe87d56f82",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-combat-z1.5.png",
+      "sha256": "e12c2e7885633759a3bb340836f29745c07d5df6a3b8e777d2b88dd5d9bf3981",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-mining-z2.png",
+      "sha256": "cb77ac143d9fdf93567ff1a22338ea810386a0f5f5871972a9eb105fa7d8ae5d",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-combat-z2.png",
+      "sha256": "4be2e4638b38226e94a57ee0636b3703ec5cba6e7338aebd5256ac50c19d785a",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-mining-z1.png",
+      "sha256": "af122844f45f6ff978e4b9913f3780dfa4414a5fee08b2c4ea88010fcdaf3a2c",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-combat-z1.png",
+      "sha256": "c2fffa269365b5618eb7a2f3f053d0b7377eb0530906b70e47db419fda3118a2",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-mining-z1.5.png",
+      "sha256": "bdd59923c49bfb64d47f286f3c34b8ca9d55408ce55b65a5c73ebf56820a1ebf",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-combat-z1.5.png",
+      "sha256": "a93e1f2a30d2fd0f1d56600c8a05a9d9f2d246c3f22396ca27e86b44532c9b90",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-mining-z2.png",
+      "sha256": "4cf8ae4c8fbab7dc1a1e36c25246d74742b306cb914645c4c870028851102810",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-combat-z2.png",
+      "sha256": "9ef3cf276f857d71810603baa31eba282e41c27bdadf6dc0ebb4e39016cf051d",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-mining-z1.png",
+      "sha256": "488a8c1385c7be0d8bb96d5dfcf059db15aab4f9882b17f12da89d090093e615",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-combat-z1.png",
+      "sha256": "5069d1fc94b373ad00406c3d3261d1a771553d2d2c1ce68ed0f02042331f1b9d",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-mining-z1.5.png",
+      "sha256": "eec524318ac0e8a9f825b827ecad0b6c0da7079fe66ae916c5ed62d4f15bccf7",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-combat-z1.5.png",
+      "sha256": "2224c3c9dc78b8b6979d0ae3bdd478dc17e318a0073e77881c50b8340898f570",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-mining-z2.png",
+      "sha256": "088d7f1a381fac7b79c5bd1b7d6b96afb1030e7850d16f90fd8086be240f9075",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-combat-z2.png",
+      "sha256": "16e4f4f0b6b98b43d41821640d20c615aafc3e3d1a050199ca164df67745cf25",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-mining-z1.png",
+      "sha256": "6dcc7810d13ce19b98191c0768acc6e45b447826260941d7ef31aabdf5cbee5f",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-combat-z1.png",
+      "sha256": "2c510b2d0c830bd2cc47cf4bea7c62f1f07911f982ed8ea40be4cde635037e91",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-mining-z1.5.png",
+      "sha256": "4d2c6918a4c69e58ac0bb2da52ca7d1469b50dc2f4036314f7ba2ede947f2002",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-combat-z1.5.png",
+      "sha256": "75ce267673795159d34daa5934564020691f834fcc4a129d9586acea5484b502",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-mining-z2.png",
+      "sha256": "d011e3a1442855d732eed1062906bf5c678c0de9daba1de67c035b4ac55ad4d1",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-combat-z2.png",
+      "sha256": "b10cb2fd2ed926b5a99b73f414bb7b443949e8906ae8c4d8a275e54a5b08b72a",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-mining-z1.png",
+      "sha256": "084737d07995b9e1ee609f78ed92f278221fde60748938dd0ff26ef0f6b13515",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-combat-z1.png",
+      "sha256": "3c06a8482dd30972b0cd3e137cdb138fef1bc39c2b517a54cb4d9ce736130814",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-mining-z1.5.png",
+      "sha256": "b3beaaad457de48cb8981927d39585ca17456d2b004aadf3befcd318322dca4a",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-combat-z1.5.png",
+      "sha256": "d143ee18883cfec0a4b62da0a19423c49ab18737efaa9e20b006d7062cba8c28",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-mining-z2.png",
+      "sha256": "645ab4813a12662f40e8b53e4949fd8072eb83f6e072cf9683f2bcb3ebac40eb",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-combat-z2.png",
+      "sha256": "566aadb39d2994ac7ddfd1396cc69e87233c8fdb1eb551a53535ae6870a0411d",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-mining-z1.png",
+      "sha256": "a7765b9c4d30baa8f3f2ead25cd127a52fb48ccb0dfef7efb8fa0ff860a75f96",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-combat-z1.png",
+      "sha256": "68634a06e6ae324acfbb36169f64234912fea4ffa06501f271375c98f99d417e",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-mining-z1.5.png",
+      "sha256": "d48a2bcde6beaa222aa1464c1145e2d743856bf0c9ab70b137f0a197bfffa7fc",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-combat-z1.5.png",
+      "sha256": "17410251128861dbce5edc04e2f37d768b6cd82b7cd72402e534d89bf7624b7b",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 1.5,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-mining-z2.png",
+      "sha256": "5b3bc74435b332ec6436aa1c430da71e827668e0004fb9170ea188a2cb8717f0",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-combat-z2.png",
+      "sha256": "de9a248b8590ca39e0f0113e81af8e290e07c7d44a1401c2870daa60162eb9fa",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "exact serialized baseline model fixture; synthetic",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    }
+  ],
+  "navigation_captures": [
+    {
+      "file": "en-us-1280-navigation-z2.png",
+      "sha256": "40b4aec81190672d8d443cbe22bf2a8919de7bd73027f95d68af21599de197d6",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-1920-navigation-z2.png",
+      "sha256": "2174486b113660dec9aa393f0f381eb5618aa03c30c2bd038e20ba7d7a9f0bb0",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-2560-navigation-z2.png",
+      "sha256": "cb25dd7cde4adf0da9108adb9d8a5093e268433a0ce2cf81bfb14ac990ec93ab",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "en-us-3840-navigation-z2.png",
+      "sha256": "5206201f4eb32bafb54406b49a4938b1dc5a986bdecac7e729b308ebe70a4d51",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1280-navigation-z2.png",
+      "sha256": "f6c623033a478780cc9d467bcfc60b56b8a7af95cc836b85a4ad8727464f94c6",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-1920-navigation-z2.png",
+      "sha256": "67469f880dfd86a1d12fc939cda3b8701fbcc08063adcf48b5a5c23f46493a76",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-2560-navigation-z2.png",
+      "sha256": "29e4f3734cd033d3b4378946d3ce3d20c42b360cc69aad5184764d56f7ec7abf",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    },
+    {
+      "file": "de-3840-navigation-z2.png",
+      "sha256": "f9f5e2bfed4b59512373b8453f877ed5ddbee39f0593d32e03f47ccb849c0107",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic legal actor positions: offscreen station/rival plus formerly overlapping enlarged rival",
+      "mode": "flight",
+      "zoom": 2.0,
+      "world_bounds_warnings": []
+    }
+  ],
+  "earned": {
+    "trip": {
+      "passed": true,
+      "ore": 3,
+      "credits_before": 80,
+      "credits_after": 110
+    },
+    "combat": {
+      "passed": true,
+      "earned_lifetime_sales": 330,
+      "bounty": 70,
+      "banked_before": 190,
+      "banked_after": 260,
+      "continued_checkpoint_verified": true,
+      "visible_target_firing_samples": 46,
+      "firing_view_min": [
+        609.0,
+        234.0
+      ],
+      "firing_view_max": [
+        609.0,
+        234.0
+      ]
+    },
+    "captures": [
+      {
+        "file": "trip-fresh.png",
+        "sha256": "1aa56afa2647d3d457406eb356c350339ed5e20be9ef2ffed72e3a4eb91ae85f",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "trip-mining.png",
+        "sha256": "dd1772c0766ddba538198e1d60fe218f856cea55f13864c285b1af7773da638d",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "trip-collected.png",
+        "sha256": "b5cb94ee3906057576fe274de4561b021892d147bfd60ac622d07012c8c80f97",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "trip-docked.png",
+        "sha256": "f33a2808096d5604c93a7f023fe880d1db132141829268a44c7fce90e22ce55c",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "result",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "trip-sold.png",
+        "sha256": "6129c5b16103bac98948fb0a1b25dd639e94de215761e453fe9e2790957508ab",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "station",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "combat-approach.png",
+        "sha256": "e8bddfd1ce0135c1789af511cee29a49ffa0419db7ddc2fc3df30e6d7972bed9",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "combat-firing.png",
+        "sha256": "5f737fe1d84b66e81e83714017444163a0f842d72d8198f09f9d6eccca053bef",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "combat-defeated-rival.png",
+        "sha256": "81a2971ac9aaafa5adb22ced0aeb899a0f7e411d31c689b567c3249722e24972",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "flight",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "combat-docked.png",
+        "sha256": "8f83147228f5f475318f89fedfdd84f80590c8d5ac9e4782dc6e86c6a82cc4aa",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "station",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "menu-station.png",
+        "sha256": "cc21e56f8221c6169b39263a5e3078848c258fe1f52da2db958a3e431453d136",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "station",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      },
+      {
+        "file": "menu-fleet.png",
+        "sha256": "96cd533a69e29087a027bbd9d1def10dc84ccfc653625e87bbcdb9a1c002c739",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-earned progression; no injected game state",
+        "mode": "fleet",
+        "zoom": 1.5,
+        "world_bounds_warnings": []
+      }
+    ],
+    "native_input": false
+  },
+  "benchmark": [
+    {
+      "pixels": [
+        1280,
+        720
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 156.145,
+      "first_frame_ms": 15.527,
+      "median_ms": 4.353,
+      "p95_ms": 5.811,
+      "p99_ms": 7.999,
+      "max_ms": 12.822,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 236.47,
+      "process_peak_rss_after_mib": 237.34
+    },
+    {
+      "pixels": [
+        1280,
+        720
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 143.541,
+      "first_frame_ms": 9.306,
+      "median_ms": 4.526,
+      "p95_ms": 5.867,
+      "p99_ms": 7.352,
+      "max_ms": 8.019,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 258.64,
+      "process_peak_rss_after_mib": 258.81
+    },
+    {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 141.173,
+      "first_frame_ms": 7.648,
+      "median_ms": 2.927,
+      "p95_ms": 4.194,
+      "p99_ms": 5.505,
+      "max_ms": 7.371,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 258.81,
+      "process_peak_rss_after_mib": 258.81
+    },
+    {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 143.234,
+      "first_frame_ms": 7.133,
+      "median_ms": 3.402,
+      "p95_ms": 5.412,
+      "p99_ms": 9.81,
+      "max_ms": 11.793,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 258.81,
+      "process_peak_rss_after_mib": 258.81
+    },
+    {
+      "pixels": [
+        2560,
+        1440
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 143.566,
+      "first_frame_ms": 11.072,
+      "median_ms": 5.007,
+      "p95_ms": 6.126,
+      "p99_ms": 6.701,
+      "max_ms": 9.95,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 258.81,
+      "process_peak_rss_after_mib": 258.81
+    },
+    {
+      "pixels": [
+        2560,
+        1440
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 182.648,
+      "first_frame_ms": 9.289,
+      "median_ms": 5.33,
+      "p95_ms": 6.239,
+      "p99_ms": 6.419,
+      "max_ms": 7.471,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 258.81,
+      "process_peak_rss_after_mib": 258.81
+    },
+    {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 125.139,
+      "first_frame_ms": 14.498,
+      "median_ms": 6.879,
+      "p95_ms": 7.51,
+      "p99_ms": 8.323,
+      "max_ms": 9.275,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 265.59,
+      "process_peak_rss_after_mib": 265.66
+    },
+    {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 124.673,
+      "first_frame_ms": 10.633,
+      "median_ms": 7.18,
+      "p95_ms": 8.116,
+      "p99_ms": 16.832,
+      "max_ms": 18.381,
+      "over_16_67_ms": 2,
+      "process_peak_rss_before_mib": 265.73,
+      "process_peak_rss_after_mib": 265.73
+    }
+  ]
+}

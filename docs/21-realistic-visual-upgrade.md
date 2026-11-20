@@ -174,3 +174,123 @@ art. Physical input/audio/human acceptance and native 4K remain unverified.
 See the [polish report](reviews/2026-11-20-realistic-polish.md) for warnings,
 timings, screenshots, source hashes and reproduction commands. Proposed status
 is retained pending the original native play and human acceptance criteria.
+
+## Amendment — 2026-11-20: gameplay camera and navigation
+
+Serge authorized implementation of the [camera review](reviews/2026-11-20-reference-comparison/review.md)
+using the existing team. Baseline product is `957e96b`; current HEAD `b268b1a`
+contains documentation only after the polish/test refinements. Prior uncommitted
+comparison documents are preserved and may be included in this local handoff.
+This amendment replaces the identity-only flight presentation; the simulation,
+asset originals, economy, combat rules and campaign v1 serialization stay intact.
+
+### Configuration and interaction
+
+- Session-only zoom levels **1× overview, 1.5× default, 2× close**. New campaign
+  screens start at 1.5×. Retain the selected level across trips in that screen;
+  no save/config migration and no dependency changes.
+- Mouse wheel and `-` / `=` (including shifted plus/keypad equivalents) step zoom;
+  `Home` selects 1× overview. Controls apply only in flight. Existing arrows,
+  WASD, Space, mouse fire, E and Escape keep their meanings. Show localized zoom
+  instructions/current level in screen space without covering the world or HUD.
+- Camera follows the player without interpolation lag and clamps to the existing
+  arena presentation bounds. At 1× it is an identity overview. Reachable world
+  edges remain inside the flight viewport; HUD occupies its existing margins.
+  Do not move world entities to improve their composition.
+
+### Transform and input contract
+
+One camera owns forward and inverse mappings:
+`view = viewport_center + zoom * (world - camera_center)`;
+`world = camera_center + (view - viewport_center) / zoom`.
+Use it consistently for ships, rocks, station, projectiles, pickups, mining beam,
+thrust/impact effects, safe/dock/mining circles and target/direction anchors.
+World extents/radii scale with zoom; labels, health bars and UI retain readable
+screen sizes after projecting their anchors. Cull/clip world drawing at the
+flight viewport. Sprite sources are sampled at projected size, not by enlarging
+a finished world framebuffer. Decorative world debris uses the same projection;
+background atmosphere may remain screen-aligned. No model/RNG mutation by drawing.
+
+`current_scale().mouse()` converts incoming window coordinates into logical view
+space once. SDL `SCALED` already supplies logical display coordinates in desktop
+fullscreen; no second physical-window inverse is permitted. Store cursor in view
+space and recompute world aim whenever the camera/zoom changes, including every
+simulation step with a stationary cursor. An already released quick tap retains
+its click-time world aim until consumed; held firing uses current cursor aim.
+Preserve cooldown, focus/pause and pending-shot clearing. Menus remain screen space.
+
+### Navigation and visibility
+
+Offscreen station and live rival centers receive bounded, localized directional
+edge indicators and true world distances. Prioritize the station and nearest
+threats, with an explicit extra-threat count if any are aggregated. Distinguish
+friendly cyan from hostile red; prevent marker/label collisions and HUD clipping.
+Suppress edge markers for on-screen centers. Keep the existing next-action/mining
+and docking guidance meaningful after transformation; a closer camera must not
+hide how to return home. No enemy/weapon range change to compensate for cropping.
+
+### Ownership and shared-file rule
+
+This amendment supersedes the earlier pass ownership during camera work:
+renderer owns `campaign_camera.py`, world/effect/sprite projection and exclusive
+`screens/campaign.py` integration plus its camera tests. UI (existing art agent)
+owns separate `camera_indicators.py`, its tests and locale keys. UI communicates
+an explicit call contract to renderer and does not edit the shared screen.
+Lead owns the canonical plan, documentation, integration review and handoff;
+independent QA owns separate acceptance tests and camera evidence scripts.
+Any shared-file handoff must be explicit before another agent writes it.
+
+### Dev plan — camera pass
+
+1. Record baseline source/image hashes and matching-output mining/combat captures;
+   review the camera/UI API and this amendment before product edits. **Completed 2026-11-20.**
+2. Implement camera, consistent world projection and inverse cursor mapping;
+   integrate UI-owned navigation indicators and zoom instructions. **Completed 2026-11-20.**
+3. Complete an isolated input-driven launch → mine → collect → dock → sell trip,
+   then earned combat validation. Do not seed cargo/credits to claim earned play. **Completed 2026-11-20.**
+4. Independent QA checks transforms, stationary aiming, taps/held fire,
+   output resizing, fullscreen scaling, all zooms, boundaries, docking, combat,
+   save/model invariants and readable EN/DE layouts. Run affected and full tests. **Completed 2026-11-20.**
+5. Capture matched before/after gameplay views, inspect actual images, run a
+   separate native window/fullscreen graphics probe and record warnings and
+   performance. Review before local commit; provide launch/zoom instructions.
+   Human visual acceptance stays open, so spec status remains proposed. **Completed 2026-11-20 (camera implementation and evidence only).**
+
+### Testing and acceptance criteria
+
+Camera round trips and visible bounds must hold at each level and arena edge.
+Aiming must align with projected targets at 720p/1080p/1440p/offscreen2160p, after
+window/fullscreen transitions and during player motion without mouse motion.
+Effects/markers track the same actors; screen-space controls remain usable.
+Tests must demonstrate no gameplay geometry/model/save changes and preserve
+existing earned campaign, safety, quick-click, pause/focus and serialization tests.
+Independent regression includes a full event-driven mining trip and earned combat,
+with actual captures, exact source hashes and synthetic versus native provenance.
+No user save is a fixture. A native graphics probe does not establish physical
+mouse/audio acceptance. Report failures and unverified behavior explicitly.
+
+### Internal rendering resolution and remaining scope
+
+The logical world drawing target remains **1920×1080**, now drawing projected
+sprites directly for the selected camera zoom. Offscreen 3840×2160 output still
+scales that world canvas, with output-size text; native SDL fullscreen still
+scales its 1920×1080 display backbuffer to the desktop window. **Native 4K world
+rendering remains a separate task.** This pass does not replace artwork or claim
+the reference's lighting, fracture effects or cinematic station-menu composition.
+
+### Camera verification checkpoint — 2026-11-20
+
+Full suite: **1,928 passed, one known dummy-renderer warning**. Independent camera
+math/aim checks and the continuous earned mining-trip/combat route passed. Saved
+48 matching mining/combat, eight navigation and 11 earned/menu originals, with
+source/image hashes and separate native Cocoa window/fullscreen/window evidence.
+Native desktop window 3440×1440 still uses a 1920×1080 backbuffer. Model, save
+serialization, world ranges and dependencies remain unchanged.
+
+[Camera report and launch instructions](reviews/2026-11-20-camera/review.md),
+[QA review](reviews/2026-11-20-camera/independent-review.md) and
+[UI/art review](reviews/2026-11-20-camera/art-review.md) distinguish completed
+camera work from physical input/audio, artwork/lighting judgment, human visual
+acceptance and native 4K world rendering. Serge explicitly separated framing
+improvement from artwork/lighting acceptance; neither is implicitly approved by
+this camera pass. Specification status remains proposed for those open gates.

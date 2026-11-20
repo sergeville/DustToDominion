@@ -1,0 +1,343 @@
+{
+  "campaign": {
+    "credits": 80,
+    "hull": 100.0,
+    "cargo": [],
+    "upgrades": {
+      "cargo": 0,
+      "laser": 0,
+      "hull": 0
+    },
+    "support_ships": 0,
+    "miner": false,
+    "engineer": false,
+    "lifetime_sales": 1000,
+    "won": false
+  },
+  "run": {
+    "sector": 3,
+    "x": 470,
+    "y": 540,
+    "heading": -1.5707963267948966,
+    "asteroids": [
+      {
+        "id": 0,
+        "x": 350,
+        "y": 630,
+        "radius": 46,
+        "ore": 1,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 1,
+        "x": 660,
+        "y": 570,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 2,
+        "x": 1230,
+        "y": 570,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 3,
+        "x": 1550,
+        "y": 630,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 4,
+        "x": 430,
+        "y": 330,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 5,
+        "x": 1430,
+        "y": 330,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 6,
+        "x": 850,
+        "y": 350,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 7,
+        "x": 1080,
+        "y": 350,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 8,
+        "x": 180,
+        "y": 450,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      },
+      {
+        "id": 9,
+        "x": 1730,
+        "y": 450,
+        "radius": 46,
+        "ore": 2,
+        "health": 3,
+        "max_health": 3
+      }
+    ],
+    "pickups": [],
+    "enemies": [
+      {
+        "id": 0,
+        "x": 350,
+        "y": 630,
+        "hull": 75.0,
+        "heading": -0.7,
+        "radius": 24.0,
+        "cooldown": 1.0
+      }
+    ],
+    "projectiles": [
+      {
+        "x": 500,
+        "y": 350,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 538,
+        "y": 398,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 576,
+        "y": 446,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 614,
+        "y": 494,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 652,
+        "y": 350,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 690,
+        "y": 398,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 728,
+        "y": 446,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 766,
+        "y": 494,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 804,
+        "y": 350,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 842,
+        "y": 398,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 880,
+        "y": 446,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 918,
+        "y": 494,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 956,
+        "y": 350,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 994,
+        "y": 398,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1032,
+        "y": 446,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1070,
+        "y": 494,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1108,
+        "y": 350,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1146,
+        "y": 398,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1184,
+        "y": 446,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": true,
+        "ttl": 2.0,
+        "radius": 5.0
+      },
+      {
+        "x": 1222,
+        "y": 494,
+        "vx": -650,
+        "vy": 50,
+        "damage": 24,
+        "friendly": false,
+        "ttl": 2.0,
+        "radius": 5.0
+      }
+    ],
+    "hull": 100.0,
+    "cargo": [],
+    "finished": false,
+    "defeated": false,
+    "bounty": 0,
+    "_mine_cooldown": 0,
+    "_fire_cooldown": 0,
+    "_pickup_id": 0
+  },
+  "aim": [
+    300,
+    340
+  ],
+  "visual_time": 10,
+  "keys": []
+}

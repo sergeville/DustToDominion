@@ -14,6 +14,8 @@ import pygame
 from dtd.campaign import (Campaign, InputState, STATION_X, STATION_Y,
                           DOCK_RADIUS, SAFE_RADIUS, MINE_RANGE)
 from dtd.campaign_sprites import CampaignSprites
+from dtd.campaign_camera import Camera
+from dtd.camera_indicators import offscreen_indicators, draw_indicators
 from dtd.campaign_effects import DamageFlashes, mining_beam, projectile, ore_glint
 from dtd.campaign_guidance import guidance, mining_target
 from dtd.campaign_store import SaveError
@@ -47,7 +49,9 @@ class CampaignScreen(Screen):
         self._keys: set[int] = set()
         self._firing = False
         self._pending_shot = None
-        self._aim = (960.0, 350.0)
+        self._cursor = (960.0, 350.0)
+        self._camera = Camera()
+        self._aim = self._camera.screen_to_world(self._cursor)
         self._accumulator = 0.0
         self._visual_time = 0.0
         self._pending_action = None
@@ -72,6 +76,7 @@ class CampaignScreen(Screen):
         self._shield = pygame.Surface((SAFE_RADIUS * 2 + 2, SAFE_RADIUS * 2 + 2), pygame.SRCALPHA)
         pygame.draw.circle(self._shield, (33, 103, 119, 18),
                            (SAFE_RADIUS + 1, SAFE_RADIUS + 1), SAFE_RADIUS)
+        self._shields = {1.0: self._shield}
         rng = random.Random(47)
         self._stars = [(rng.randrange(1920), rng.randrange(1080), rng.randrange(35, 90))
                        for _ in range(180)]
@@ -173,6 +178,7 @@ class CampaignScreen(Screen):
 
     def _launch(self, sector: int) -> None:
         self.expedition = self.campaign.launch(sector)
+        self._sync_camera()
         self._impacts = DamageFlashes()
         self._visual_time = 0.0
         self.mode = "flight"
@@ -235,6 +241,18 @@ class CampaignScreen(Screen):
         if self._save():
             self._pending_action = ScreenAction.SHOW_TITLE_SCREEN
 
+    def _sync_camera(self) -> None:
+        if self.expedition is not None:
+            self._camera.follow(self.expedition.x, self.expedition.y)
+        self._aim = self._camera.screen_to_world(self._cursor)
+
+    def _zoom(self, direction=None) -> None:
+        if direction is None:
+            self._camera.set_zoom(1.0)
+        else:
+            self._camera.step_zoom(direction)
+        self._sync_camera()
+
     def update(self, events) -> None:
         # Process each event once. A transition discards the rest of its batch;
         # a launch/resume click cannot also fire a weapon or trigger another UI.
@@ -245,6 +263,7 @@ class CampaignScreen(Screen):
             if self.expedition is not None:
                 self._pause()
             return
+        self._sync_camera()
         for event in events:
             before = self.mode
             if event.type == pygame.WINDOWFOCUSLOST and self.mode == "flight":
@@ -262,16 +281,28 @@ class CampaignScreen(Screen):
                 break
             if self.mode == "flight":
                 if event.type == pygame.KEYDOWN:
-                    self._keys.add(event.key)
+                    if event.key == pygame.K_HOME:
+                        self._zoom()
+                    elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                        self._zoom(-1)
+                    elif event.key in (pygame.K_EQUALS, pygame.K_PLUS, pygame.K_KP_PLUS):
+                        self._zoom(1)
+                    else:
+                        self._keys.add(event.key)
                     if event.key == pygame.K_e and self.expedition.request_dock():
                         self._finish()
                 elif event.type == pygame.KEYUP:
                     self._keys.discard(event.key)
+                elif event.type == pygame.MOUSEWHEEL:
+                    self._zoom(event.y)
                 elif event.type == pygame.MOUSEMOTION:
-                    self._aim = current_scale().mouse(event.pos)
+                    self._cursor = current_scale().mouse(event.pos)
+                    self._aim = self._camera.screen_to_world(self._cursor)
                 elif event.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP) and event.button == 1:
-                    self._aim = current_scale().mouse(event.pos)
-                    self._firing = event.type == pygame.MOUSEBUTTONDOWN
+                    self._cursor = current_scale().mouse(event.pos)
+                    self._aim = self._camera.screen_to_world(self._cursor)
+                    self._firing = (event.type == pygame.MOUSEBUTTONDOWN
+                                    and self._camera.viewport.collidepoint(self._cursor))
                     if self._firing:
                         self._pending_shot = self._aim
             else:
@@ -290,17 +321,20 @@ class CampaignScreen(Screen):
             self._accumulator -= _STEP
             # Preserve a tap until a real step, then consume it even when the
             # model rejects firing (shield/cooldown). Held fire uses current aim.
-            aim = self._aim if self._firing or self._pending_shot is None else self._pending_shot
+            self._sync_camera()
+            held = self._firing and self._camera.viewport.collidepoint(self._cursor)
+            aim = self._aim if held or self._pending_shot is None else self._pending_shot
             controls = InputState(
                 move_x=int(bool(keys & {pygame.K_d, pygame.K_RIGHT})) - int(bool(keys & {pygame.K_a, pygame.K_LEFT})),
                 move_y=int(bool(keys & {pygame.K_s, pygame.K_DOWN})) - int(bool(keys & {pygame.K_w, pygame.K_UP})),
                 mining=pygame.K_SPACE in keys,
-                firing=self._firing or self._pending_shot is not None,
+                firing=held or self._pending_shot is not None,
                 aim_x=aim[0], aim_y=aim[1])
             self._pending_shot = None
             self._visual_time += _STEP
             before = self._impacts.snapshot(self.expedition)
             self.expedition.step(_STEP, controls)
+            self._sync_camera()
             self._impacts.advance(_STEP, before, self.expedition)
             if self.expedition.finished:
                 self._finish(self.expedition.defeated)
@@ -346,8 +380,6 @@ class CampaignScreen(Screen):
         self._text_layer.clear()
         self._canvas.fill(_BG)
         self._art.draw_image(self._canvas, "background", (0, 0, 1920, 1080))
-        if self.expedition is not None:
-            self._art.draw_field_detail(self._canvas)
         for x, y, light in self._stars:
             self._canvas.set_at((x, y), (light, light, light + 15))
         if self.expedition is not None:
@@ -453,11 +485,12 @@ class CampaignScreen(Screen):
         run = self.expedition
         if run is None:
             return []
-        obstacles = [pygame.Rect(run.x - 43, run.y - 43, 86, 86)]
-        obstacles += [pygame.Rect(e.x - 34, e.y - 34, 68, 68) for e in run.enemies]
-        obstacles += [pygame.Rect(r.x - r.radius - 5, r.y - r.radius - 5,
-                                  2 * r.radius + 10, 2 * r.radius + 10)
-                      for r in run.asteroids]
+        camera = self._camera
+        obstacles = []
+        for actor, radius in [(run, 38)] + [(e, 29) for e in run.enemies] + [(r, r.radius) for r in run.asteroids]:
+            x, y = camera.world_to_screen((actor.x, actor.y))
+            radius = camera.scale_length(radius) + 5
+            obstacles.append(pygame.Rect(x-radius, y-radius, radius*2, radius*2))
         obstacles += self._world_labels + self._world_bars
         points = self._direction_points(guidance(self.campaign, run))
         if points:
@@ -518,9 +551,11 @@ class CampaignScreen(Screen):
         self._text(text, rect.x + 6, rect.y + 3, size, color)
 
     def _rival_bar(self, enemy):
-        x, y = enemy.x, enemy.y
+        x, y = self._camera.world_to_screen((enemy.x, enemy.y))
+        radius = self._camera.scale_length(31)
         rect = self._annotation_rect((56, 14),
-            [(x-28, y+40), (x-28, y-54), (x+42, y-7), (x-98, y-7)])
+            [(x-28, y+radius+9), (x-28, y-radius-23),
+             (x+radius+11, y-7), (x-radius-67, y-7)])
         if rect is not None:
             pygame.draw.line(self._canvas, _RED, (x, y), rect.center, 1)
             pygame.draw.rect(self._canvas, _BG, rect, border_radius=3)
@@ -532,8 +567,10 @@ class CampaignScreen(Screen):
             return []
         run = self.expedition
         angle = math.atan2(advice.target[1] - run.y, advice.target[0] - run.x)
-        x = max(60, min(1860, run.x + math.cos(angle) * 70))
-        y = max(170, min(998, run.y + math.sin(angle) * 70))
+        px, py = self._camera.world_to_screen((run.x, run.y))
+        distance = self._camera.scale_length(32) + 38
+        x = max(60, min(1860, px + math.cos(angle) * distance))
+        y = max(170, min(998, py + math.sin(angle) * distance))
         return [(x + math.cos(angle + offset) * length,
                  y + math.sin(angle + offset) * length)
                 for offset, length in ((0, 14), (2.5, 10), (-2.5, 10))]
@@ -548,15 +585,18 @@ class CampaignScreen(Screen):
             xs, ys = zip(*points)
             arrow = pygame.Rect(min(xs), min(ys), max(xs) - min(xs) + 2,
                                 max(ys) - min(ys) + 2).inflate(12, 12)
-        candidates = [(run.x - width / 2, run.y - 50 - height),
-                      (run.x - width / 2, run.y + 50),
-                      (run.x - 50 - width, run.y - height / 2),
-                      (run.x + 50, run.y - height / 2)]
+        px, py = self._camera.world_to_screen((run.x, run.y))
+        offset = self._camera.scale_length(37) + 13
+        candidates = [(px - width / 2, py - offset - height),
+                      (px - width / 2, py + offset),
+                      (px - offset - width, py - height / 2),
+                      (px + offset, py - height / 2)]
         for x, y in candidates:
             x = max(12, min(1908 - width, x))
             rect = pygame.Rect(x, y, width, height).inflate(12, 6)
             if pygame.Rect(0, 145, 1920, 875).contains(rect) and not rect.colliderect(arrow):
-                self._flight_label(text, x, y, _WHITE)
+                self._flight_label(text, x, y, _WHITE,
+                                   anchor=(px, py, self._camera.scale_length(37)))
                 return
 
     def _draw_guidance(self) -> None:
@@ -570,69 +610,102 @@ class CampaignScreen(Screen):
             if advice.key in ("approach", "mine"):
                 rock = next(r for r in run.asteroids if r.id == advice.target_id)
                 radius = rock.radius + 12
-            self._brackets(tx, ty, radius, color)
-            if advice.key == "approach":
-                self._flight_label(self._t("ore_target", value=round(advice.distance)),
-                                   tx - radius, ty - radius - 32, color, anchor=(tx, ty, radius))
+            if self._camera.is_visible((tx, ty), radius):
+                tx, ty = self._camera.world_to_screen((tx, ty))
+                radius = self._camera.scale_length(radius)
+                self._brackets(tx, ty, radius, color)
+                if advice.key == "approach" and self._camera.viewport.collidepoint((tx, ty)):
+                    self._flight_label(self._t("ore_target", value=round(advice.distance)),
+                                       tx - radius, ty - radius - 32, color, anchor=(tx, ty, radius))
             points = self._direction_points(advice)
             if points:
                 pygame.draw.polygon(self._canvas, color, points)
-        self._text(self._t("guide_" + advice.key), 60, 108, 23, color)
-        self._text(self._t("distance", value=round(advice.distance)), 1710, 108, 21, _MUTED)
 
     def _draw_flight(self) -> None:
         run, c = self.expedition, self.campaign
+        self._sync_camera()
+        camera = self._camera
+        project, length = camera.world_to_screen, camera.scale_length
         self._world_labels.clear()
         self._world_bars.clear()
+        indicator_obstacles = []
+        for actor, radius in [(run, 38)] + [(e, 31) for e in run.enemies if e.hull > 0]:
+            x, y = project((actor.x, actor.y))
+            radius = length(radius) + 5
+            indicator_obstacles.append(pygame.Rect(x-radius, y-radius, 2*radius, 2*radius))
+        indicators = offscreen_indicators(
+            player=(run.x, run.y), station=(STATION_X, STATION_Y),
+            threats=[(e.id, e.x, e.y) for e in run.enemies if e.hull > 0],
+            project=project, viewport=camera.viewport, obstacles=indicator_obstacles)
+        self._world_labels.extend(pygame.Rect(marker.bounds) for marker in indicators)
+        old_clip = self._canvas.get_clip()
+        self._canvas.set_clip(camera.viewport)
+        self._art.draw_field_detail(self._canvas, camera)
         target = mining_target(c, run)
-        # A faint field preserves background depth without hiding its true radius.
-        self._canvas.blit(self._shield, (STATION_X - SAFE_RADIUS - 1,
-                                        STATION_Y - SAFE_RADIUS - 1))
-        pygame.draw.circle(self._canvas, _LINE, (STATION_X, STATION_Y), SAFE_RADIUS, 1)
-        pygame.draw.circle(self._canvas, _CYAN, (STATION_X, STATION_Y), DOCK_RADIUS, 1)
-        self._art.draw_station(self._canvas, STATION_X, STATION_Y)
+        sx, sy = project((STATION_X, STATION_Y))
+        if camera.zoom not in self._shields:
+            diameter = round(length(SAFE_RADIUS * 2 + 2))
+            self._shields[camera.zoom] = pygame.transform.smoothscale(self._shield, (diameter, diameter))
+        shield = self._shields[camera.zoom]
+        self._canvas.blit(shield, shield.get_rect(center=(round(sx), round(sy))))
+        pygame.draw.circle(self._canvas, _LINE, (round(sx), round(sy)), round(length(SAFE_RADIUS)), 1)
+        pygame.draw.circle(self._canvas, _CYAN, (round(sx), round(sy)), round(length(DOCK_RADIUS)), 1)
+        self._art.draw_station(self._canvas, sx, sy, size=length(100))
         for rock in run.asteroids:
-            self._art.draw_asteroid(self._canvas, rock)
+            if not camera.is_visible((rock.x, rock.y), rock.radius):
+                continue
+            self._art.draw_asteroid(self._canvas, rock, camera)
             if rock is target or rock.health < rock.max_health:
+                rx, ry = project((rock.x, rock.y))
+                radius = length(rock.radius)
                 rect = self._annotation_rect((62, 16),
-                    [(rock.x-31, rock.y+rock.radius+10),
-                     (rock.x-31, rock.y-rock.radius-26),
-                     (rock.x+rock.radius+12, rock.y-8)])
+                    [(rx-31, ry+radius+10), (rx-31, ry-radius-26), (rx+radius+12, ry-8)])
                 if rect is not None:
                     pygame.draw.rect(self._canvas, _BG, rect, border_radius=4)
                     self._bar(rect.x+3, rect.y+3, 56, rock.health/rock.max_health, _ORE[rock.ore])
                     self._world_bars.append(rect)
         for pickup in run.pickups:
-            ore_glint(self._canvas, pickup.x, pickup.y, pickup.ore,
-                      self._visual_time, pickup.id)
+            if camera.is_visible((pickup.x, pickup.y), 13):
+                ore_glint(self._canvas, pickup.x, pickup.y, pickup.ore,
+                          self._visual_time, pickup.id, camera)
+        px, py = project((run.x, run.y))
         # Backing precedes the beam so it cannot hide the mining mount/glow.
-        pygame.draw.circle(self._canvas, _BG, (round(run.x), round(run.y)), 37)
+        pygame.draw.circle(self._canvas, _BG, (round(px), round(py)), round(length(37)))
         if target is not None:
-            pygame.draw.circle(self._canvas, _LINE, (round(run.x), round(run.y)), round(MINE_RANGE), 1)
-            pygame.draw.circle(self._canvas, _CYAN, (round(target.x), round(target.y)), round(target.radius + 8), 1)
+            tx, ty = project((target.x, target.y))
+            radius = length(target.radius)
+            pygame.draw.circle(self._canvas, _LINE, (round(px), round(py)), round(length(MINE_RANGE)), 1)
+            pygame.draw.circle(self._canvas, _CYAN, (round(tx), round(ty)), round(length(target.radius + 8)), 1)
             progress = round((1 - target.health / target.max_health) * 100)
             self._flight_label(self._t("cut_progress", value=progress),
-                               target.x - 60, target.y - target.radius - 44, _CYAN,
-                               anchor=(target.x, target.y, target.radius))
+                               tx - 60, ty - radius - 44, _CYAN, anchor=(tx, ty, radius))
             if pygame.K_SPACE in self._keys and self.mode == "flight":
-                mining_beam(self._canvas, run, target, self._visual_time)
+                mining_beam(self._canvas, run, target, self._visual_time, camera)
         for enemy in run.enemies:
+            if not camera.is_visible((enemy.x, enemy.y), 34):
+                continue
+            ex, ey = project((enemy.x, enemy.y))
             self._rival_bar(enemy)
-            self._brackets(enemy.x, enemy.y, 31, _RED)
-            self._art.draw_ship(self._canvas, enemy.x, enemy.y, enemy.heading, kind="rival", size=24)
+            self._brackets(ex, ey, length(31), _RED)
+            self._art.draw_ship(self._canvas, ex, ey, enemy.heading, kind="rival", size=length(24))
         for shot in run.projectiles:
-            projectile(self._canvas, shot)
-        self._brackets(run.x, run.y, 36, _WHITE)
-        self._art.draw_ship(self._canvas, run.x, run.y, run.heading, size=32,
+            if camera.is_visible((shot.x, shot.y), 20):
+                projectile(self._canvas, shot, camera)
+        self._brackets(px, py, length(36), _WHITE)
+        self._art.draw_ship(self._canvas, px, py, run.heading, size=length(32),
                   thrust=self._moving(), phase=self._visual_time, color=_CYAN)
-        self._impacts.draw(self._canvas)
+        self._impacts.draw(self._canvas, camera)
         if self._visual_time < 6:
             self._draw_player_label()
-        if self.mode == "flight":
-            ax, ay = map(int, self._aim)
+        if self.mode == "flight" and camera.viewport.collidepoint(self._cursor):
+            ax, ay = map(int, self._cursor)
             pygame.draw.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
             pygame.draw.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
             pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
+        self._draw_guidance()
+        # Reserved early, painted last so guidance cannot cross navigation chips.
+        draw_indicators(self._canvas, indicators, self._text, self._t)
+        self._canvas.set_clip(old_clip)
         self._panel((30, 24, 1860, 116))
         self._text(self._t("sector_title", sector=run.sector), 60, 35, 32, _CYAN)
         in_safe_zone = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= SAFE_RADIUS
@@ -643,9 +716,18 @@ class CampaignScreen(Screen):
         self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 35, 28, _GOLD)
         self._bar(1130, 80, 400, len(run.cargo)/c.capacity, _GOLD)
         self._text(self._t("credits", value=c.credits), 1590, 47, 27, _GOLD)
-        self._draw_guidance()
+        # Guidance text is screen space, emitted after its opaque HUD backing.
+        advice = guidance(c, run)
+        color = _RED if advice.key == "return_damaged" else _GOLD
+        self._text(self._t("guide_" + advice.key), 60, 108, 23, color)
+        self._text(self._t("distance", value=round(advice.distance)), 1710, 108, 21, _MUTED)
+        self._text(self._t("camera_zoom", value=f"{camera.zoom:g}"), 1430, 108, 19, _MUTED)
         self._panel((30, 1026, 1860, 42))
-        self._text(self._t("controls"), 60, 1034, 24, _WHITE)
+        controls = self._t("controls") + "   " + self._t("camera_controls")
+        size = 24
+        while size > 14 and self._theme.get_font(size).size(controls)[0] > 1800:
+            size -= 1
+        self._text(controls, 60, 1034, size, _WHITE)
 
     def _draw_fleet(self) -> None:
         self._text_layer.clear()

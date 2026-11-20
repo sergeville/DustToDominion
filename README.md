@@ -5,15 +5,39 @@ spec-first pygame-ce game. Mine and sell ore, upgrade your ship, fight rival
 ships, hire two crew members and build a three-ship operation. Win with both
 crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
-This local continuation includes a complete playable ruleset and textured campaign
-artwork. **1,860 tests pass**; a native graphics check verified fullscreen at
-3440×1440 on this Mac. Hands-on campaign play, audio and difficulty balance still
-need human acceptance. See the [current validation report](docs/reviews/2026-11-20-realistic-polish.md)
-and [campaign specification](docs/19-complete-small-game.md).
-The [team handoff](docs/reviews/TEAM-HANDOFF.md) records the design, decisions,
-validation commands, full screenshot archive and work still needing acceptance.
+This local continuation includes a complete playable ruleset, textured artwork
+and a player-following camera. The [camera validation report](docs/reviews/2026-11-20-camera/review.md)
+records the latest checks and matching before/after images. Physical play, audio,
+balance and **Serge's visual acceptance remain open**. The
+[campaign specification](docs/19-complete-small-game.md) and
+[team handoff](docs/reviews/TEAM-HANDOFF.md) retain the rules and implementation history.
 
-## Realistic visual upgrade
+## Camera and framing
+
+**1,928 tests pass**, including an earned mining/sale trip and rival defeat.
+Native graphics passed at 3440×1440 desktop fullscreen with a 1080p backbuffer.
+One known dummy-display test warning is documented in the report.
+
+Flight starts at **1.5× zoom**. Use the mouse wheel or **− / +** (`=` also works)
+to select **1×, 1.5× or 2×**; **Home** returns to overview. The camera follows your
+ship and stops at the arena edges. Offscreen station/rival arrows show direction
+and world distance. Aiming follows the pointer correctly while the camera moves;
+HUD text and station/fleet menus stay in screen space. Zoom is session-only and
+retained between trips; existing saves and gameplay geometry are unchanged.
+
+![Camera pass: matching mining scene before and after](docs/reviews/2026-11-20-camera/mining-before-after.png)
+
+Both source images are 1920×1080 actual renderer captures of the same synthetic
+model state, shown at equal size. See [earned mining](docs/reviews/2026-11-20-camera/final/trip-mining.png)
+and [earned combat](docs/reviews/2026-11-20-camera/final/combat-firing.png) for
+input-driven gameplay. The internal world canvas is still **1920×1080**.
+Offscreen 3840×2160 output scales that world; native 4K world rendering remains a
+separate task. Camera zoom samples each sprite at its projected size inside the
+1080p world canvas; it does not turn that canvas into 4K.
+
+## Earlier realistic visual upgrade
+
+[Actual versus reference: four side-by-side image sheets and camera evaluation](docs/reviews/2026-11-20-reference-comparison/review.md). **Visual acceptance remains open for Serge’s review.**
 
 The campaign now uses 13 standalone artwork assets: four ships, Kepler Station,
 four mineral asteroid forms, two crew portraits, a docking bay and a starfield.
@@ -59,7 +83,7 @@ panels remain differences from the reference. Detailed evidence and limitations:
 [validation report](docs/reviews/2026-11-20-realistic-polish.md) and
 [independent review](docs/reviews/2026-11-20-realistic-polish/independent-review.md).
 
-Changes are committed locally. Nothing was pushed to the upstream repository.
+Work stays local. Nothing is pushed to the upstream repository.
 Earlier [vector-art screenshots](docs/reviews/2026-11-20-feedback.md) and the
 [team handoff](docs/reviews/TEAM-HANDOFF.md) preserve the implementation history.
 
@@ -71,6 +95,7 @@ On this Mac, double-click **Open Dust to Dominion.command**, then choose
 
 - **WASD / arrows:** move. **Space:** mine nearby asteroids; fly over ore to collect it.
 - **Mouse / left click:** aim / fire. **E:** dock inside the station beacon.
+- **Wheel / − / +:** zoom; **Home:** overview. Default is 1.5×.
 - **Esc:** pause during flight. Losing window focus also pauses.
 - At the station, sell cargo, repair, buy upgrades, hire crew and buy support ships.
 - Sector 1 has no enemies. Sectors 2 and 3 unlock after 300 and 1,000 credits in sales.

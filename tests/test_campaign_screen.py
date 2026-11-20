@@ -294,7 +294,9 @@ def test_guidance_stays_in_header_and_does_not_cover_reachable_ship(screen, monk
     monkeypatch.setattr(screen, '_panel', lambda rect: panels.append(pygame.Rect(rect)))
     monkeypatch.setattr(screen, '_text', lambda value, x, y, size=28, *args, **kwargs: text.append((value, y, size)))
     screen._draw_flight()
-    ship = pygame.Rect(928, 903, 64, 64)
+    sx, sy = screen._camera.world_to_screen((screen.expedition.x, screen.expedition.y))
+    radius = screen._camera.scale_length(32)
+    ship = pygame.Rect(sx-radius, sy-radius, radius*2, radius*2)
     assert not any(panel.colliderect(ship) for panel in panels)
     advice = [item for item in text if item[0] == screen._t('guide_approach')]
     assert advice and advice[0][1] + advice[0][2] < WORLD_TOP
@@ -335,11 +337,16 @@ def test_hud_and_local_labels_leave_corner_ships_visible(screen, monkeypatch, po
         original_text(text, x, y, size, *args, **kwargs)
     monkeypatch.setattr(screen, '_text', record)
     screen._draw_flight()
-    ship = pygame.Rect(point[0] - 37, point[1] - 37, 74, 74)
+    sx, sy = screen._camera.world_to_screen(point)
+    radius = screen._camera.scale_length(37)
+    ship = pygame.Rect(sx-radius, sy-radius, radius*2, radius*2)
     assert pygame.Rect(0, 0, 1920, 1080).contains(ship)
     assert not any(panel.colliderect(ship) for panel in panels)
-    station = pygame.Rect(STATION_X - SAFE_RADIUS, STATION_Y - SAFE_RADIUS,
-                          SAFE_RADIUS * 2, SAFE_RADIUS * 2)
+    sx, sy = screen._camera.world_to_screen((STATION_X, STATION_Y))
+    radius = screen._camera.scale_length(SAFE_RADIUS)
+    # World drawing is clipped to the flight viewport; offscreen portions
+    # cannot cover the fixed HUD.
+    station = pygame.Rect(sx-radius, sy-radius, radius*2, radius*2).clip(screen._camera.viewport)
     assert not any(panel.colliderect(station) for panel in panels)
     assert all(pygame.Rect(0, 0, 1920, 1080).contains(rect) for rect in labels)
 
@@ -354,11 +361,11 @@ def test_ore_brackets_surround_rock_and_return_brackets_surround_dock(screen, mo
     rock = next(r for r in screen.expedition.asteroids if r.id == advice.target_id)
     screen._draw_guidance()
     x, y, radius, color = calls[-1]
-    assert (x, y) == (rock.x, rock.y) and radius > rock.radius
+    assert (x, y) == screen._camera.world_to_screen((rock.x, rock.y)) and radius > screen._camera.scale_length(rock.radius)
     screen.expedition.cargo = [0] * screen.campaign.capacity
     screen._draw_guidance()
     x, y, radius, color = calls[-1]
-    assert (x, y) == (STATION_X, STATION_Y) and radius > DOCK_RADIUS
+    assert (x, y) == screen._camera.world_to_screen((STATION_X, STATION_Y)) and radius > screen._camera.scale_length(DOCK_RADIUS)
 
 
 def test_bottom_edge_player_label_does_not_overlap_direction_arrow(screen, monkeypatch):
@@ -366,9 +373,10 @@ def test_bottom_edge_player_label_does_not_overlap_direction_arrow(screen, monke
     from dtd.campaign_guidance import guidance
     screen._launch(1)
     screen.expedition.y = WORLD_BOTTOM
+    screen._sync_camera()  # Synthetic position fixture bypasses normal advance.
     labels = []
     monkeypatch.setattr(screen, '_flight_label',
-                        lambda text, x, y, color: labels.append(
+                        lambda text, x, y, color, **kwargs: labels.append(
                             pygame.Rect(x, y, *screen._theme.get_font(20).size(text))))
     screen._draw_player_label()
     assert len(labels) == 1
@@ -383,7 +391,9 @@ def test_quick_fire_click_survives_release_before_simulation_tick(screen, split_
     screen._launch(1)
     run = screen.expedition
     run.x, run.y = 600, 300  # Well outside the station shield.
-    point = (round(900 * size[0] / 1920), round(300 * size[1] / 1080))
+    screen._camera.follow(run.x, run.y)  # Synchronize this synthetic position fixture.
+    sx, sy = screen._camera.world_to_screen((900, 300))
+    point = (round(sx * size[0] / 1920), round(sy * size[1] / 1080))
     down = pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=point, button=1)
     up = pygame.event.Event(pygame.MOUSEBUTTONUP, pos=point, button=1)
     if split_updates:
@@ -400,9 +410,14 @@ def test_quick_fire_click_survives_release_before_simulation_tick(screen, split_
 
 
 def fire_click(screen, held=False):
-    events = [pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=(600, 200), button=1)]
+    from dtd.ui import current_scale
+    screen._camera.follow(screen.expedition.x, screen.expedition.y)
+    sx, sy = screen._camera.world_to_screen((900, 300))
+    scale = current_scale().scale
+    pos = (round(sx*scale), round(sy*scale))
+    events = [pygame.event.Event(pygame.MOUSEBUTTONDOWN, pos=pos, button=1)]
     if not held:
-        events.append(pygame.event.Event(pygame.MOUSEBUTTONUP, pos=(600, 200), button=1))
+        events.append(pygame.event.Event(pygame.MOUSEBUTTONUP, pos=pos, button=1))
     screen.update(events)
 
 
@@ -455,7 +470,10 @@ def test_released_click_uses_click_aim_after_mouse_moves(screen):
     screen._launch(1)
     screen.expedition.x, screen.expedition.y = 600, 300
     fire_click(screen)
+    clicked_aim = screen._pending_shot
     screen.update([pygame.event.Event(pygame.MOUSEMOTION, pos=(400, 400))])
     screen.advance(1 / 60)
     shot = screen.expedition.projectiles[0]
-    assert shot.vx > 0 and shot.vy == pytest.approx(0)
+    assert shot.vx > 0
+    assert shot.vy/shot.vx == pytest.approx((clicked_aim[1]-300)/(clicked_aim[0]-600))
+    assert screen._aim != clicked_aim

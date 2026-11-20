@@ -132,7 +132,8 @@ class PlayerClient:
 
     def aim(self, x, y, pressed=None):
         factor = current_scale().scale
-        pos = (int(x * factor), int(y * factor))
+        view_x, view_y = self.screen._camera.world_to_screen((x, y))
+        pos = (round(view_x * factor), round(view_y * factor))
         self.events(pygame.event.Event(pygame.MOUSEMOTION, pos=pos, rel=(0, 0), buttons=(0, 0, 0)))
         if pressed is not None:
             self.events(pygame.event.Event(

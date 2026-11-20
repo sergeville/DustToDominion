@@ -5,6 +5,9 @@ These are functional integration checks, not native desktop play acceptance.
 """
 import copy
 import random
+import math
+
+import pytest
 
 import pygame
 
@@ -29,10 +32,13 @@ def test_repeated_output_resolution_changes_preserve_flight_aim_and_state(player
         assert random.getstate() == random_before, 'Presentation must not consume shared RNG'
         player.aim(810, 510, pressed=True)
         player.aim(810, 510, pressed=False)
-        assert player.screen._aim == (810, 510)
+        # At most half an output pixel of rounding, mapped back through zoom.
+        tolerance = .5 / (size[1]/1080 * player.screen._camera.zoom) + 1e-9
+        assert player.screen._aim == pytest.approx((810, 510), abs=tolerance)
         player.screen.advance(1 / 60)
         friendly = [shot for shot in run.projectiles if shot.friendly]
-        assert friendly and abs(friendly[-1].vy) < 1e-6 and friendly[-1].vx > 0
+        assert friendly and friendly[-1].vx > 0
+        assert abs(math.atan2(friendly[-1].vy, friendly[-1].vx)) <= math.atan2(tolerance, 360-tolerance)
         # Let the firing cooldown expire through normal updates before resizing.
         for _ in range(15):
             player.screen.advance(1 / 60)

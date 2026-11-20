@@ -2,7 +2,10 @@
 
 ## Local campaign work — start here
 
-- [Current realistic polish validation](reviews/2026-11-20-realistic-polish.md): label/rival fixes, stronger station/fleet art, 1,860 tests, updated captures and distinct native/offscreen evidence.
+- [Current camera pass](reviews/2026-11-20-camera/review.md): following camera, zoom, inverse aiming, navigation indicators, matched before/after captures and remaining acceptance.
+
+- [Actual versus reference comparison](reviews/2026-11-20-reference-comparison/review.md): four paired image sheets, three largest gaps, proposed camera mapping and output/internal resolution limits; human visual acceptance open.
+- [Prior realistic polish validation](reviews/2026-11-20-realistic-polish.md): label/rival fixes, stronger station/fleet art, 1,860 tests, updated captures and distinct native/offscreen evidence.
 - [Initial realistic artwork validation](reviews/2026-11-20-realistic.md): asset implementation and earlier acceptance evidence.
 - [Realistic visuals implementation prompt](DustToDominion_Realistic_Visuals_Team_Prompt.md): Serge's supplied team brief, now kept with the project.
 - [Realistic visual upgrade plan](21-realistic-visual-upgrade.md): current asset contracts, implementation stages and acceptance criteria.

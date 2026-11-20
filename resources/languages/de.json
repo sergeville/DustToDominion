@@ -105,6 +105,11 @@
     "player_label": "DEIN SCHIFF",
     "ore_target": "ERZ / {value} m",
     "distance": "{value} m",
-    "cut_progress": "ABBAU {value}%"
+    "cut_progress": "ABBAU {value}%",
+    "camera_station": "STATION / {value} m",
+    "camera_threat": "RIVALE / {value} m",
+    "camera_extra_threats": " +{count}",
+    "camera_zoom": "ZOOM {value}×",
+    "camera_controls": "Mausrad / − +: Zoom   Pos1: Übersicht"
   }
 }

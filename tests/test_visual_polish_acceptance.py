@@ -23,8 +23,10 @@ def cut_bounds(player, progress=0):
     text, x, y, size, _ = rows[0]
     scale_y = pygame.display.get_surface().get_height()/1080
     width, height = screen._theme.get_font(max(1, round(size*scale_y))).size(text)
+    backing_width, backing_height = screen._theme.get_font(size).size(text)
     # Map actual output-rasterized glyph dimensions back into world coordinates.
-    return pygame.Rect(x, y, math.ceil(width/scale_y), math.ceil(height/scale_y)).inflate(12, 6)
+    return pygame.Rect(x, y, max(backing_width, math.ceil(width/scale_y)),
+                       max(backing_height, math.ceil(height/scale_y))).inflate(12, 6)
 
 
 def assert_clear_cut(player, progress=0):

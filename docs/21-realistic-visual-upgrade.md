@@ -106,3 +106,16 @@ Use only isolated persistence. Keep actual-runtime and synthetic-state evidence
 distinct; measure startup/cache warmup separately from steady frames. Document
 hardware, driver, resolution, p50/p95/max, memory and limitations. Keep proposed
 until native play and visual acceptance are recorded.
+
+## Implementation evidence — 2026-11-20
+
+Implemented locally at `6566c42`; kept proposed until the native play and human
+visual acceptance criteria above are satisfied. All 13 assets, bounded rendering,
+effects and station/fleet integration are present. The first textured three-asset
+mining trip passed before expansion; the final trip passed again. Independent
+regression: 1,841 passed. All 64 bilingual layout captures were reviewed.
+Native Cocoa rendering switched 1920x1080 windowed to 3440x1440 fullscreen and
+back without changing monitor modes. Physical input and audio remain unverified.
+
+See the [current report](reviews/2026-11-20-realistic.md) for evidence, source
+provenance, performance costs and exact remaining visual compromises.

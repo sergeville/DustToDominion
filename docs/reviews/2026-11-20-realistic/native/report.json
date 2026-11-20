@@ -1,0 +1,172 @@
+{
+  "kind": "native graphics smoke; synthetic state; no OS input; audio disabled",
+  "desktop_before": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "phases": [
+    {
+      "phase": "windowed-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.30979151558131,
+      "render_flip_p95_ms": 9.137791930697858,
+      "render_flip_max_ms": 11.412666994147003,
+      "paced_interval_p50_ms": 16.7696665157564,
+      "paced_interval_max_ms": 17.909707967191935,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    },
+    {
+      "phase": "windowed-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.501187501475215,
+      "render_flip_p95_ms": 10.040499968454242,
+      "render_flip_max_ms": 13.924165978096426,
+      "paced_interval_p50_ms": 16.771750000771135,
+      "paced_interval_max_ms": 17.797500011511147,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    },
+    {
+      "phase": "fullscreen-normal",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "render_flip_p50_ms": 6.892561970744282,
+      "render_flip_p95_ms": 8.972000097855926,
+      "render_flip_max_ms": 10.458874981850386,
+      "paced_interval_p50_ms": 16.759124991949648,
+      "paced_interval_max_ms": 17.904791980981827,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    },
+    {
+      "phase": "fullscreen-heavy",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "render_flip_p50_ms": 7.231500057969242,
+      "render_flip_p95_ms": 8.490124950185418,
+      "render_flip_max_ms": 9.146249969489872,
+      "paced_interval_p50_ms": 16.796542040538043,
+      "paced_interval_max_ms": 17.638124991208315,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    },
+    {
+      "phase": "returned-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.302811951376498,
+      "render_flip_p95_ms": 8.997500059194863,
+      "render_flip_max_ms": 10.923375026322901,
+      "paced_interval_p50_ms": 16.897874476853758,
+      "paced_interval_max_ms": 17.801916925236583,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    },
+    {
+      "phase": "returned-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.290708017535508,
+      "render_flip_p95_ms": 9.38583305105567,
+      "render_flip_max_ms": 11.165417032316327,
+      "paced_interval_p50_ms": 16.814749978948385,
+      "paced_interval_max_ms": 17.92012492660433,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936
+      }
+    }
+  ],
+  "native_input": "Pending: CUA omits uv Python; direct executable getApp returned Invalid app",
+  "driver": "cocoa",
+  "desktop_after": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "passed": true
+}

@@ -1,0 +1,231 @@
+{
+  "safe_campaign": {
+    "expeditions": 16,
+    "seconds": 333.09,
+    "bank": 1308,
+    "fleet": 3,
+    "crew": [
+      true,
+      true
+    ],
+    "hull": 100,
+    "won": true,
+    "runs": [
+      {
+        "sector": 1,
+        "seconds": 13.68,
+        "sale": 120,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 23.77,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 23.77,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 21.97,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 21.37,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 198,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 198,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 198,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 20.77,
+        "sale": 234,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      }
+    ]
+  },
+  "risky_campaign": {
+    "expeditions": 6,
+    "seconds": 146.34,
+    "bank": 1886,
+    "fleet": 3,
+    "crew": [
+      true,
+      true
+    ],
+    "hull": 100,
+    "won": true,
+    "runs": [
+      {
+        "sector": 1,
+        "seconds": 13.68,
+        "sale": 120,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 1,
+        "seconds": 23.77,
+        "sale": 180,
+        "bounty": 0,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 2,
+        "seconds": 29.2,
+        "sale": 480,
+        "bounty": 70,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 2,
+        "seconds": 25.1,
+        "sale": 480,
+        "bounty": 70,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 3,
+        "seconds": 27.29,
+        "sale": 924,
+        "bounty": 180,
+        "hull": 100,
+        "repair_paid": 0
+      },
+      {
+        "sector": 3,
+        "seconds": 27.29,
+        "sale": 1092,
+        "bounty": 180,
+        "hull": 100,
+        "repair_paid": 0
+      }
+    ]
+  },
+  "station_exploit_regression": [
+    {
+      "sector": 2,
+      "seconds": 10,
+      "bounty": 0,
+      "enemies_remaining": 1,
+      "hull": 100
+    },
+    {
+      "sector": 3,
+      "seconds": 10,
+      "bounty": 0,
+      "enemies_remaining": 2,
+      "hull": 100
+    }
+  ],
+  "stress": {
+    "expeditions": 120,
+    "updates": 91400,
+    "defeats": 37,
+    "docks": 47,
+    "forced_abandons": 36,
+    "maximum_projectiles": 5,
+    "invariants": "passed"
+  }
+}

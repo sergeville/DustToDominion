@@ -5,12 +5,52 @@ spec-first pygame-ce game. Mine and sell ore, upgrade your ship, fight rival
 ships, hire two crew members and build a three-ship operation. Win with both
 crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
-This local continuation includes a complete playable ruleset. Native Mac
-playthrough, fullscreen behavior and final difficulty balance still need
-human acceptance. See [validation and screenshots](docs/reviews/2026-11-20-playable-game.md)
+This local continuation includes a complete playable ruleset and textured campaign
+artwork. **1,841 tests pass**; a native graphics check verified fullscreen at
+3440×1440 on this Mac. Hands-on campaign play, audio and difficulty balance still
+need human acceptance. See the [current validation report](docs/reviews/2026-11-20-realistic.md)
 and [campaign specification](docs/19-complete-small-game.md).
 The [team handoff](docs/reviews/TEAM-HANDOFF.md) records the design, decisions,
 validation commands, full screenshot archive and work still needing acceptance.
+
+## Realistic visual upgrade
+
+The campaign now uses 13 standalone artwork assets: four ships, Kepler Station,
+four mineral asteroid forms, two crew portraits, a docking bay and a starfield.
+Mining beams, contact sparks, exhaust, projectile trails and hit flashes respond
+to play. Station and fleet panels show the new artwork alongside live values.
+The gameplay rules and version-one saves are unchanged.
+
+![Actual gameplay with the new artwork](docs/reviews/2026-11-20-realistic/final/en-us-1920-mining.png)
+
+This is an actual rendered game scene. The supplied
+[visual target](docs/concepts/realistic-visual-target-2026-11-20.png) is concept art;
+the game preserves its existing small-scale geometry and does not yet match the
+reference's cinematic detail. The
+[implementation prompt](docs/DustToDominion_Realistic_Visuals_Team_Prompt.md),
+[plan](docs/21-realistic-visual-upgrade.md) and
+[asset sources and prompts](assets/source/realistic/README.md) are retained.
+
+Validation at local product revision `6566c42`:
+
+- **1,841 tests passed**, including earned progression, combat, defeat and saves.
+- A playable automated mining trip launched, mined, collected, docked and sold
+  three iron units: **80 → 110 credits**. It passed before expanding the artwork
+  and again with all assets integrated.
+- **64 English/German captures** reviewed at 720p, 1080p, 1440p and offscreen 4K.
+- Native windowed/fullscreen/windowed graphics checks passed on the main monitor.
+  Fullscreen uses its 3440×1440 desktop resolution, scaling a 1920×1080 backbuffer.
+  Font choice and proportional scaling are preserved; this is not native 4K art.
+
+Remaining: physical mouse/keyboard play and audio acceptance, human judgment of
+balance and art, plus minor combat-label overlap and rival contrast when ships
+cross rocks. Detailed timings, screenshots and limitations are in the
+[validation report](docs/reviews/2026-11-20-realistic.md) and
+[independent review](docs/reviews/2026-11-20-realistic/independent-review.md).
+
+Changes are committed locally. Nothing was pushed to the upstream repository.
+Earlier [vector-art screenshots](docs/reviews/2026-11-20-feedback.md) and the
+[team handoff](docs/reviews/TEAM-HANDOFF.md) preserve the implementation history.
 
 ## Play
 
@@ -111,31 +151,3 @@ are written back to `game.json`.
   This is neither SDL's fault nor Pygame's fault. On Windows, our main thread is parked during a
   window drag operation, preventing our code from keeping the audio buffer full. Note that this
   seems to only be an issue on Windows.
-
-
-### Realistic visual upgrade — in progress
-
-The [implementation prompt](docs/DustToDominion_Realistic_Visuals_Team_Prompt.md)
-and [visual reference](docs/concepts/realistic-visual-target-2026-11-20.png)
-define the target: textured industrial ships, mineral asteroids, Kepler Station,
-crew portraits and readable dynamic UI. The reference is concept art; it is not
-a screenshot of the implemented game.
-
-The [implementation plan](docs/21-realistic-visual-upgrade.md) records asset
-contracts, team ownership and staged acceptance. First, complete one playable
-mining trip with the new Prospector, asteroid, station and mining effects; then
-expand the artwork across the campaign. Existing gameplay and version-one saves
-must remain compatible.
-
-Baseline at local revision `97cc41a`: **1,805 tests passed**. An isolated,
-input-driven trip launched, mined and collected three iron units, docked and
-sold them, increasing credits from 80 to 110. The
-[baseline evidence](docs/reviews/2026-11-20-realistic/baseline/report.json)
-includes rendered captures and offscreen timing measurements. This verifies
-the existing game before integration; the new visuals and native playthrough
-are still being validated.
-
-Earlier [presentation screenshots](docs/reviews/2026-11-20-feedback.md) show
-the vector-art stage. See the [team handoff](docs/reviews/TEAM-HANDOFF.md) for
-recorded implementation history and acceptance limits. Changes stay local;
-the upstream repository is not being pushed or modified.

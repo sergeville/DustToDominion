@@ -1,0 +1,125 @@
+{
+  "phase": "slice",
+  "revision": "97cc41afae03c6ca2f4c4c63aa8883e50a765910",
+  "tracked_diff": " README.md                     | 34 +++++++++++++++++++-----\n src/dtd/screens/campaign.py   | 61 +++++++++++++++++++++++++++++--------------\n tests/test_campaign_screen.py |  3 +--\n 3 files changed, 70 insertions(+), 28 deletions(-)\n",
+  "source_sha256": {
+    "src/dtd/__init__.py": "1b8c56e6bbee84931706ba956907d57a451bcd47ec1f2c9acd00f256d8b1e60d",
+    "src/dtd/audio.py": "7906bbab333eb7bbba1bde93dc58c82aa627b84cc7d68855b456decd0da70d8e",
+    "src/dtd/campaign.py": "ad70bff81d295572ca60f047193e9060bc49caa8abab52ae72ff20b6e38a03e0",
+    "src/dtd/campaign_art.py": "a5cec91a5d0cb0ba13a65f54aba3b215b7b00e849a2ebbba7fdf8d6c98d3e1bb",
+    "src/dtd/campaign_effects.py": "c354ac61f567bbf29c6e67287697694e0aa574da7147ba6f0c176c48753cff95",
+    "src/dtd/campaign_guidance.py": "a069fe9e5fbc5bde37e55e4dd310dea6834af0f1871e12d41e6ecb49ae8d4d70",
+    "src/dtd/campaign_sprites.py": "56e09a27633baa773143e98fc64b2bb6b8daca1d81ce945b25bc4ffe1f214abb",
+    "src/dtd/campaign_store.py": "1f2dab3ad609daf60f0594fcba9b3fb3cf976a4981d9186aafca4a9e377b0fe8",
+    "src/dtd/config.py": "81fd3978cbed880289aa58f98420270e7d755f49b2a6e58d547078d6593b305d",
+    "src/dtd/errors.py": "3160702088d262df650239065f1304a6a89bc38a0c9b9c2cc4e1eb63499a154e",
+    "src/dtd/game_config.py": "d2f5e6891d931d7c200cdaf60eaa2ddf8d8df75ff6efe0b81661966a40bb6850",
+    "src/dtd/game_constants.py": "26ea340faaef489c765dedfe67f993c993c6993af71f8c3641dfcdac04d510a1",
+    "src/dtd/language.py": "25ec6ac218c857e969a62e5805df523069be33a290d799e4e6bc91bb36a3499e",
+    "src/dtd/main.py": "a422f2d1aeaaa236d7b5ff817d8e43a6020f54bd50aaddca58697eff63f81871",
+    "src/dtd/main_window.py": "0b3afa3387e56ddc7a425fc22d1af84bef806ec537b14edfe0791f58422d6177",
+    "src/dtd/pak.py": "741d6432942b43d6286702f54e34b8f3c869c867378547ea93c99ac4b00041c1",
+    "src/dtd/persistence.py": "17fe341f19c80b66d6b6902d3974a58930443365e95878a4910e1eaf9bc49ccb",
+    "src/dtd/resource_loader.py": "1252e777ef0fcf230f7027369168e7535d07c84173a5275a32292513610cbcb0",
+    "src/dtd/screens/__init__.py": "f036d95e3dd72815222765d31d15cf3cbe226ec15aecd15ce5c7beaef8c74dcd",
+    "src/dtd/screens/background.py": "ed2a3f5c3605d76fc7a90a2e8fe89ef27e92fcf66c4c7bb6aad5db42ebb3bd7f",
+    "src/dtd/screens/base.py": "60cef670f2b66a0502d719e6b54109395b011255779a895bf9f6364d5fcb335b",
+    "src/dtd/screens/campaign.py": "ec547d4e05d85ad33dbecefc69f3c96ba7c30ee9daa547accd20d3eb5876b3d4",
+    "src/dtd/screens/options.py": "2c0b19c1c6040d721b77e9ec044ef80a045f5e3737a4b3f123bf995a10d1e346",
+    "src/dtd/screens/starfield.py": "0506e840b12302d94045971a74cf17bf547f71b13ce95accb5107f9d40ee852f",
+    "src/dtd/screens/title.py": "d4e8cca6fb3735dab7bac9eec2b08774c18b11d2afad7f51cfe88bc30fd16359",
+    "src/dtd/ui.py": "e59e7802882820746764461ee6cbfa1b5844704873a1458dc48720554f598661",
+    "src/dtd/widgets/__init__.py": "b885d26d2f831c76cf67fd545120cb6217463f00d8c9b90cf92f8161e77d385f",
+    "src/dtd/widgets/button.py": "f4a9d63c77c2599ef75b475bb484fb1eb97c0690c20448f2ed40badf6e9f9f13",
+    "src/dtd/widgets/checkbox.py": "5efa322110fe8c03ec59bab620a79a58810ec76271ea92e5442e2c51dbffafe0",
+    "src/dtd/widgets/choice_list.py": "b75f1e7b4d8ce0b26bfde4cbded17b6a2b7bf89fab5ef9029ab78d8b73f53a6b",
+    "src/dtd/widgets/label.py": "a733ae31093279c90ac6879707b8fec4d63bd1f407bf9fe955c0eaf4c7059e72",
+    "src/dtd/widgets/progress_bar.py": "b9cf6205c391c6be24af374a4de33f2ed3da1736ed193587df4bc95ec65dfe82",
+    "src/dtd/widgets/slider.py": "5b521c7c42fc013b9da0b0103606020e898857b8520bf3acee5b517cc5d76662",
+    "src/dtd/widgets/text_layout.py": "fc69af0177e5780dd6d45fdeea5aad60bfb2dd7e508ae03de08af251b51f7f94",
+    "src/dtd/widgets/text_panel.py": "785a60c1283cdc4bfabd25a05186cc6459130203481dd48fad365eeb6cb985ef",
+    "src/dtd/widgets/value_layout.py": "d28699fb703f716710322c42fdcbffcf4ee63e045e71c6775b4cfa31e42c9d13"
+  },
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.12.13",
+  "pygame": "2.5.8",
+  "sdl": [
+    2,
+    32,
+    10
+  ],
+  "driver": "dummy",
+  "evidence": "SDL dummy offscreen actual renderer; synthetic matrix separate from earned event-driven trip; not native FPS/input",
+  "logical_world": [
+    1920,
+    1080
+  ],
+  "user_persistence_touched": false,
+  "memory_note": "process cumulative peak RSS; includes loaded source art and transforms, not isolated GPU allocation",
+  "trip": {
+    "passed": true,
+    "credits_before": 80,
+    "credits_after": 110,
+    "ore_mined_collected_sold": 3,
+    "checkpoint_after_dock": [
+      0,
+      0,
+      0
+    ],
+    "collect_and_cut_reproduced": true,
+    "captures": [
+      {
+        "file": "trip-fresh.png",
+        "sha256": "a654085db3de727ada8f2747d15c7286ed40d8b0859e813d053f60f1ad91f251",
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-mining.png",
+        "sha256": "43bd76780280cf5e51c79afad99706895d9a32fab24e1683ef3547a05c7201e7",
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-collected.png",
+        "sha256": "d15da2f45d39096fba58e89453f11df64485ea5946838f9a5cbfbfc8772bb666",
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-docked.png",
+        "sha256": "3c7aad6353b2eb800a7197e60f6e97aeb22b86137cfed521e5a9ae5e774fb2b6",
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "result"
+      },
+      {
+        "file": "trip-sold.png",
+        "sha256": "677b3b78df70250a40906d68c01f4ec2889f3101ee7488cff95c96ace35f7b3a",
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "station"
+      }
+    ],
+    "native_input": false
+  }
+}

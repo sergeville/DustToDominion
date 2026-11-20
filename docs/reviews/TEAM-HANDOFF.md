@@ -7,6 +7,10 @@ status: active
 
 ## 1. Start here
 
+**Latest:** [Realistic visual upgrade](2026-11-20-realistic.md), product `6566c42`,
+1,841 passing tests, 13 artwork assets and native graphics smoke evidence.
+Earlier sections retain their dated implementation history.
+
 This handoff records work authorized by Serge on 2026-11-20: update the requested
 checkout, start the app, then build a complete small game with mining, trade,
 upgrades, combat, save/load and a clear ending. He subsequently asked to see the
@@ -38,7 +42,7 @@ checkout; do not assume those changes are present.
 | Replayed draw costs | [Raw measurements](2026-11-20-evidence/draw-benchmark.txt) |
 | Player controls and setup | [README](../../README.md) |
 
-## 2. Team work and ownership
+## 2. Original campaign team work and ownership
 
 | Role | Work delivered | Independent evidence |
 | --- | --- | --- |
@@ -54,8 +58,10 @@ regression result for the final product code, not a measure of game quality.
 
 The design follows the existing project and Serge's selected scope, using
 ordinary software architecture and simplified arcade math. **There has been no
-side-by-side benchmark against a running reference game.** No external game
+side-by-side benchmark against a running reference game.** In the original campaign stage, no external game
 art, copied ship assets, generated image API or new dependencies were used.
+The realistic upgrade below subsequently added generated raster assets with
+retained originals, prompts and provenance. No new dependencies were added.
 
 - Architecture separates pure rules (`campaign.py`), persistence
   (`campaign_store.py`) and rendering/input (`screens/campaign.py`).
@@ -217,3 +223,29 @@ step, with pause/focus clearing and unchanged shield/cooldown rules. Full suite
 **1,805 passed in 35.70s**, focused screen/acceptance **57 passed**. EN/DE safe-zone
 hints now explicitly say to leave the shield. Running game preserved; save/reopen
 to load the fix. Native physical-click acceptance remains unverified.
+
+## Realistic visual upgrade — 2026-11-20
+
+Local product `6566c42` replaces campaign vectors with 13 reusable textured
+assets, keeping vector fallbacks, model geometry, economy and version-one saves.
+The [current report](2026-11-20-realistic.md) is the authority for this stage;
+older test counts and statements that portraits/textures remain unbuilt are
+historical. Root owned integration/UI/effects; art owned sources/exports;
+renderer owned caching/adapter tests; independent QA owned acceptance/evidence.
+
+First slice: new Prospector, iron rock and station completed an earned
+launch/mine/collect/dock/sell trip before expansion. Final trip repeated with all
+artwork: 80 to 110 credits, three iron sold. Final suite: **1,841 passed in 42.88s**.
+QA reviewed 64 EN/DE layouts at 720p/1080p/1440p/offscreen 2160p, earned combat and
+defeat routes, saves and renderer purity. See the [independent review](2026-11-20-realistic/independent-review.md).
+
+Native Cocoa graphics passed windowed/fullscreen/returned phases; desktop 3440x1440
+was retained and the logical backbuffer remained 1920x1080. CUA could not attach
+to uv Python, so native physical play, audio, human balance/art acceptance and
+other-monitor/platform testing remain open. Minor combat-label overlap and rival
+contrast on rocks remain documented polish. Source assets are raster originals,
+not 3D/layered files; baked lighting rotates and world detail scales from 1080p.
+
+The README now links the moved team prompt, actual screenshot, source assets and
+current evidence. Work remains local; no push or PR. User saves and unrelated
+drafts remain intact. Reopen `Open Dust to Dominion.command` to use current code.

@@ -1,0 +1,50 @@
+2026-11-20 11:57:21.101 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+output /var/folders/xw/6_rxwxw5457c1y0c6bb71vr80000gn/T/dtd-rock-debug-b2qiiq0x
+
+CAPTURE trip-fresh
+rocks [(0, 46, 3, 350, 630), (1, 46, 3, 660, 570), (2, 46, 3, 1230, 570), (3, 46, 3, 1550, 630), (4, 46, 3, 430, 330), (5, 46, 3, 1430, 330)]
+('asteroid_iron', 92, 92, 0) 5545 255
+('asteroid_iron_b', 92, 92, 20) 2711 255
+('asteroid_iron', 92, 92, 42) 5549 255
+('asteroid_iron_b', 92, 92, 64) 2710 255
+('asteroid_iron', 92, 92, 84) 5543 255
+('asteroid_iron_b', 92, 92, 104) 2725 255
+
+CAPTURE trip-mining
+rocks [(0, 46, 2, 350, 630), (1, 46, 3, 660, 570), (2, 46, 3, 1230, 570), (3, 46, 3, 1550, 630), (4, 46, 3, 430, 330), (5, 46, 3, 1430, 330)]
+('asteroid_iron', 92, 92, 0) 5545 255
+('asteroid_iron_b', 92, 92, 20) 2711 255
+('asteroid_iron', 92, 92, 42) 5549 255
+('asteroid_iron_b', 92, 92, 64) 2710 255
+('asteroid_iron', 92, 92, 84) 5543 255
+('asteroid_iron_b', 92, 92, 104) 2725 255
+
+CAPTURE trip-collected
+rocks [(1, 46, 3, 660, 570), (2, 46, 3, 1230, 570), (3, 46, 3, 1550, 630), (4, 46, 3, 430, 330), (5, 46, 3, 1430, 330)]
+('asteroid_iron', 92, 92, 0) 5545 255
+('asteroid_iron_b', 92, 92, 20) 2711 255
+('asteroid_iron', 92, 92, 42) 5549 255
+('asteroid_iron_b', 92, 92, 64) 2710 255
+('asteroid_iron', 92, 92, 84) 5543 255
+('asteroid_iron_b', 92, 92, 104) 2725 255
+after ('asteroid_iron', 92, 92, 0) 5545 255
+after ('asteroid_iron_b', 92, 92, 20) 2711 255
+after ('asteroid_iron', 92, 92, 42) 5549 255
+after ('asteroid_iron_b', 92, 92, 64) 2710 255
+after ('asteroid_iron', 92, 92, 84) 5543 255
+after ('asteroid_iron_b', 92, 92, 104) 2725 255
+
+CAPTURE trip-docked
+('asteroid_iron_b', 92, 92, 20) 2711 255
+('asteroid_iron', 92, 92, 42) 5549 255
+('asteroid_iron_b', 92, 92, 64) 2710 255
+('asteroid_iron', 92, 92, 84) 5543 255
+('asteroid_iron_b', 92, 92, 104) 2725 255
+
+CAPTURE trip-sold
+('asteroid_iron_b', 92, 92, 20) 2711 255
+('asteroid_iron', 92, 92, 42) 5549 255
+('asteroid_iron_b', 92, 92, 64) 2710 255
+('asteroid_iron', 92, 92, 84) 5543 255
+('asteroid_iron_b', 92, 92, 104) 2725 255

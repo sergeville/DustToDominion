@@ -2,14 +2,15 @@
 
 ## Local campaign work — start here
 
+- [Current realistic visuals validation](reviews/2026-11-20-realistic.md): implemented artwork, 1,841 tests, native graphics evidence and remaining acceptance.
 - [Realistic visuals implementation prompt](DustToDominion_Realistic_Visuals_Team_Prompt.md): Serge's supplied team brief, now kept with the project.
 - [Realistic visual upgrade plan](21-realistic-visual-upgrade.md): current asset contracts, implementation stages and acceptance criteria.
-- [Independent visual upgrade review](reviews/2026-11-20-realistic/independent-review.md): baseline, first playable slice and remaining checks.
+- [Independent visual upgrade review](reviews/2026-11-20-realistic/independent-review.md): baseline, playable trip, final matrix, performance and visual limitations.
 - [Team handoff and evidence index](reviews/TEAM-HANDOFF.md): design rationale, team work, validation, screenshots and remaining acceptance.
 - [Complete small game specification](19-complete-small-game.md): implemented rules; native acceptance still pending.
 - [Validation report](reviews/2026-11-20-playable-game.md): results and limits.
 
-- [Flight presentation review](reviews/2026-11-20-feedback.md): current art, guidance and tests.
+- [Flight presentation review](reviews/2026-11-20-feedback.md): earlier vector art, guidance and tests.
 - [Visual goal concept](concepts/README.md): intended look and feel, separate from current implementation.
 
 - [Display validation](reviews/2026-11-20-display.md): larger default window and native desktop fullscreen.

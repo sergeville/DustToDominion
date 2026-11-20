@@ -1,0 +1,926 @@
+{
+  "tested_revision": "6566c42c8fb3b5cb7208f9f9faae48cbc1f365dd",
+  "purpose": "Retained baseline, first slice, final automated and native graphics evidence; see reports for limits",
+  "files": [
+    {
+      "path": "asteroid-debug.log",
+      "bytes": 2200,
+      "sha256": "f452393ecc27bc38d825a9a0f8b526428c5f2a06679bebb9c6408147dd40a576"
+    },
+    {
+      "path": "baseline/de-1280-bottom-edge.png",
+      "bytes": 80459,
+      "sha256": "d0f98aead18a5ef689a09ae362c8779da9f0468ef200659f09e57c847d25761b"
+    },
+    {
+      "path": "baseline/de-1280-combat.png",
+      "bytes": 99296,
+      "sha256": "2f398970bc322f973ee3fa685ae48b71f82e4af9e318908bc6345131e54a2066"
+    },
+    {
+      "path": "baseline/de-1280-fleet.png",
+      "bytes": 85469,
+      "sha256": "2b3a67aeb3f3db2b22289010cefc1103437f0146888912f552d9d334a43629d5"
+    },
+    {
+      "path": "baseline/de-1280-fresh.png",
+      "bytes": 79888,
+      "sha256": "1807f0bb35cda1eceb4e9b3ce33ea11a29e94487701b09964eb9ba2d5844f6db"
+    },
+    {
+      "path": "baseline/de-1280-mining.png",
+      "bytes": 84584,
+      "sha256": "fa3a8c31bdce3a89ae8a507096720863b114a35c400d4bc5e06eda100d3dec59"
+    },
+    {
+      "path": "baseline/de-1280-return.png",
+      "bytes": 77876,
+      "sha256": "22000f680ce60ca9aab601088067fcd950b544d5ea6c5c94a11d01a4c5b0ab5f"
+    },
+    {
+      "path": "baseline/de-1280-station.png",
+      "bytes": 111602,
+      "sha256": "4b3a0792f04706e58a543c675a665d4be3666cc622febaa8ff2aa38b85d73a6e"
+    },
+    {
+      "path": "baseline/de-1280-victory.png",
+      "bytes": 85743,
+      "sha256": "28000c9efdbd9be20cfb014d2db0c45c9b5035e63bd50988c133a5fb286406a8"
+    },
+    {
+      "path": "baseline/de-1920-bottom-edge.png",
+      "bytes": 71998,
+      "sha256": "88d6b4e0eca5096f44ef52550660426e42ce3c8e688f6dff4312c3070007caf1"
+    },
+    {
+      "path": "baseline/de-1920-combat.png",
+      "bytes": 84895,
+      "sha256": "9104d79d395e5fa48332bca67f99794b11609d937551e270c0fd09528fab0eb2"
+    },
+    {
+      "path": "baseline/de-1920-fleet.png",
+      "bytes": 87031,
+      "sha256": "5a24692ef53e5543b60f9374f9223ccb2c2292f92f76338ae3caad3f7678b4ed"
+    },
+    {
+      "path": "baseline/de-1920-fresh.png",
+      "bytes": 71802,
+      "sha256": "df591d4b0a5ae21b0292ac238456ffba16d176be7012fdd9675ef7105eace1b8"
+    },
+    {
+      "path": "baseline/de-1920-mining.png",
+      "bytes": 73451,
+      "sha256": "412e00956953e9bb97280fd774e61670df392895923408ca12494dc46b54d038"
+    },
+    {
+      "path": "baseline/de-1920-return.png",
+      "bytes": 67979,
+      "sha256": "4d66a4a4f92e211351041df831af37de25ad00b92e0ee243ca6c5e771ca4fa09"
+    },
+    {
+      "path": "baseline/de-1920-station.png",
+      "bytes": 130097,
+      "sha256": "921a8bc6a5fdecf6d8dbeb5c9737ca762d97dbc8b0ef8be678bcde5463342e35"
+    },
+    {
+      "path": "baseline/de-1920-victory.png",
+      "bytes": 91546,
+      "sha256": "50383869b20f4639b1927956810968e66e7f0b68dd52d74810b4c187c0a8ef0c"
+    },
+    {
+      "path": "baseline/de-2560-bottom-edge.png",
+      "bytes": 237258,
+      "sha256": "c0ee08d3cfbbb8670b1f98a0ec3c9c54dee8c1b2ba39777a0edc45b168f28b80"
+    },
+    {
+      "path": "baseline/de-2560-combat.png",
+      "bytes": 291567,
+      "sha256": "ab24b3b21c37effd8653809e14e181d0543bf357287788c5a8cbddb791ac6919"
+    },
+    {
+      "path": "baseline/de-2560-fleet.png",
+      "bytes": 242430,
+      "sha256": "023814e3bc4ba2470d94af55a2dbf6316ccf6ccd6af0f4c02271742f78e6652b"
+    },
+    {
+      "path": "baseline/de-2560-fresh.png",
+      "bytes": 235458,
+      "sha256": "f657b29ba31e18a1583c0d3bfbb28ef75836c2ed4cb747b4d8e658e78522b2b9"
+    },
+    {
+      "path": "baseline/de-2560-mining.png",
+      "bytes": 249597,
+      "sha256": "9ce44b949ef8c416ea00d20e29d1f14869fd63669e4848c3b9bdab1198d5a830"
+    },
+    {
+      "path": "baseline/de-2560-return.png",
+      "bytes": 226715,
+      "sha256": "a97e8228fc9f5472645dba5ac226e8a906473efe8ba0dd8a89895d6325747385"
+    },
+    {
+      "path": "baseline/de-2560-station.png",
+      "bytes": 311022,
+      "sha256": "c49d0e14980f9eb46a807504ff5d999bbe53c2d9ecf554b03819086a12c8de16"
+    },
+    {
+      "path": "baseline/de-2560-victory.png",
+      "bytes": 244279,
+      "sha256": "ec5ca58befd74aacaf084b4ace34a752e716d7c5eaa2d2cf80cca7e5f53a3e91"
+    },
+    {
+      "path": "baseline/de-3840-bottom-edge.png",
+      "bytes": 381624,
+      "sha256": "5bcb7f7fb4a10ae6f943d6ed05d191b83159f12e9f1488dbfd2a76ebe025e8b7"
+    },
+    {
+      "path": "baseline/de-3840-combat.png",
+      "bytes": 460921,
+      "sha256": "8a31fde491df4a92975e79131ab50bb622a2a915e40df048c1883d933b5b471b"
+    },
+    {
+      "path": "baseline/de-3840-fleet.png",
+      "bytes": 406115,
+      "sha256": "17eab8d7b044c9b469a34e6c62efa7d01ff7c015069a4463da8550ce5821a1cb"
+    },
+    {
+      "path": "baseline/de-3840-fresh.png",
+      "bytes": 378250,
+      "sha256": "59be656024e8090bd54fce066a153516c84186a9d11a4dc9fe13543e561fdea0"
+    },
+    {
+      "path": "baseline/de-3840-mining.png",
+      "bytes": 397241,
+      "sha256": "3ab90682c29d725385129c93921bbf3591da59892d1d6904e6ab25a738742522"
+    },
+    {
+      "path": "baseline/de-3840-return.png",
+      "bytes": 362569,
+      "sha256": "33c6e13469db60535e62ae7ae1d017ce6861c2b7f9b5aaaff17adb151e881ff3"
+    },
+    {
+      "path": "baseline/de-3840-station.png",
+      "bytes": 533050,
+      "sha256": "81b63cce6d832ecabe067a5325d5a44a55e631b04dfe09a67294d643cbbb4982"
+    },
+    {
+      "path": "baseline/de-3840-victory.png",
+      "bytes": 403518,
+      "sha256": "23b9fa00e21957e6526e78f52bb002ef15a1cd368dc386f5feee38fe9531d8b1"
+    },
+    {
+      "path": "baseline/en-us-1280-bottom-edge.png",
+      "bytes": 77559,
+      "sha256": "5567d1e3e86c376ea277285210e369dc605f9197f5c0b2d3be598891fd802544"
+    },
+    {
+      "path": "baseline/en-us-1280-combat.png",
+      "bytes": 98550,
+      "sha256": "f6e8d3954a27aae8489fadd8bfdd03d7c85596e0090853b9fe99232e61537399"
+    },
+    {
+      "path": "baseline/en-us-1280-fleet.png",
+      "bytes": 76955,
+      "sha256": "82c5bbef6fe995cdeed0f389d047415bc8f873137ecec367d09f221ef565fdb0"
+    },
+    {
+      "path": "baseline/en-us-1280-fresh.png",
+      "bytes": 77043,
+      "sha256": "db3ee3c5c23170c2bdb79a29b83e8afe7e23e1ddf4cc64f32e1faf7e63f654ea"
+    },
+    {
+      "path": "baseline/en-us-1280-mining.png",
+      "bytes": 83076,
+      "sha256": "4d0058f0e8d2bff3e49a4351990d86f0803041ab33fb90ebb8c708f4ffda3a28"
+    },
+    {
+      "path": "baseline/en-us-1280-return.png",
+      "bytes": 75821,
+      "sha256": "4d44504fb3fd165ac60a2742f646cb26f3d6eca83437c61df12712b9f30d2a06"
+    },
+    {
+      "path": "baseline/en-us-1280-station.png",
+      "bytes": 105917,
+      "sha256": "bc8863617659293cc72b6979ba519e7cda963e6518d737bd61434bdfd86b9be0"
+    },
+    {
+      "path": "baseline/en-us-1280-victory.png",
+      "bytes": 79920,
+      "sha256": "61fc982e1e77f4004235545151e8a275857ec93580d8fdc48ab8b0c0e9bc9370"
+    },
+    {
+      "path": "baseline/en-us-1920-bottom-edge.png",
+      "bytes": 69609,
+      "sha256": "2bbcc21b035c87bed4c887c4a9c33db461448ab407b6d00115b222a698528be5"
+    },
+    {
+      "path": "baseline/en-us-1920-combat.png",
+      "bytes": 84295,
+      "sha256": "b4d5563c06c27891435aa6c921ec981b517bd3d15a22ccc1be8537d95463b662"
+    },
+    {
+      "path": "baseline/en-us-1920-fleet.png",
+      "bytes": 78130,
+      "sha256": "369a153f4156d05ea9dbe172b24b091df8369962391479471da4b33dc8062b5f"
+    },
+    {
+      "path": "baseline/en-us-1920-fresh.png",
+      "bytes": 69532,
+      "sha256": "e9aa80b852099230a3a17ad1634dbd81a5ec5d97afa6826c81107a93c28796b1"
+    },
+    {
+      "path": "baseline/en-us-1920-mining.png",
+      "bytes": 72366,
+      "sha256": "e183881cf07ac387b6f7eac2942a64a8c54c12f211e8a32fe7d7ead3d65de55f"
+    },
+    {
+      "path": "baseline/en-us-1920-return.png",
+      "bytes": 66122,
+      "sha256": "70ba6a01632865e2037c4555ae5d6eb002ce2de52cb1777185410032a41568a9"
+    },
+    {
+      "path": "baseline/en-us-1920-station.png",
+      "bytes": 123361,
+      "sha256": "ea1e0c158b4e9105efcd54dd73eb8987fe68e0ff9347f84d06208fd74b12c8f3"
+    },
+    {
+      "path": "baseline/en-us-1920-victory.png",
+      "bytes": 84755,
+      "sha256": "5fd8a27785e3bd5a568f1e8838a9c9b0f40b98bcabc074c8413e90649c1fb881"
+    },
+    {
+      "path": "baseline/en-us-2560-bottom-edge.png",
+      "bytes": 224426,
+      "sha256": "238cb97505d8c63a97254b9b7e31f3b44171e6f67100c494d461a219ba41900b"
+    },
+    {
+      "path": "baseline/en-us-2560-combat.png",
+      "bytes": 286298,
+      "sha256": "c358d25adf46a0448216792b941bbb35d1e0140a529c38b3704b03d81c5a7bb7"
+    },
+    {
+      "path": "baseline/en-us-2560-fleet.png",
+      "bytes": 218987,
+      "sha256": "37fe1dd7f2d3fb5988a6e8349f99e4246aacc4347f9ab265b19f2af320b4601e"
+    },
+    {
+      "path": "baseline/en-us-2560-fresh.png",
+      "bytes": 223241,
+      "sha256": "f6a1e62c0e27e4f34c70528155a0124a240dd223a0e886c3cb1ddf1783afe5e9"
+    },
+    {
+      "path": "baseline/en-us-2560-mining.png",
+      "bytes": 240788,
+      "sha256": "1eb3bc16b41bd586aadd037b2765e791ad01213c64536ff5dad6d2fc2272c666"
+    },
+    {
+      "path": "baseline/en-us-2560-return.png",
+      "bytes": 218315,
+      "sha256": "7a77a3b9c6a30f4405eb8e1e0acbddcd64575f5045451b5d11d238081e55dcf3"
+    },
+    {
+      "path": "baseline/en-us-2560-station.png",
+      "bytes": 297301,
+      "sha256": "325854cca664279a6d61c03aba7cc35605aed4ddec3f8461808116976b538246"
+    },
+    {
+      "path": "baseline/en-us-2560-victory.png",
+      "bytes": 228975,
+      "sha256": "820f1d3dbc1c03c6a91c48a66ab821a4a6213d55f72b0bc947025cb2653927c5"
+    },
+    {
+      "path": "baseline/en-us-3840-bottom-edge.png",
+      "bytes": 360755,
+      "sha256": "7d350d08b62e1abd81dfd8053743b8d52bc3b176b40455e61c1baaad71054876"
+    },
+    {
+      "path": "baseline/en-us-3840-combat.png",
+      "bytes": 455891,
+      "sha256": "292d794eb2fa8f778bd3ada41272f46b967cda56917680683f6fba861a5bcaad"
+    },
+    {
+      "path": "baseline/en-us-3840-fleet.png",
+      "bytes": 366232,
+      "sha256": "6253d5de5f1d704bed97dcdb9952a0f472931dd588f558c5104e57c6c371e48a"
+    },
+    {
+      "path": "baseline/en-us-3840-fresh.png",
+      "bytes": 356787,
+      "sha256": "05f1b4ebaa578a63644ba3e849688d8d5f7b1ea5f7a17cb8ae284733b973ec32"
+    },
+    {
+      "path": "baseline/en-us-3840-mining.png",
+      "bytes": 381955,
+      "sha256": "eaaf71d59006d9985b978ff135348fcd9b06d5a273ae13d11a9348ae0eb66f19"
+    },
+    {
+      "path": "baseline/en-us-3840-return.png",
+      "bytes": 347601,
+      "sha256": "f93abaf536f72b8f983714e4c337baeeaeb871d5ebd27e0e36ed99625fa2527d"
+    },
+    {
+      "path": "baseline/en-us-3840-station.png",
+      "bytes": 509834,
+      "sha256": "a3ff3b70094f779c8c35ef6450745651a50054a44a5d6cf5090d52c8fe879401"
+    },
+    {
+      "path": "baseline/en-us-3840-victory.png",
+      "bytes": 378359,
+      "sha256": "5bfeeb3321db9201adb3c7c95fdbc240daf84ed9639aad6636f8b6436df6bac2"
+    },
+    {
+      "path": "baseline/report.json",
+      "bytes": 21837,
+      "sha256": "7da886760e754d2720e25859ff6893ab014c5d07aaf69d73b2ba33a9f1ff3829"
+    },
+    {
+      "path": "baseline/trip-collected.png",
+      "bytes": 68269,
+      "sha256": "5c9bb8b832d72764b3828deb74c853b50d93a1e0b772a97eed43dc3f66849f66"
+    },
+    {
+      "path": "baseline/trip-docked.png",
+      "bytes": 81779,
+      "sha256": "e5c15b48a53ee142aef9c33b89ec2539a2aeacebf290378878a43de6080d02b2"
+    },
+    {
+      "path": "baseline/trip-fresh.png",
+      "bytes": 69532,
+      "sha256": "e9aa80b852099230a3a17ad1634dbd81a5ec5d97afa6826c81107a93c28796b1"
+    },
+    {
+      "path": "baseline/trip-mining.png",
+      "bytes": 72073,
+      "sha256": "79cd3b841065d8725e492f2faef81d634bc5654df01f5f7a3b1f3034d941c6cd"
+    },
+    {
+      "path": "baseline/trip-sold.png",
+      "bytes": 126716,
+      "sha256": "37059f8bff92b3883b3fe57c8cab51fa78d1c7cc5bbcf61fb1f40e24204f73aa"
+    },
+    {
+      "path": "combat-capture.log",
+      "bytes": 1139,
+      "sha256": "07e0d67f3f3f002922b61e1e191eb4865826f451ae0010abafc14270b9d32ccf"
+    },
+    {
+      "path": "combat_capture.py",
+      "bytes": 2544,
+      "sha256": "1d6e1e762305d10c4bd26bf2e7cf7b104816b17cf3ea12fcb3f926b5ab80e960"
+    },
+    {
+      "path": "final/combat-earned-defeated.png",
+      "bytes": 838622,
+      "sha256": "3722119f9039016a885d4198037e74ec154925eaa7f120cc6aa2150a479e93e2"
+    },
+    {
+      "path": "final/combat-earned-hit.png",
+      "bytes": 838099,
+      "sha256": "f9e5f1cc1759b4f2c51cac471b4acb8b71c27a64b03b93413114646952c75b02"
+    },
+    {
+      "path": "final/combat-earned-report.json",
+      "bytes": 928,
+      "sha256": "10ba350c68f7c213de4405fba4e50cce7ea7a8696b2242bc222f7e3eb3440bcb"
+    },
+    {
+      "path": "final/contact-de-1280-1.png",
+      "bytes": 514309,
+      "sha256": "ef7614e5c09fb12d6ee84e3ce2c5d5680bb02d5e3a93af4d8b989f49e34bb320"
+    },
+    {
+      "path": "final/contact-de-1280-2.png",
+      "bytes": 646276,
+      "sha256": "0c5b1befa8eca3f6e67935cc2fc78aa0ee38ca1267e8aacd34664dfaed84167e"
+    },
+    {
+      "path": "final/contact-de-1920-1.png",
+      "bytes": 509836,
+      "sha256": "a36b423c45f18669378342e9478aa37445547454e47951c47a70ababa06418ad"
+    },
+    {
+      "path": "final/contact-de-1920-2.png",
+      "bytes": 626318,
+      "sha256": "156c48c5bf4cdb2c1143da9f23d6e11845fb83a24245eb597243963f16a992d7"
+    },
+    {
+      "path": "final/contact-de-2560-1.png",
+      "bytes": 470674,
+      "sha256": "4bc33a4ddff2979f33a71b4e36cba02f6850eab407808120bad52e9b85868342"
+    },
+    {
+      "path": "final/contact-de-2560-2.png",
+      "bytes": 580211,
+      "sha256": "7f08cc839a158d727200e7f30acde1a7b1ad2526cd8b301e8df50310bee5b3cf"
+    },
+    {
+      "path": "final/contact-de-3840-1.png",
+      "bytes": 479890,
+      "sha256": "0065d622bc2e9d9bca9d81581979ab1ffa05ac403b85a139dd3868588ca6f260"
+    },
+    {
+      "path": "final/contact-de-3840-2.png",
+      "bytes": 584620,
+      "sha256": "4baabc2e2703183261af45c8b757cafc57ecfc4b7ac3beba3c52602d7ea8d708"
+    },
+    {
+      "path": "final/contact-en-us-1280-1.png",
+      "bytes": 508490,
+      "sha256": "6f1a7d374e93d14ae7de302a350fe8445d2369b4a429df58f930400a61b9b663"
+    },
+    {
+      "path": "final/contact-en-us-1280-2.png",
+      "bytes": 633030,
+      "sha256": "aa0d7df0e204f74b7f574cff3ca01c9dff00e2d44443571f9f4e25d74dca2641"
+    },
+    {
+      "path": "final/contact-en-us-1920-1.png",
+      "bytes": 504871,
+      "sha256": "50f342ef365261b61c4a9d742072eaf76e920450d67309f59e8acffd16881556"
+    },
+    {
+      "path": "final/contact-en-us-1920-2.png",
+      "bytes": 613531,
+      "sha256": "8a6c48331f29df01dbfb9edd0c8ed3656a546f68584930b4030e603ee4f4c6d0"
+    },
+    {
+      "path": "final/contact-en-us-2560-1.png",
+      "bytes": 465173,
+      "sha256": "6d1f011ff38d01448e252c6049c96a50d568d7f1d54e1913e0d69116c1b3f215"
+    },
+    {
+      "path": "final/contact-en-us-2560-2.png",
+      "bytes": 567887,
+      "sha256": "1513e64a2fa9fd3684b133b281ecad872ad9d3e402ebc968ae87f89a761df1e0"
+    },
+    {
+      "path": "final/contact-en-us-3840-1.png",
+      "bytes": 474439,
+      "sha256": "fb1012e80080d6093b1067b87d8b043b25e2db2d8761ef2e8b29dd24917457e6"
+    },
+    {
+      "path": "final/contact-en-us-3840-2.png",
+      "bytes": 573298,
+      "sha256": "489a5ac1060fcae07e118bf1088b811a01c10a685b83e2dd6fc5053e5c2fe973"
+    },
+    {
+      "path": "final/de-1280-bottom-edge.png",
+      "bytes": 418073,
+      "sha256": "418a24d23cff78c979089a94ea7c6f8677a505db52fc9530f4136d926115e410"
+    },
+    {
+      "path": "final/de-1280-combat.png",
+      "bytes": 438241,
+      "sha256": "91d1504a6aac8c3c9bf3b15eaa799a98ed70a58f25c902dcf132773aa8f40cd3"
+    },
+    {
+      "path": "final/de-1280-fleet.png",
+      "bytes": 131673,
+      "sha256": "af9513434b49f89fb60decda1e24230519342e22e04e59c18d722dacc81df06a"
+    },
+    {
+      "path": "final/de-1280-fresh.png",
+      "bytes": 416850,
+      "sha256": "05aa78bf49bb13c457585e9279d54dfdc264dc54bb6ee6941259641cac2ccea2"
+    },
+    {
+      "path": "final/de-1280-mining.png",
+      "bytes": 418500,
+      "sha256": "7df23dbc334dea9fdaadb93cf541e12dfd27e2af282e505fde6d79bfede5953a"
+    },
+    {
+      "path": "final/de-1280-return.png",
+      "bytes": 416052,
+      "sha256": "8d6ec16897db43ad630933b1ff0809686a8f85cc09e1250c4a4d6d69710639b1"
+    },
+    {
+      "path": "final/de-1280-station.png",
+      "bytes": 352459,
+      "sha256": "8d05702b17abb2dbd4da9a3f72f79f07093d7d9e3bcafca098a9534c7f7a45ad"
+    },
+    {
+      "path": "final/de-1280-victory.png",
+      "bytes": 130321,
+      "sha256": "5ed10a6987437b068f50f2646ba57fb2659ed827b0467b06550ba17f2cc9726a"
+    },
+    {
+      "path": "final/de-1920-bottom-edge.png",
+      "bytes": 796168,
+      "sha256": "e91760b3eb3082881abee44cbda2e1e649a68afe6ba2f26a76e51d9aedb19aca"
+    },
+    {
+      "path": "final/de-1920-combat.png",
+      "bytes": 826146,
+      "sha256": "1c8e8f868988e3158efd7b6bf7903ebae0b84e09e208b87d759375347ef09409"
+    },
+    {
+      "path": "final/de-1920-fleet.png",
+      "bytes": 241280,
+      "sha256": "03f02ed5e6938a74ca193c6f5a5399a55c91c5ea109bf07aa0a562800ed1bdd4"
+    },
+    {
+      "path": "final/de-1920-fresh.png",
+      "bytes": 794520,
+      "sha256": "11dbb1329285fa855ba8f3e451453bf619aa61fef2c1cd31335f03e471db87cb"
+    },
+    {
+      "path": "final/de-1920-mining.png",
+      "bytes": 792776,
+      "sha256": "d4f76b9af80ded917039447dfedbd4e05139b84583597ca5539b85f89f3fb236"
+    },
+    {
+      "path": "final/de-1920-return.png",
+      "bytes": 792469,
+      "sha256": "a62b0ec607a15f4f29850b3eedc81e5288d98951aa4cb570e37631dcbec23060"
+    },
+    {
+      "path": "final/de-1920-station.png",
+      "bytes": 661861,
+      "sha256": "aa5db7630999366c2261e4738a44b13df780392ec698d446ee5c0974c70dfa3d"
+    },
+    {
+      "path": "final/de-1920-victory.png",
+      "bytes": 232287,
+      "sha256": "b8cad9a57b37cdd8e1518272c7fdbe1df919a3f2e5fd89d2770b855f61a0bc73"
+    },
+    {
+      "path": "final/de-2560-bottom-edge.png",
+      "bytes": 837119,
+      "sha256": "0ee2d32054b009fb4b46fb2f4d02b5939b5fa87476c4baf142f26572a1f15c17"
+    },
+    {
+      "path": "final/de-2560-combat.png",
+      "bytes": 912163,
+      "sha256": "74f3b486dff77725b5111a4421062465c7a55dc26ddf2e58ba67f99dad2da921"
+    },
+    {
+      "path": "final/de-2560-fleet.png",
+      "bytes": 303472,
+      "sha256": "976fdf0fd846dd3841eeabc1f2ec9e0c55eca1b65797472b552b12e337dd32c0"
+    },
+    {
+      "path": "final/de-2560-fresh.png",
+      "bytes": 834225,
+      "sha256": "7a6216fd6eec4a53546bf57c46d0eb970206df5928c05185abf9f26f2ec290a3"
+    },
+    {
+      "path": "final/de-2560-mining.png",
+      "bytes": 846874,
+      "sha256": "c93eb16ba99f95059b2f2bacabbe79554ed1597748ff8d3433834e7cbc997895"
+    },
+    {
+      "path": "final/de-2560-return.png",
+      "bytes": 831291,
+      "sha256": "7cf28b15e8f8449d0e68d7f251fbc1ed985679072aee1b0c947a4efef47f063b"
+    },
+    {
+      "path": "final/de-2560-station.png",
+      "bytes": 753318,
+      "sha256": "3ced27a68c27f83f9fcc96d2d9c0fb36e408bcd37ee8e9fd8bc7fd968dde9cd3"
+    },
+    {
+      "path": "final/de-2560-victory.png",
+      "bytes": 255830,
+      "sha256": "3edf70d80a9ab3d42bd002128f27c4ada1c0c86492b293565e2365b28e41470b"
+    },
+    {
+      "path": "final/de-3840-bottom-edge.png",
+      "bytes": 1152355,
+      "sha256": "ae70e27cac5ee5966811e01e12d256b777d05b5c0a0ef17baf58bfb2b01734d1"
+    },
+    {
+      "path": "final/de-3840-combat.png",
+      "bytes": 1289853,
+      "sha256": "d026f3d7f12c4d02909811e48b10f3f055fe33fce48120cd3c706a58aaa72c3d"
+    },
+    {
+      "path": "final/de-3840-fleet.png",
+      "bytes": 509407,
+      "sha256": "55f8cfde8495f5fca82b619967958347612825fbd5d8d61256fc078b90d3b8a3"
+    },
+    {
+      "path": "final/de-3840-fresh.png",
+      "bytes": 1149835,
+      "sha256": "612914cdb5cdf48b5ff4d94c60e500bfb7b9cf9e0f8136c33c1d7d3786ab6a6c"
+    },
+    {
+      "path": "final/de-3840-mining.png",
+      "bytes": 1166386,
+      "sha256": "98418a2293f6d7c7cd32752697e9694243dd46120f46e761f8a85dbab4178824"
+    },
+    {
+      "path": "final/de-3840-return.png",
+      "bytes": 1146075,
+      "sha256": "9739cbcad0c969afbade9ae6b21813179b30bdd188edbdeb870be244fe32ca65"
+    },
+    {
+      "path": "final/de-3840-station.png",
+      "bytes": 1146975,
+      "sha256": "a2c6504cfda8fd5c0b835b153017ef8a6d815d0b6a7f374f5cab179e105ebdab"
+    },
+    {
+      "path": "final/de-3840-victory.png",
+      "bytes": 377819,
+      "sha256": "b424ffd6de778dc18577cc8816227b4b6f02289374e281e37a1023531f51e3fa"
+    },
+    {
+      "path": "final/en-us-1280-bottom-edge.png",
+      "bytes": 416501,
+      "sha256": "cb7fd9f6f373aacb973a033b4b36816c6a4c80792d7fed65ace85a7c41ae2734"
+    },
+    {
+      "path": "final/en-us-1280-combat.png",
+      "bytes": 437598,
+      "sha256": "d2af3eda5c6825496e3840e1b6ac975a3f6a7b62cbbe38ec1ff0846cb02a4452"
+    },
+    {
+      "path": "final/en-us-1280-fleet.png",
+      "bytes": 128601,
+      "sha256": "b9fc51ca85a85487808456a9f80f940e48be893eeb3564d7b09da71c85d42284"
+    },
+    {
+      "path": "final/en-us-1280-fresh.png",
+      "bytes": 415428,
+      "sha256": "e2bbb2eb4c06731474e00bd517a57efac7795e467ece64f5d015fe174a54b03e"
+    },
+    {
+      "path": "final/en-us-1280-mining.png",
+      "bytes": 417629,
+      "sha256": "0ca8375709432738e2f7f3f2378c60af476f4d9e471cb7cd738f9de48c370f3a"
+    },
+    {
+      "path": "final/en-us-1280-return.png",
+      "bytes": 414545,
+      "sha256": "c90ccc545fa27cc5afc8c8fb69d0c8f92d9da90ab9e00976b13f87ca64030bbe"
+    },
+    {
+      "path": "final/en-us-1280-station.png",
+      "bytes": 347450,
+      "sha256": "4a4f6e8311541cadf0edb675ec8d2d2d3c2415e91b919ab740f14c8d8dae2461"
+    },
+    {
+      "path": "final/en-us-1280-victory.png",
+      "bytes": 127875,
+      "sha256": "326c9d8317ee0d2f469894180616493a75907ca99e9565f76d7ee87ed25d04e1"
+    },
+    {
+      "path": "final/en-us-1920-bottom-edge.png",
+      "bytes": 795086,
+      "sha256": "6ab872507dfd34eac6002fedffd41f64418310b218e2f2d9bc29ff4adf32cea0"
+    },
+    {
+      "path": "final/en-us-1920-combat.png",
+      "bytes": 825656,
+      "sha256": "dbd27cf0a9696cf19345eef2fd57ce9cd3040992bea2bc153243edf0310cf295"
+    },
+    {
+      "path": "final/en-us-1920-fleet.png",
+      "bytes": 236363,
+      "sha256": "5361d71d5b85b514ad3ebd40ed50337dab5ddcbb42500daaed4867f0a3b4eceb"
+    },
+    {
+      "path": "final/en-us-1920-fresh.png",
+      "bytes": 793110,
+      "sha256": "1c8de8b62887afc319a38b936a497e389aa776af296ead4115dca20444cb28ea"
+    },
+    {
+      "path": "final/en-us-1920-mining.png",
+      "bytes": 791834,
+      "sha256": "150a7ab3910303b8dd143f917e2904468534fd743b5a9338f15d46864ade96e9"
+    },
+    {
+      "path": "final/en-us-1920-return.png",
+      "bytes": 791321,
+      "sha256": "9d269b02c414eecdbcf2b6fa165139cc451ab2a650c6ccc57d7022c6206dbe71"
+    },
+    {
+      "path": "final/en-us-1920-station.png",
+      "bytes": 655295,
+      "sha256": "6474d04d26ecd22f0d6cca8e1d7d9e60bd63ac7f85b8af1f7e0a5e5e4f28870f"
+    },
+    {
+      "path": "final/en-us-1920-victory.png",
+      "bytes": 228412,
+      "sha256": "aa6d843874d18aef2a7c18364d75ad5aa71bf9ee56a42669e34bba7d72f35920"
+    },
+    {
+      "path": "final/en-us-2560-bottom-edge.png",
+      "bytes": 834630,
+      "sha256": "61a3f89566a8d9ff672c7d90e3dcae1d0c1e30d841ab459dfc9d2277a5cab118"
+    },
+    {
+      "path": "final/en-us-2560-combat.png",
+      "bytes": 911843,
+      "sha256": "d2d22855afaad09400a337138c49ef377399b81e58a6c4f34b591d6f699e814d"
+    },
+    {
+      "path": "final/en-us-2560-fleet.png",
+      "bytes": 297266,
+      "sha256": "2a7141ce1ac3a42b5356b81eefeabb2e648e0b2e53b4b9567961392cc5025acc"
+    },
+    {
+      "path": "final/en-us-2560-fresh.png",
+      "bytes": 832140,
+      "sha256": "fbe89b2380e776601de25dd82ec87c98152629498ce140b65628ab3639dc3777"
+    },
+    {
+      "path": "final/en-us-2560-mining.png",
+      "bytes": 846124,
+      "sha256": "14eed8d9f6ef61f22bb25f4ae554946d6e879b24b8faf03cf60dca7e8f29448d"
+    },
+    {
+      "path": "final/en-us-2560-return.png",
+      "bytes": 829241,
+      "sha256": "7700fc0550334313decbdd46c3eefd691179e2a3c52b56ac783c7323a067ac9c"
+    },
+    {
+      "path": "final/en-us-2560-station.png",
+      "bytes": 745297,
+      "sha256": "4f6bf5139036a5f022d0b5a1b7ef55e4f6832259192d0c1c3638313dea16e270"
+    },
+    {
+      "path": "final/en-us-2560-victory.png",
+      "bytes": 250522,
+      "sha256": "fc96a30c0a23c236bbe75998cb55de3140d54c1549be54d03179944060903572"
+    },
+    {
+      "path": "final/en-us-3840-bottom-edge.png",
+      "bytes": 1148793,
+      "sha256": "bcfe03db147a5530ee1136674df9bf4b90268c9aa861b05c475c8f1e6df9d919"
+    },
+    {
+      "path": "final/en-us-3840-combat.png",
+      "bytes": 1289493,
+      "sha256": "56cc0be3e924c54def1e74552dc0162835a28d07ce553013ee48d199c7c45cca"
+    },
+    {
+      "path": "final/en-us-3840-fleet.png",
+      "bytes": 499502,
+      "sha256": "c6fc50643cf56479fb1d109a5c96059c3f5c8f10530a48c58e8ed23ed6cbcdab"
+    },
+    {
+      "path": "final/en-us-3840-fresh.png",
+      "bytes": 1147157,
+      "sha256": "a319c127ede98e4441645d21282455d65a330e94ae1778883777eaf1733237e6"
+    },
+    {
+      "path": "final/en-us-3840-mining.png",
+      "bytes": 1165251,
+      "sha256": "642558d84f4726e44ac02ae92e846c34433df8b7b0d92bced9c5ff8a5bb81fa5"
+    },
+    {
+      "path": "final/en-us-3840-return.png",
+      "bytes": 1143415,
+      "sha256": "4611810f93279043ca61b3dc444d064ae75560aefb127515ba1b3e9b07d3ff90"
+    },
+    {
+      "path": "final/en-us-3840-station.png",
+      "bytes": 1136442,
+      "sha256": "4725745f3d15329f9ed70b376a94228f7354a93e76cc593cd78bcec60d89fa1b"
+    },
+    {
+      "path": "final/en-us-3840-victory.png",
+      "bytes": 370062,
+      "sha256": "991318457388716dab0d15ffa11d7844daa9b5bcffceb68937d03b50ca183790"
+    },
+    {
+      "path": "final/report.json",
+      "bytes": 27487,
+      "sha256": "e8fb0f2599f64363fdd61bd3d878dc0e76b4493b0b21f88674dbdaa537487400"
+    },
+    {
+      "path": "final/trip-collected.png",
+      "bytes": 777746,
+      "sha256": "ca15d370e37fb86b3ced3b15111527eaf88c89bfaf8b0fdbdae95aaf856da257"
+    },
+    {
+      "path": "final/trip-docked.png",
+      "bytes": 225332,
+      "sha256": "8b1dd08de0b3c5a58814346beb13a6c2849223181d92d30e09599ee74f3aeeb1"
+    },
+    {
+      "path": "final/trip-fresh.png",
+      "bytes": 793110,
+      "sha256": "1c8de8b62887afc319a38b936a497e389aa776af296ead4115dca20444cb28ea"
+    },
+    {
+      "path": "final/trip-mining.png",
+      "bytes": 792391,
+      "sha256": "2dec59c05b1e663b51b533ef7cf9ea3626f0a26eabe73fd86d4c3312fb4849ce"
+    },
+    {
+      "path": "final/trip-sold.png",
+      "bytes": 659326,
+      "sha256": "caf8541e7cb28d0ac81389986cfaefc2376fddc0a0abae5b93e01682332af4f4"
+    },
+    {
+      "path": "final-pytest.log",
+      "bytes": 2605,
+      "sha256": "5fedc9c82a19bc72c28b142396a53060208c00b94dcc20068ab6f425268c3bcb"
+    },
+    {
+      "path": "final-run.log",
+      "bytes": 445,
+      "sha256": "b3cacae382054df590a421064a39dc7c4c271ff0c92ea82d42038a4772f2f43e"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 15230,
+      "sha256": "a9229dae51aacb339a30810252e23b34b4126692b44aefac418e39f47427ac06"
+    },
+    {
+      "path": "layout-check/de-fleet.png",
+      "bytes": 82421,
+      "sha256": "3193b0764075310edb034ee92d69eae4cae5efcbda33fafd8968c02c129177e8"
+    },
+    {
+      "path": "layout-check/de-station.png",
+      "bytes": 132480,
+      "sha256": "c7f6e207fc79be9f30e934434332f5fe2352a68cade0c784eb01857d10d7bbdd"
+    },
+    {
+      "path": "layout-check/en-us-fleet.png",
+      "bytes": 79157,
+      "sha256": "a74b644aaa2ef0254ba052745459921f1314929057c826b9f2499f7135bad9d7"
+    },
+    {
+      "path": "layout-check/en-us-station.png",
+      "bytes": 126771,
+      "sha256": "c8d55abc23cc646090d086f1743dfecfb297ed6534ff003891cdc306aa8edd8e"
+    },
+    {
+      "path": "layout-check/report.json",
+      "bytes": 1052,
+      "sha256": "4b562175315d49003b2d1b3f79443b6b2137069a0621d4374a591f56b901ef6b"
+    },
+    {
+      "path": "model-validation.json",
+      "bytes": 4221,
+      "sha256": "987fe9dafe3608414b93ffaa0091e0bde206fbb910fdf546cf43d41b265e9483"
+    },
+    {
+      "path": "native/fullscreen-heavy.png",
+      "bytes": 792861,
+      "sha256": "9a38e4eb923afa57f452a17e86f58224e2c4ddf44a245b1c37cb1b868ffc0cc0"
+    },
+    {
+      "path": "native/fullscreen-normal.png",
+      "bytes": 793110,
+      "sha256": "1c8de8b62887afc319a38b936a497e389aa776af296ead4115dca20444cb28ea"
+    },
+    {
+      "path": "native/report.json",
+      "bytes": 4069,
+      "sha256": "5aab8b7f3dcff61b48eefa0bbeef88c95761a0c141fe6ab9d10bc8008e03517c"
+    },
+    {
+      "path": "native/returned-heavy.png",
+      "bytes": 871751,
+      "sha256": "de26a49566c68b709e142ca20af7fb96bf464760cb30b2fcb36704afd2cfa135"
+    },
+    {
+      "path": "native/returned-normal.png",
+      "bytes": 871716,
+      "sha256": "86072f60218fc6c1a94b45d7fac6a6eabb4f9eb64693d4577de187775dfd5fd2"
+    },
+    {
+      "path": "native/windowed-heavy.png",
+      "bytes": 871751,
+      "sha256": "de26a49566c68b709e142ca20af7fb96bf464760cb30b2fcb36704afd2cfa135"
+    },
+    {
+      "path": "native/windowed-normal.png",
+      "bytes": 871716,
+      "sha256": "86072f60218fc6c1a94b45d7fac6a6eabb4f9eb64693d4577de187775dfd5fd2"
+    },
+    {
+      "path": "slice/report.json",
+      "bytes": 6169,
+      "sha256": "52e481b660cbef21d6477f43ac552251b25e30c3b1c3b49314ece7d55cef7dcb"
+    },
+    {
+      "path": "slice/trip-collected.png",
+      "bytes": 178354,
+      "sha256": "d15da2f45d39096fba58e89453f11df64485ea5946838f9a5cbfbfc8772bb666"
+    },
+    {
+      "path": "slice/trip-docked.png",
+      "bytes": 31464,
+      "sha256": "3c7aad6353b2eb800a7197e60f6e97aeb22b86137cfed521e5a9ae5e774fb2b6"
+    },
+    {
+      "path": "slice/trip-fresh.png",
+      "bytes": 192966,
+      "sha256": "a654085db3de727ada8f2747d15c7286ed40d8b0859e813d053f60f1ad91f251"
+    },
+    {
+      "path": "slice/trip-mining.png",
+      "bytes": 193746,
+      "sha256": "43bd76780280cf5e51c79afad99706895d9a32fab24e1683ef3547a05c7201e7"
+    },
+    {
+      "path": "slice/trip-sold.png",
+      "bytes": 126764,
+      "sha256": "677b3b78df70250a40906d68c01f4ec2889f3101ee7488cff95c96ace35f7b3a"
+    }
+  ]
+}

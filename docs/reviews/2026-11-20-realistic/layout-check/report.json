@@ -1,0 +1,46 @@
+[
+  {
+    "file": "en-us-station.png",
+    "sha256": "c8d55abc23cc646090d086f1743dfecfb297ed6534ff003891cdc306aa8edd8e",
+    "layout_warnings": [],
+    "pixels": [
+      1280,
+      720
+    ],
+    "origin": "interim synthetic layout check",
+    "mode": "station"
+  },
+  {
+    "file": "en-us-fleet.png",
+    "sha256": "a74b644aaa2ef0254ba052745459921f1314929057c826b9f2499f7135bad9d7",
+    "layout_warnings": [],
+    "pixels": [
+      1280,
+      720
+    ],
+    "origin": "interim synthetic layout check",
+    "mode": "fleet"
+  },
+  {
+    "file": "de-station.png",
+    "sha256": "c7f6e207fc79be9f30e934434332f5fe2352a68cade0c784eb01857d10d7bbdd",
+    "layout_warnings": [],
+    "pixels": [
+      1280,
+      720
+    ],
+    "origin": "interim synthetic layout check",
+    "mode": "station"
+  },
+  {
+    "file": "de-fleet.png",
+    "sha256": "3193b0764075310edb034ee92d69eae4cae5efcbda33fafd8968c02c129177e8",
+    "layout_warnings": [],
+    "pixels": [
+      1280,
+      720
+    ],
+    "origin": "interim synthetic layout check",
+    "mode": "fleet"
+  }
+]

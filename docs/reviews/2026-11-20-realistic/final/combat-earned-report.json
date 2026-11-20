@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "input": "pygame events, SDL dummy; no native physical input",
+  "progression_injected": false,
+  "lifetime_sales_to_unlock": 300,
+  "initial_enemy_hull": 75.0,
+  "enemy_hull_at_hit": 45.0,
+  "credits_before_bounty": 160,
+  "credits_after_dock": 230,
+  "captures": [
+    {
+      "file": "combat-earned-hit.png",
+      "sha256": "f9e5f1cc1759b4f2c51cac471b4acb8b71c27a64b03b93413114646952c75b02",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "earned pygame-event combat, first observed rival hull reduction",
+      "mode": "flight"
+    },
+    {
+      "file": "combat-earned-defeated.png",
+      "sha256": "3722119f9039016a885d4198037e74ec154925eaa7f120cc6aa2150a479e93e2",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "earned pygame-event combat, rival defeated",
+      "mode": "flight"
+    }
+  ]
+}

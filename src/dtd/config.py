@@ -135,7 +135,9 @@ def _validate(model: type[M], raw: dict[str, Any], resolved: Path) -> M:
     # client models that did not set extra='forbid' - this is the module's
     # backstop. Nested unexpected keys are deliberately out of scope; policing
     # them is the client model's business (extra='forbid').
-    unexpected = sorted(set(raw) - set(model.model_fields))
+    known_keys = set(model.model_fields)
+    known_keys.update(field.alias for field in model.model_fields.values() if field.alias)
+    unexpected = sorted(set(raw) - known_keys)
     if unexpected:
         raise InvalidConfigError(
             f"unexpected properties in config file {resolved}: {unexpected}"

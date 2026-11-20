@@ -5,11 +5,19 @@ status: active
 
 # Title Screen
 
+## Campaign amendment — 2026-11-20 (spec 19)
+
+The menu now has New Game, Continue, Options and Exit in that order, using the existing centered layout. New Game confirms replacement of an existing campaign. Continue loads a versioned station checkpoint and shows recoverable missing/invalid save errors without replacing the file. The campaign is passed from the title screen into the campaign screen; returning to title saves a station checkpoint, and Continue reloads it. Options transitions preserve that checkpoint. Existing theme, music, F11 and ESC contracts remain.
+
+Testing adds New Game/Continue action routing, replacement confirmation, load-error visibility and session persistence; layout tests expect four buttons.
+
+Dev plan amendment: update menu/actions/integration and tests, then verify full suite and a real campaign launch before completion.
+
+
 The Title Screen is shown when the game first starts up (assuming successful startup),
 and provides the user with a list of menu options.
 
-This spec currently defines two menu options: Options and Exit Game. The intention is for
-this spec to be amended as future screens and game modes are introduced.
+This spec defines New Game, Continue, Options and Exit Game.
 
 The Title Screen lives in the `dtd/screens/title.py` module. The `screens/` subdirectory was introduced
 with the anticipation that there will be several additional screens, and it will help
@@ -100,6 +108,8 @@ future amendment may add caching.*
 The following Title Screen menu options are displayed in a single vertical column,
 both horizontally and vertically centered in the lower half of the screen:
 
+- New Game (Button widget; `campaign.new_game`)
+- Continue (Button widget; `campaign.continue`)
 - Options (Button widget)
 - Exit Game (Button widget)
 
@@ -151,12 +161,14 @@ This document introduces a new `dtd/screens/base.py` module with a generic base 
 class Screen:
     def handle(self, events) -> ScreenAction | None: ...  # returns QUIT/NONE; ESC lives here
     def update(self, events) -> None: ...                 # per-frame state: starfield twinkle
+    def advance(self, dt) -> None: ...                   # elapsed simulation time; default no-op
     def draw(self, surface) -> None: ...                  # background, title, then self._ui.draw
 
 class ScreenAction(Enum):
     QUIT = 1
     SHOW_TITLE_SCREEN = 2
     SHOW_OPTIONS_SCREEN = 3
+    SHOW_CAMPAIGN = 4
 ```
 
 *Amended 2026-10-14 per spec 13 (Options Screen): `SHOW_TITLE_SCREEN` and
@@ -241,7 +253,7 @@ New tests specifically for Title Screen behavior (these stay in this doc):
     cached copy in the display's full format, and a headless draw (no video mode) keeps
     the unconverted copy without raising while still drawing correctly.
 - An Options button appears above the Exit Game button. (Added 2026-10-14 per spec 13.)
-- Only two Buttons are created and displayed. (Added 2026-10-14 per spec 13.)
+- Four menu Buttons are created and displayed (spec 19); replacement confirmation uses a separate modal.
 - Clicking the Options button triggers a transition to the Options screen. (Added 2026-10-14 per spec 13.)
 - A new Theme object is created from config before each screen transition. (Added 2026-10-14 per spec 13.)
 - An "Exit Game" button is centered in the lower half of the screen.
@@ -249,8 +261,8 @@ New tests specifically for Title Screen behavior (these stay in this doc):
 - Hitting ESC on the title screen is equivalent to clicking the Exit Game button.
 - Language-driven text (added 2026-11-03 per spec 16: Language support):
   - the title Label's text is looked up from the `title_screen.title`
-    language key, and the two menu Buttons' texts from
-    `title_screen.options` and `title_screen.exit`, via
+    language key, and the four menu Buttons' texts from
+    `campaign.new_game`, `campaign.continue`, `title_screen.options` and `title_screen.exit`, via
     `LanguageManager.get_string` (falling back to the raw key when the
     lookup misses, spec 16).
 
@@ -368,3 +380,7 @@ staged implementation plan is suggested (each stage should include tests):
      screen built after a language change shows the new language). Doc
      flipped back to `active`; full suite green at 1426 tests.
 
+
+14. Campaign integration (2026-11-20): four-button title, confirmed replacement,
+    Continue, elapsed-time screen contract and transition event regressions implemented.
+    Native play acceptance remains open under spec 19.

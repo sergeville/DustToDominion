@@ -5,6 +5,13 @@ status: active
 
 # Language support
 
+## Campaign amendment — 2026-11-20 (spec 19)
+
+All campaign menus, station actions, control hints, save failures, pause/results and victory messages use `campaign.*` keys in the existing English and German resources. Dynamic counts and prices are formatted after lookup. New title entries use `campaign.new_game` and `campaign.continue`. Missing optional translations retain the existing English fallback. Test new key parity and real localized screen construction.
+
+Dev plan amendment: add keys alongside campaign UI, run resource and screen tests, verify readable layout in both languages.
+
+
 The game needs a way to support multiple languages, not only in user-facing UI
 labels, but also (going forward) in speech. The user can choose from the list
 of supported languages (determined dynamically on startup

@@ -2,7 +2,7 @@
 
 Background handling (the shared ``Background`` helper: background image
 if one resolves, random starfield otherwise), the title display, and
-the menu column - the Options button above the Exit Game button. The
+the menu column - New Game, Continue, Options and Exit Game. The
 font/theme ChoiceLists that were temporarily hosted here for manual
 testing have moved to the Options screen (spec 08, as amended by
 spec 13): the Theme this screen receives is built by main from the
@@ -36,6 +36,8 @@ import random
 import pygame
 
 from dtd import audio, game_constants
+from dtd.campaign import Campaign
+from dtd.campaign_store import CampaignStore, SaveError
 from dtd.language import get_language_manager
 from dtd.resource_loader import ResourceLoader
 from dtd.screens.background import Background
@@ -67,6 +69,11 @@ class TitleScreen(Screen):
         resource_loader: ResourceLoader,
         rng: random.Random | None = None,
     ) -> None:
+        self.store = CampaignStore()
+        self.campaign = None
+        self._confirming = False
+        self._message = ""
+        self._modal_ui = UIManager(theme)
         self._theme = theme
         self._resource_loader = resource_loader
         # Per-screen UIManager (spec 04, as amended by spec 08): the
@@ -83,6 +90,7 @@ class TitleScreen(Screen):
         # The title Label (spec 08: Title, as amended by spec 10).
         self._title = self._build_title()
         self._build_menu()
+        self._build_modal()
         # Spec 08: Title Screen audio, as amended by spec 13: each screen
         # is responsible for starting its own music; the main loop stops
         # it on any transition. No candidate resolving is a silent no-op
@@ -95,7 +103,13 @@ class TitleScreen(Screen):
         # The starfield twinkle is the only per-frame state (spec 08:
         # Background), then the widget broadcast.
         self._background.advance()
-        self._ui.update(events)
+        if self._confirming:
+            if any(e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE for e in events):
+                self._cancel_new()
+            else:
+                self._modal_ui.update(events)
+        else:
+            self._ui.update(events)
 
     def draw(self, surface: pygame.Surface) -> None:
         # Paint order per spec 08: Code layout - background, title, then
@@ -104,6 +118,14 @@ class TitleScreen(Screen):
         self._background.draw(surface)
         self._title.draw(surface, self._theme)
         self._ui.draw(surface)
+        if self._message:
+            self._draw_message(surface, self._message, 560)
+        if self._confirming:
+            shade = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+            shade.fill((0, 0, 0, 225))
+            surface.blit(shade, (0, 0))
+            self._draw_message(surface, self._text("campaign.replace_confirm"), 400)
+            self._modal_ui.draw(surface)
 
     # -- title (spec 08: Title, as amended by spec 10) ----------------------
 
@@ -156,7 +178,13 @@ class TitleScreen(Screen):
             border_width=game_constants.MENU_OPTION_BORDER_WIDTH,
             on_click=self._request_quit,
         )
-        options = [options_button, exit_game]
+        new_game = Button(option_rect.copy(), text=self._text("campaign.new_game"),
+                          border_width=game_constants.MENU_OPTION_BORDER_WIDTH,
+                          on_click=self._request_new)
+        continue_game = Button(option_rect.copy(), text=self._text("campaign.continue"),
+                               border_width=game_constants.MENU_OPTION_BORDER_WIDTH,
+                               on_click=self._request_continue)
+        options = [new_game, continue_game, options_button, exit_game]
         self._layout_as_centered_column(options)
         self._ui.widgets.extend(options)
 
@@ -184,3 +212,68 @@ class TitleScreen(Screen):
         """Record the Options intent for the base-class ``handle``
         (spec 08, as amended by spec 13)."""
         self._pending_action = ScreenAction.SHOW_OPTIONS_SCREEN
+
+    def _text(self, key: str) -> str:
+        return get_language_manager().get_string(key)
+
+    def _draw_message(self, surface: pygame.Surface, text: str, top: int) -> None:
+        label = Label(pygame.Rect(100, top, 1720, 110), text=text, border_width=0)
+        label.set_text_centered(True)
+        label.set_font_point_size(28)
+        label.set_opaque(False)
+        label.draw(surface, self._theme)
+
+    def _build_modal(self) -> None:
+        self._modal_ui.widgets = [
+            Button(pygame.Rect(470, 570, 470, 70), text=self._text("campaign.confirm_new"),
+                   on_click=self._start_new),
+            Button(pygame.Rect(980, 570, 470, 70), text=self._text("campaign.cancel"),
+                   on_click=self._cancel_new),
+        ]
+
+    def handle(self, events: list[pygame.event.Event]) -> ScreenAction | None:
+        # ESC cancels replacement; it must not also quit on that same event.
+        if self._confirming:
+            return None
+        if getattr(self, "_cancelled_modal", False):
+            self._cancelled_modal = False
+            return None
+        return super().handle(events)
+
+    def _cancel_new(self) -> None:
+        self._confirming = False
+        self._cancelled_modal = True
+
+    def _request_new(self) -> None:
+        try:
+            exists = self.store.exists()
+        except SaveError:
+            self._message = self._text("campaign.load_error")
+            return
+        if exists:
+            self._confirming = True
+            self._message = ""
+        else:
+            self._start_new()
+
+    def _start_new(self) -> None:
+        try:
+            if self.store.exists():
+                self.store.preserve_existing()
+            campaign = Campaign()
+            self.store.save(campaign)
+        except SaveError:
+            self._confirming = False
+            self._message = self._text("campaign.save_error")
+            return
+        self.campaign = campaign
+        self._confirming = False
+        self._pending_action = ScreenAction.SHOW_CAMPAIGN
+
+    def _request_continue(self) -> None:
+        try:
+            self.campaign = self.store.load()
+        except SaveError:
+            self._message = self._text("campaign.load_error")
+            return
+        self._pending_action = ScreenAction.SHOW_CAMPAIGN

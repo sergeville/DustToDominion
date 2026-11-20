@@ -605,13 +605,13 @@ class TestRun:
         # ...the startup Title screen shows the default language's
         # RESOLVED text - no raw key names on screen (spec 16 stage 4),
         assert created_titles[0]._title.text == "Dust to Dominion"
-        assert created_titles[0]._ui.widgets[0].text == "Options"
+        assert created_titles[0]._ui.widgets[2].text == "Options"
         # ...the Title screen built AFTER the change shows the de-at
         # title, while keys de-at never translated fall back to their
         # en-us text (spec 16: Testing - the change takes effect on the
         # next screen transition),
         assert created_titles[1]._title.text == "Staub zu Herrschaft"
-        assert created_titles[1]._ui.widgets[0].text == "Options"
+        assert created_titles[1]._ui.widgets[2].text == "Options"
         # ...the window caption already carries the de-at text (the
         # best-effort refresh rode the language change itself),
         assert observed_caption["value"] == "Staub zu Herrschaft"

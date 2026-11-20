@@ -5,7 +5,7 @@ update/draw). Stage 3 added background handling and the title display.
 Stage 4 added the Exit Game button and ESC-as-quit. Stage 5 added the
 font/theme choosers - since removed again by the spec 13 amendment,
 which moved the choosers to the Options screen: the Title Screen now
-shows exactly two Buttons (Options above Exit Game) and starts its own
+shows four Buttons (New Game, Continue, Options, Exit Game) and starts its own
 music in its constructor. The title display is a Label widget (spec 08:
 Title, as amended by spec 10) - its tests follow the widget-suite
 convention of drawing at the design resolution.
@@ -86,7 +86,7 @@ class _StubLanguageLoader:
         return sorted(self._documents)
 
 
-def _expected_option_rect(index: int, option_count: int = 2) -> pygame.Rect:
+def _expected_option_rect(index: int, option_count: int = 4) -> pygame.Rect:
     """The design-space rect of option ``index`` in a centered column of
     ``option_count`` options (spec 08: Buttons and options geometry)."""
     width = game_constants.MENU_OPTION_WIDTH
@@ -419,29 +419,29 @@ class TestTitleScreenTitle:
 
 
 class TestTitleScreenExitGame:
-    def test_constructor_shouldAddExitGameButton_asSecondOptionOfTheTwoOptionColumn(
+    def test_constructor_shouldAddExitGameButton_asLastOptionOfTheFourOptionColumn(
         self, font_ready: None
     ) -> None:
         # GIVEN the screen,
         screen = TitleScreen(_default_theme(), _StubImageLoader({}), rng=random.Random(1))
 
-        # THEN the Exit Game button is the second option of the column
+        # THEN the Exit Game button is the last option of the column
         # (spec 08: Buttons and options, as amended by spec 13),
-        exit_game = screen._ui.widgets[1]
+        exit_game = screen._ui.widgets[3]
         assert isinstance(exit_game, Button)
         # ...labelled per spec, with the spec'd design-space border,
         assert exit_game.text == game_constants.EXIT_GAME_LABEL
         assert exit_game.border_width == game_constants.MENU_OPTION_BORDER_WIDTH
         # ...and sized per spec, as the last option of the column that is
         # centered in the lower half of design space:
-        assert exit_game.rect == _expected_option_rect(1)
+        assert exit_game.rect == _expected_option_rect(3)
 
     def test_update_withClickOnExitGameButton_shouldMakeHandleReturnQuitAction(
         self, font_ready: None
     ) -> None:
         # GIVEN the screen (no display surface, so scales are identity),
         screen = TitleScreen(_default_theme(), _StubImageLoader({}), rng=random.Random(1))
-        button_center = _expected_option_rect(1).center
+        button_center = _expected_option_rect(3).center
 
         # WHEN a full left-button click lands on the Exit Game button,
         screen.update(
@@ -483,27 +483,27 @@ class TestTitleScreenOptionsButton:
         # GIVEN the screen,
         screen = TitleScreen(_default_theme(), _StubImageLoader({}), rng=random.Random(1))
 
-        # THEN the first option of the column is the Options button,
-        options_button = screen._ui.widgets[0]
+        # THEN the third option of the column is the Options button,
+        options_button = screen._ui.widgets[2]
         assert isinstance(options_button, Button)
         assert options_button.text == game_constants.OPTIONS_LABEL
         assert options_button.border_width == game_constants.MENU_OPTION_BORDER_WIDTH
         # ...sized per spec and stacked directly above the Exit Game
         # button in the centered column (spec 08: Buttons and options,
         # as amended by spec 13):
-        assert options_button.rect == _expected_option_rect(0)
-        assert options_button.rect.bottom < screen._ui.widgets[1].rect.top
+        assert options_button.rect == _expected_option_rect(2)
+        assert options_button.rect.bottom < screen._ui.widgets[3].rect.top
 
-    def test_constructor_shouldCreateExactlyTwoButtonsAndNothingElse(
+    def test_constructor_shouldCreateExactlyFourButtonsAndNothingElse(
         self, font_ready: None
     ) -> None:
         # GIVEN the screen,
         screen = TitleScreen(_default_theme(), _StubImageLoader({}), rng=random.Random(1))
 
-        # THEN the menu widget list is exactly the two Buttons - no
+        # THEN the menu widget list is exactly the four Buttons - no
         # choosers, no extras (spec 08: Buttons and options, as amended
         # by spec 13):
-        assert len(screen._ui.widgets) == 2
+        assert len(screen._ui.widgets) == 4
         assert all(isinstance(widget, Button) for widget in screen._ui.widgets)
 
     def test_update_withClickOnOptionsButton_shouldMakeHandleReturnShowOptionsAction(
@@ -511,7 +511,7 @@ class TestTitleScreenOptionsButton:
     ) -> None:
         # GIVEN the screen (no display surface, so scales are identity),
         screen = TitleScreen(_default_theme(), _StubImageLoader({}), rng=random.Random(1))
-        button_center = _expected_option_rect(0).center
+        button_center = _expected_option_rect(2).center
 
         # WHEN a full left-button click lands on the Options button,
         screen.update(
@@ -575,8 +575,8 @@ class TestTitleScreenLanguageText:
         # criteria - existing widgets are provided text from the current
         # language file):
         assert screen._title.text == "Dust to Dominion"
-        assert screen._ui.widgets[0].text == "Options"
-        assert screen._ui.widgets[1].text == "Exit Game"
+        assert screen._ui.widgets[2].text == "Options"
+        assert screen._ui.widgets[3].text == "Exit Game"
 
     def test_constructor_withPartialDeAtDocuments_shouldFallBackPerKeyToEnUs(
         self, font_ready: None
@@ -600,8 +600,8 @@ class TestTitleScreenLanguageText:
         # keys fall through to en-us - per key, not all-or-nothing
         # (spec 16: Acceptance criteria - partial language fallback):
         assert screen._title.text == "Staub zu Herrschaft"
-        assert screen._ui.widgets[0].text == "Options"
-        assert screen._ui.widgets[1].text == "Exit Game"
+        assert screen._ui.widgets[2].text == "Options"
+        assert screen._ui.widgets[3].text == "Exit Game"
 
 
 class TestTitleScreenAudio:

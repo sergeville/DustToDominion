@@ -17,6 +17,7 @@ class TestScreenAction:
             ScreenAction.QUIT,
             ScreenAction.SHOW_TITLE_SCREEN,
             ScreenAction.SHOW_OPTIONS_SCREEN,
+            ScreenAction.SHOW_CAMPAIGN,
         ]
         assert ScreenAction.QUIT.value == 1
         assert ScreenAction.SHOW_TITLE_SCREEN.value == 2

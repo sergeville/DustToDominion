@@ -46,6 +46,7 @@ from dtd.main_window import MainWindow
 from dtd.resource_loader import ResourceLoader
 from dtd.screens.base import Screen, ScreenAction
 from dtd.screens.options import OptionsScreen
+from dtd.screens.campaign import CampaignScreen
 from dtd.screens.title import TitleScreen
 from dtd.ui import Theme
 
@@ -204,16 +205,33 @@ def _run_event_loop(
     is re-fetched each frame because F11 mode switches replace it.
     """
     clock = pygame.time.Clock()
+    elapsed = 0.0
     try:
         while True:
             events = pygame.event.get()
             current_screen.update(events)
             action = current_screen.handle(events)
+            if _pump_app_events(window, events):
+                return
             if action is ScreenAction.QUIT:
                 return
+            if action is ScreenAction.SHOW_CAMPAIGN:
+                audio.get_audio_manager().stop_music()
+                audio.get_audio_manager().stop_loops()
+                config = game_config.load_game_config()
+                current_screen = CampaignScreen(
+                    Theme(config.theme, config.font, resource_loader),
+                    resource_loader, current_screen.campaign, current_screen.store,
+                )
+                elapsed = 0.0
+                clock.tick(60)
+                continue
             if action in _SCREEN_FACTORIES:
                 audio.get_audio_manager().stop_music()
+                audio.get_audio_manager().stop_loops()
                 current_screen = _create_screen(action, resource_loader)
+                elapsed = 0.0
+                clock.tick(60)
                 continue
             if action is not None:
                 # A screen asking for a screen this build cannot
@@ -226,8 +244,7 @@ def _run_event_loop(
                     "screen requested unhandled ScreenAction {}; ignoring",
                     action,
                 )
-            if _pump_app_events(window, events):
-                return
+            current_screen.advance(min(elapsed, 0.25))
             screen = pygame.display.get_surface()
             screen.fill((0, 0, 0))
             current_screen.draw(screen)
@@ -235,12 +252,13 @@ def _run_event_loop(
             # until it is flipped - this step was missing since spec 04 and
             # the Title Screen background is what finally gave it away.
             pygame.display.flip()
-            clock.tick(60)
+            elapsed = clock.tick(60) / 1000.0
     finally:
         # Precedent for every screen (spec 08: Integration, as amended by
         # spec 13): leaving a screen by any means - Exit Game, its ESC
         # shortcut, or the window close - stops the screen's music.
         audio.get_audio_manager().stop_music()
+        audio.get_audio_manager().stop_loops()
 
 
 def _pump_app_events(window: MainWindow, events: list[pygame.event.Event]) -> bool:

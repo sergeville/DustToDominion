@@ -126,3 +126,18 @@ Unit tests for the config module should include:
 - The `config` module allows creation of new configuration files.
 - The location of config files can be specified by full path OR by an environment variable, with the env var taking precedence.
 
+
+## Compatibility amendment — 2026-11-20
+
+The game schema recognizes optional `_help` JSON metadata from prior local
+builds. It has no gameplay effect and does not invalidate otherwise valid
+settings. All other unknown top-level keys remain errors. The generic config
+backstop recognizes a model field's explicit validation alias as a known key.
+Saving an individual settings section preserves unrelated `_help` metadata.
+
+Testing: load a settings file with `_help` and a nondefault language, confirm
+settings are retained, then save a section and confirm metadata is preserved.
+Existing unknown-key rejection tests remain required.
+
+Dev plan: declare metadata in GameConfig and support model aliases in the
+backstop; run config tests and read-only validation of the existing settings.

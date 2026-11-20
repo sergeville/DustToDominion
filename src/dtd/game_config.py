@@ -102,6 +102,7 @@ class GameConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    help_metadata: Any = Field(default=None, alias="_help", exclude=True)
     mainWindow: MainWindowConfig | None = None
     resources: ResourcesConfig | None = None
     # Spec 05: audio sfx/speech/music settings. A missing key (or an explicit

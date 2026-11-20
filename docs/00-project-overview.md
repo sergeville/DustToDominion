@@ -76,9 +76,9 @@ The project is structured as follows:
 
 Game specifics:
 - **Framerate:** Locked at 60 FPS via `clock.tick(60)`
-  - In simulation mode (for testing), we advance in fixed steps using the accumulator pattern,
-    and `clock.tick(60)` only paces the rendering. Tests drive the simulation with the
-    injected clock directly. The accumulator lives in the test harness, not in the game.
+  - The campaign runtime consumes fixed steps through a bounded accumulator;
+    `clock.tick(60)` paces rendering. Deterministic tests inject elapsed time
+    directly (spec 19, 2026-11-20 amendment).
     The fixed step is a `SIM_STEP = 1/60` constant in `dtd/game_constants.py`.
 - Unless otherwise noted in future spec docs, all non-configurable game properties
   should by default be stored in a central `game_constants.py` module,

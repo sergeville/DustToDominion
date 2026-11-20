@@ -540,3 +540,14 @@ class TestSetThemeSetFont:
             logger.remove(sink_id)
         assert any("font" in record.lower() for record in warning_records)
         assert not (hermetic_persistence / "game.json").exists()
+
+
+def test_legacy_help_metadata_preserves_settings_and_section_updates(hermetic_persistence):
+    path = _write_game_json(hermetic_persistence, {
+        "_help": {"language": "Choose a language"}, "language": "de"
+    })
+    assert game_config.load_game_config().language == "de"
+    game_config.set_theme("themes/matrix.json")
+    saved = json.loads(path.read_text())
+    assert saved["_help"] == {"language": "Choose a language"}
+    assert game_config.load_game_config().language == "de"

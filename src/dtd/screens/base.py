@@ -2,14 +2,14 @@
 
 A Screen owns everything that is screen-scoped: its widget list (through
 the ``UIManager`` it creates itself - spec 04, as amended by spec 08) and
-its per-frame state. Application state - the ``Theme`` and the
-``AudioManager`` singleton - is built once at startup and handed to the
-constructor; the main game loop keeps owning app-level events (QUIT,
+its per-frame state. The ``Theme`` is refreshed at screen transitions; the ``AudioManager``
+singleton is initialized at startup; the main game loop keeps owning app-level events (QUIT,
 F11) and stops the screen's music on any transition.
 
-The three-method contract mirrors the main loop's frame steps:
+The screen contract mirrors the main loop's frame steps:
 ``handle`` (screen-level input, possibly yielding a ``ScreenAction``),
-``update`` (per-frame state), and ``draw`` (rendering). The base
+``update`` (per-frame input/state), ``advance`` (elapsed simulation time),
+and ``draw`` (rendering). The base
 ``handle`` already covers the shared screen-level patterns - the ESC
 shortcut and widget-recorded actions (see ``Screen``); ``update`` and
 ``draw`` stay deliberately inert: a screen with no per-frame state does
@@ -34,6 +34,7 @@ class ScreenAction(Enum):
     QUIT = 1
     SHOW_TITLE_SCREEN = 2
     SHOW_OPTIONS_SCREEN = 3
+    SHOW_CAMPAIGN = 4
 
 
 class Screen:
@@ -81,6 +82,9 @@ class Screen:
 
     def update(self, events: list[pygame.event.Event]) -> None:
         """Advance per-frame screen state (example: starfield twinkle)."""
+
+    def advance(self, dt: float) -> None:
+        """Advance timed gameplay; menu screens have no timed simulation."""
 
     def draw(self, surface: pygame.Surface) -> None:
         """Render the screen: background first, then its widgets."""

@@ -213,3 +213,18 @@ def test_player_backing_does_not_erase_mining_mount_connection(presentation, mon
     monkeypatch.setattr(screen._art, 'draw_ship', lambda *args, **kwargs: None)
     screen._draw_flight()
     assert screen._canvas.get_at((428, 300))[:3] != (7, 13, 25)
+
+
+def test_station_shield_keeps_background_detail_visible(presentation):
+    """Safety remains legible without replacing the sky with an opaque disk."""
+    from dtd.campaign import STATION_X, STATION_Y, SAFE_RADIUS
+    screen = presentation
+    screen._launch(1)
+    screen._canvas.fill((20, 30, 70))
+    point = (STATION_X + SAFE_RADIUS - 40, STATION_Y)
+    screen._canvas.set_at(point, (120, 140, 200))
+    screen._draw_flight()
+    color = screen._canvas.get_at(point)
+    assert color.r > 100 and color.g > 120 and color.b > 170
+    # The exact outer boundary is still drawn at the model's safe radius.
+    assert screen._canvas.get_at((STATION_X + SAFE_RADIUS - 1, STATION_Y))[:3] != (20, 30, 70)

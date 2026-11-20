@@ -76,6 +76,31 @@ class CampaignSprites:
                 self._sources[name] = image
             except (OSError, pygame.error, ValueError) as error:
                 self.issues[name] = str(error)
+        self._field_details = self._prepare_field_details()
+
+    def _prepare_field_details(self):
+        """At most 24 tiny, faint, static pieces; no resemblance to mineable rocks."""
+        names = [name for name in ("asteroid_iron", "asteroid_iron_b")
+                 if name in self._sources]
+        if not names:
+            return ()
+        pieces = []
+        for i in range(24):
+            side = i % 4
+            if side == 0:
+                x, y = 55+(i*37)%115, 185+(i*97)%800
+            elif side == 1:
+                x, y = 1750+(i*29)%115, 185+(i*83)%800
+            elif side == 2:
+                x, y = 190+(i*137)%1530, 170+(i*19)%70
+            else:
+                x, y = 190+(i*113)%1530, 935+(i*13)%65
+            size = 6+i%5
+            image = pygame.transform.smoothscale(self._sources[names[i%len(names)]],
+                                                 (size, size))
+            image.set_alpha(55+(i%3)*8)
+            pieces.append((x, y, image))
+        return tuple(pieces)
 
     @staticmethod
     def _normalize_world(source, bounds):
@@ -119,7 +144,9 @@ class CampaignSprites:
         return {"entries": len(self._cache), "bytes": self._cache_bytes,
                 "entry_limit": self._entry_limit, "byte_limit": self._byte_limit,
                 "source_bytes": sum(image.get_pitch()*image.get_height()
-                                    for image in self._sources.values())}
+                                    for image in self._sources.values()),
+                "field_detail_bytes": sum(image.get_pitch()*image.get_height()
+                                          for _, _, image in self._field_details)}
 
     def _transformed(self, name, size, angle=0):
         width, height = size
@@ -134,6 +161,8 @@ class CampaignSprites:
         image = pygame.transform.smoothscale(self._sources[name], size)
         if angle:
             image = pygame.transform.rotate(image, angle)
+        if name == "rival":
+            image = self._separate_rival(image)
         if name in WORLD_NAMES:
             # Guard the physical artwork footprint against antialias fringes and
             # rotation rounding; this affects presentation, never hit geometry.
@@ -142,6 +171,9 @@ class CampaignSprites:
                                (image.get_width()//2, image.get_height()//2),
                                min(width, height)//2)
             image.blit(clip, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+        return self._remember(key, image)
+
+    def _remember(self, key, image):
         cost = image.get_pitch()*image.get_height()
         if self._entry_limit and cost <= self._byte_limit:
             while self._cache and (len(self._cache) >= self._entry_limit or
@@ -151,6 +183,24 @@ class CampaignSprites:
             self._cache[key] = image
             self._cache_bytes += cost
         return image
+
+    @staticmethod
+    def _separate_rival(image):
+        """Cached two-pixel dark separation and restrained one-pixel red rim.
+
+        Stroke pixels remain within the original transform canvas and the
+        normal circular footprint guard; gameplay size is not enlarged.
+        """
+        mask = pygame.mask.from_surface(image, 32)
+        separated = pygame.Surface(image.get_size(), pygame.SRCALPHA)
+        for distance, color in ((2, (4, 9, 16, 255)), (1, (235, 116, 111, 210))):
+            silhouette = mask.to_surface(setcolor=color, unsetcolor=(0, 0, 0, 0))
+            for dx, dy in ((-distance, 0), (distance, 0), (0, -distance), (0, distance),
+                           (-distance, -distance), (-distance, distance),
+                           (distance, -distance), (distance, distance)):
+                separated.blit(silhouette, (dx, dy))
+        separated.blit(image, (0, 0))
+        return separated
 
     def _world(self, surface, name, x, y, radius, angle=0):
         if name not in self._sources:
@@ -223,3 +273,37 @@ class CampaignSprites:
         image = self._transformed(name, fit.size)
         surface.blit(image, fit)
         return True
+
+    def draw_image_cover(self, surface, name, rect):
+        """Fill a panel by center-cropping, without stretching source geometry."""
+        if name not in self._sources:
+            return False
+        rect = pygame.Rect(rect)
+        if rect.width <= 0 or rect.height <= 0 or not surface.get_rect().colliderect(rect):
+            return True
+        key = ("cover:"+name, rect.width, rect.height, 0)
+        image = self._cache.get(key)
+        if image is not None:
+            self._cache.move_to_end(key)
+        else:
+            source = self._sources[name]
+            crop = source.get_rect()
+            if crop.width*rect.height > crop.height*rect.width:
+                crop.width = max(1, round(crop.height*rect.width/rect.height))
+            else:
+                crop.height = max(1, round(crop.width*rect.height/rect.width))
+            crop.center = source.get_rect().center
+            image = pygame.transform.smoothscale(source.subsurface(crop), rect.size)
+            self._remember(key, image)
+        surface.blit(image, rect)
+        return True
+
+    def draw_field_detail(self, surface):
+        """Draw static distant debris behind the world, in logical 1920x1080 space.
+
+        Exactly 24 precomputed 6–10px images at most (<10KiB) are shared across
+        frames. Missing rock artwork simply omits this decorative layer.
+        """
+        for x, y, image in self._field_details:
+            surface.blit(image, (x, y))
+        return bool(self._field_details)

@@ -245,3 +245,95 @@ def test_iron_variant_is_stable_by_identity_and_missing_variant_uses_primary(tmp
     assert pixels(first) == pixels(missing)
     assert "asteroid_iron_b" in variants.loaded_names
     assert pygame.Rect(153, 153, 94, 94).contains(second.get_bounding_rect())
+
+
+def test_rival_has_cached_separation_outside_hull_without_expanding_radius(tmp_path, monkeypatch):
+    arrow(tmp_path, 'rival')
+    arrow(tmp_path, 'prospector')
+    renderer = CampaignSprites(tmp_path)
+    original = pixels(renderer._sources['rival'])
+    plain, rival = canvas(), canvas()
+    renderer.draw_ship(plain, 200, 200, .7, kind='prospector', size=24)
+    renderer.draw_ship(rival, 200, 200, .7, kind='rival', size=24)
+    body = pygame.mask.from_surface(plain, 32)
+    red_rim = pygame.mask.from_threshold(rival, (235, 116, 111, 210), (8, 8, 8, 48))
+    dark_edge = pygame.mask.from_threshold(rival, (4, 9, 16, 255), (3, 3, 3, 3))
+    assert red_rim.count() > red_rim.overlap_area(body, (0, 0)) + 10
+    assert dark_edge.count() > dark_edge.overlap_area(body, (0, 0)) + 10
+    assert pygame.Rect(175, 175, 50, 50).contains(rival.get_bounding_rect())
+    assert pixels(renderer._sources['rival']) == original
+    def no_stroke(*args):
+        raise AssertionError('rival stroke must use the transform cache')
+    monkeypatch.setattr(renderer, '_separate_rival', no_stroke)
+    repeated = canvas()
+    renderer.draw_ship(repeated, 200, 200, .7, kind='rival', size=24)
+    assert pixels(repeated) == pixels(rival)
+
+
+def test_cover_fills_panel_without_distortion_and_keeps_fit_api(tmp_path, monkeypatch):
+    image = pygame.Surface((200, 100), pygame.SRCALPHA)
+    image.fill((25, 40, 60, 255))
+    pygame.draw.circle(image, (220, 180, 100, 255), (100, 50), 20)
+    pygame.image.save(image, str(tmp_path/'dock.png'))
+    renderer = CampaignSprites(tmp_path)
+    original = pixels(renderer._sources['dock'])
+    covered, fitted = canvas(), canvas()
+    assert renderer.draw_image_cover(covered, 'dock', (100, 100, 100, 100))
+    assert renderer.draw_image(fitted, 'dock', (100, 100, 100, 100))
+    assert covered.get_bounding_rect() == pygame.Rect(100, 100, 100, 100)
+    assert fitted.get_bounding_rect() == pygame.Rect(100, 125, 100, 50)
+    circle = pygame.mask.from_threshold(covered, (220, 180, 100, 255), (1, 1, 1, 1))
+    bounds = circle.get_bounding_rects()[0]
+    assert bounds.width == bounds.height == 40
+    assert pixels(renderer._sources['dock']) == original
+    def no_scale(*args):
+        raise AssertionError('identical cover must reuse its transform')
+    monkeypatch.setattr(pygame.transform, 'smoothscale', no_scale)
+    again = canvas()
+    renderer.draw_image_cover(again, 'dock', (100, 100, 100, 100))
+    assert pixels(again) == pixels(covered)
+
+
+def test_cover_cache_remains_bounded_and_missing_art_is_optional(tmp_path):
+    arrow(tmp_path, 'dock')
+    renderer = CampaignSprites(tmp_path, cache_entries=3, cache_bytes=50_000)
+    surface = canvas()
+    for size in range(30, 180, 3):
+        renderer.draw_image_cover(surface, 'dock', (20, 20, size, size//2))
+        assert renderer.cache_info['entries'] <= 3
+        assert renderer.cache_info['bytes'] <= 50_000
+    before = pixels(surface)
+    assert renderer.draw_image_cover(surface, 'unknown', (10, 10, 20, 20)) is False
+    assert pixels(surface) == before
+
+
+def test_distant_debris_is_sparse_faint_static_read_only_and_off_center(tmp_path, monkeypatch):
+    arrow(tmp_path, 'asteroid_iron')
+    state = random.getstate()
+    renderer = CampaignSprites(tmp_path)
+    original = pixels(renderer._sources['asteroid_iron'])
+    a, b = [pygame.Surface((1920, 1080), pygame.SRCALPHA) for _ in range(2)]
+    def no_transform(*args, **kwargs):
+        raise AssertionError('debris is precomputed, not transformed per frame')
+    monkeypatch.setattr(pygame.transform, 'smoothscale', no_transform)
+    monkeypatch.setattr(pygame.image, 'load', no_transform)
+    assert renderer.draw_field_detail(a)
+    assert renderer.draw_field_detail(b)
+    assert pixels(a) == pixels(b)
+    assert pygame.mask.from_surface(a, 0).count() > 0
+    assert pygame.mask.from_surface(a, 80).count() == 0
+    assert pygame.mask.from_surface(a.subsurface((200, 250, 1500, 650)), 0).count() == 0
+    assert len(renderer._field_details) == 24
+    assert all(image.get_width() <= 10 and image.get_height() <= 10
+               for _, _, image in renderer._field_details)
+    assert renderer.cache_info['field_detail_bytes'] <= 24*10*10*4
+    assert pixels(renderer._sources['asteroid_iron']) == original
+    assert random.getstate() == state
+
+
+def test_missing_debris_textures_omit_decorative_layer(tmp_path):
+    renderer = CampaignSprites(tmp_path)
+    surface = canvas()
+    assert renderer.draw_field_detail(surface) is False
+    assert not surface.get_bounding_rect().width
+    assert renderer.cache_info['field_detail_bytes'] == 0

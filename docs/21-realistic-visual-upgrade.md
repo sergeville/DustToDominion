@@ -79,7 +79,7 @@ No agent writes another owner's files; no pushes or user-save mutations.
 
 No dependencies, settings, save migration or engine change. Native fullscreen
 continues to use desktop resolution with proportional letterboxing. Offscreen
-4K captures are not proof of a native4K display or 4K source detail.
+4K captures are not proof of a native 4K display or 4K source detail.
 Campaign labels render at the supplied output surface resolution, retaining
 logical sizes/wrapping and selected fonts. A transient text layer is cleared
 under modal overlays; widgets already render at output scale. SDL's fullscreen
@@ -119,3 +119,43 @@ back without changing monitor modes. Physical input and audio remain unverified.
 
 See the [current report](reviews/2026-11-20-realistic.md) for evidence, source
 provenance, performance costs and exact remaining visual compromises.
+
+## Amendment — 2026-11-20: readability and reference comparison
+
+User authorized continuing with the same team, preserving gameplay and saves.
+Baseline is product `6566c42` with documentation `c991a1a`. Existing raster assets are
+retained; this pass improves their presentation rather than changing the engine.
+
+### Dev plan
+
+1. Retain four-view EN/DE baseline captures and inspect the actual screenshots
+   against the supplied reference before product edits.
+2. Place localized world labels outside player/rival hulls, visible health bars,
+   HUD and other labels. Keep CUT progress visible; use backed text and a leader
+   when moved. Prefer nearby placements before a distance-ordered field search;
+   bars must remain associated with their ships in ordinary scenes. Add a dark separation edge, red rim and open brackets to rival
+   presentation, without enlarging hitboxes or changing targeting.
+3. Replace the opaque station shield disk with a faint transparent field and
+   readable boundaries. Add restrained distant debris/depth without introducing
+   mineable-looking large objects. Make docking art a broad shared station panel
+   and enlarge fleet display hulls within their cards; keep all actions accessible.
+4. Test real font bounds, ship/rock overlap, edges, no model/RNG/save mutation,
+   resource fallback, bounded caches and draw determinism. Capture mining,
+   combat, station and fleet at 720p/1080p/1440p/offscreen 3840x2160 in EN/DE.
+5. Independent QA reviews changes and reference fidelity; run affected and full
+   regression checks once stable. Repeat native graphics probe separately from
+   offscreen rendering, retaining warnings and exact framebuffer/window sizes.
+
+### Acceptance and limits
+
+Label/bar placement and rival silhouettes must be readable in the reproduced
+problem scenes and edge fixtures. The shield must retain its exact safety radius
+while allowing the backdrop to show through. Decorative debris has no collision,
+pickups or gameplay state. Fleet display size changes do not affect flight size.
+Station layout may move widgets but not change callbacks/prices/save behavior.
+All source artwork remains unmodified and provenance stays accurate.
+
+The world canvas remains 1920x1080: 3840x2160 captures verify output, font rendering
+and layout, not native 4K world detail. Native main-monitor fullscreen must report
+window and backbuffer separately. Physical input, audio, balance and final art
+acceptance remain separate from automated and native graphics evidence.

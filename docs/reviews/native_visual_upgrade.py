@@ -3,10 +3,13 @@
 Uses application window/render APIs and synthetic scenes with isolated settings.
 Does not synthesize OS mouse/keyboard events or access the player's save.
 """
+import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
 import statistics
+import subprocess
 import sys
 import tempfile
 import time
@@ -17,6 +20,9 @@ os.chdir(REPO)
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output-dir", type=Path, default=REPO / "docs/reviews/2026-11-20-realistic/native")
+    args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='dtd-native-graphics-') as scratch:
         os.environ['DUST_TO_DOMINION_HOME'] = scratch
         os.environ['DUST_TO_DOMINION_CONFIG'] = str(Path(scratch) / 'game.json')
@@ -38,11 +44,14 @@ def main():
         init_audio_manager(loader, None)
         init_language_manager(loader, 'en-us')
         window = MainWindow()
-        output = REPO / 'docs/reviews/2026-11-20-realistic/native'
-        output.mkdir(exist_ok=True)
+        output = args.output_dir.resolve()
+        output.mkdir(parents=True, exist_ok=True)
         report = {'kind': 'native graphics smoke; synthetic state; no OS input; audio disabled',
+                  'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                  'source_sha256': {str(p.relative_to(REPO)): hashlib.sha256(p.read_bytes()).hexdigest()
+                                    for p in sorted((REPO / 'src/dtd').rglob('*.py'))},
                   'desktop_before': pygame.display.get_desktop_sizes(), 'phases': [],
-                  'native_input': 'Pending: CUA omits uv Python; direct executable getApp returned Invalid app'}
+                  'native_input': 'Not exercised by this probe; physical keyboard/mouse acceptance remains pending'}
         try:
             window.open()
             report['driver'] = pygame.display.get_driver()

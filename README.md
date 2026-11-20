@@ -25,7 +25,7 @@ On this Mac, double-click **Open Dust to Dominion.command**, then choose
 - Sector 1 has no enemies. Sectors 2 and 3 unlock after 300 and 1,000 credits in sales.
 - Defeat or confirmed abandonment loses cargo and returns you with half hull for free.
 
-Your ship is a white outline in the flight view; rivals are red. At the
+Your ship has a bright segmented marker in the flight view; rivals use red accents. At the
 station, choose **View fleet** to inspect all three vessel silhouettes, ownership
 and bonuses. Support ships provide passive ore-sale bonuses and do not fly
 alongside you. The station shield locks your weapons and absorbs all shots;
@@ -113,9 +113,29 @@ are written back to `game.json`.
   seems to only be an issue on Windows.
 
 
-### Visual direction and latest preview
+### Realistic visual upgrade — in progress
 
-See the [visual goal](docs/concepts/README.md) for the intended look and feel,
-and [actual presentation screenshots](docs/reviews/2026-11-20-feedback.md) for
-the implemented vector-art step. Flight now marks useful targets and shows
-mining progress; the station **View fleet** displays detailed vessel hulls.
+The [implementation prompt](docs/DustToDominion_Realistic_Visuals_Team_Prompt.md)
+and [visual reference](docs/concepts/realistic-visual-target-2026-11-20.png)
+define the target: textured industrial ships, mineral asteroids, Kepler Station,
+crew portraits and readable dynamic UI. The reference is concept art; it is not
+a screenshot of the implemented game.
+
+The [implementation plan](docs/21-realistic-visual-upgrade.md) records asset
+contracts, team ownership and staged acceptance. First, complete one playable
+mining trip with the new Prospector, asteroid, station and mining effects; then
+expand the artwork across the campaign. Existing gameplay and version-one saves
+must remain compatible.
+
+Baseline at local revision `97cc41a`: **1,805 tests passed**. An isolated,
+input-driven trip launched, mined and collected three iron units, docked and
+sold them, increasing credits from 80 to 110. The
+[baseline evidence](docs/reviews/2026-11-20-realistic/baseline/report.json)
+includes rendered captures and offscreen timing measurements. This verifies
+the existing game before integration; the new visuals and native playthrough
+are still being validated.
+
+Earlier [presentation screenshots](docs/reviews/2026-11-20-feedback.md) show
+the vector-art stage. See the [team handoff](docs/reviews/TEAM-HANDOFF.md) for
+recorded implementation history and acceptance limits. Changes stay local;
+the upstream repository is not being pushed or modified.

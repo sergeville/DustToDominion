@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--repo", default=str(Path(__file__).resolve().parents[2]))
 args = parser.parse_args()
 sys.path.insert(0, str(Path(args.repo) / "src"))
-from dtd.campaign import Campaign, InputState, STATION_X, STATION_Y, MAX_PROJECTILES
+from dtd.campaign import Campaign, InputState, STATION_X, STATION_Y, LAUNCH_Y, MAX_PROJECTILES
 
 
 def sortie(campaign, sector):
@@ -100,9 +100,14 @@ def station_exploit():
             enemy = run.enemies[0]
             run.step(0.1, InputState(firing=True, aim_x=enemy.x, aim_y=enemy.y))
         assert run.bounty == 0 and not run.projectiles and len(run.enemies) == sector - 1
-        assert (run.x, run.y, run.hull) == (STATION_X, STATION_Y, 100)
+        assert (run.x, run.y, run.hull) == (STATION_X, LAUNCH_Y, 100)
         results.append({"sector": sector, "seconds": 10, "bounty": run.bounty,
                         "enemies_remaining": len(run.enemies), "hull": run.hull})
+        # The readability update starts outside docking range, inside safety.
+        for _ in range(60):
+            if run.dock_ready:
+                break
+            run.step(1 / 60, InputState(move_y=1))
         assert run.request_dock() and campaign.finish_run(run)
     return results
 

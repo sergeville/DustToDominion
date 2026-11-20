@@ -1,0 +1,518 @@
+{
+  "schema": 1,
+  "status": "All 13 commissioned assets delivered; integration and independent visual/native acceptance tracked by lead.",
+  "source_kind": "Generated raster originals and exact generation prompts; no layered or 3D source was produced.",
+  "provenance": "New artwork generated with the built-in imagegen tool for the user-authorized DustToDominion visual upgrade. Reference board used only as art direction, not cropped or copied into runtime assets.",
+  "usage": "Intended for use and modification in this game under the applicable image-generation service terms. No third-party asset package or external license was imported; no claim of exclusive copyright or legal clearance.",
+  "lighting_compromise": "Soft baked overhead lighting/occlusion rotates with sprites; no runtime relighting or 3D geometry.",
+  "assets": [
+    {
+      "id": "asteroid_crystal",
+      "source": "assets/source/realistic/asteroid_crystal.png",
+      "runtime": "resources/campaign/realistic/asteroid_crystal.png",
+      "prompt_file": "assets/source/realistic/asteroid_crystal.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "d9f8a8911ff5214fa2e53e3535ca355410aa3bf1a4a2929d24cc3ef9cef95c42",
+      "runtime_sha256": "d9f8a8911ff5214fa2e53e3535ca355410aa3bf1a4a2929d24cc3ef9cef95c42",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        47,
+        30,
+        1154,
+        1200
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "asteroid_gold",
+      "source": "assets/source/realistic/asteroid_gold.png",
+      "runtime": "resources/campaign/realistic/asteroid_gold.png",
+      "prompt_file": "assets/source/realistic/asteroid_gold.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "e2d3616fff2532c87a4febc84cc2eb9cfe2207740468157444368186a7424c80",
+      "runtime_sha256": "e2d3616fff2532c87a4febc84cc2eb9cfe2207740468157444368186a7424c80",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        28,
+        59,
+        1198,
+        1152
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "asteroid_iron",
+      "source": "assets/source/realistic/asteroid_iron.png",
+      "runtime": "resources/campaign/realistic/asteroid_iron.png",
+      "prompt_file": "assets/source/realistic/asteroid_iron.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "ab6b57e91b4427c01d9645d86cdfe0e5ebec1da97ebf9400f053580d2c89577e",
+      "runtime_sha256": "ab6b57e91b4427c01d9645d86cdfe0e5ebec1da97ebf9400f053580d2c89577e",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        58,
+        80,
+        1129,
+        1104
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "asteroid_iron_b",
+      "source": "assets/source/realistic/asteroid_iron_b.png",
+      "runtime": "resources/campaign/realistic/asteroid_iron_b.png",
+      "prompt_file": "assets/source/realistic/asteroid_iron_b.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "5cbc4453ff42f943e6b4972f6a523232fc8002a03bc1865ee260e721662b7323",
+      "runtime_sha256": "5cbc4453ff42f943e6b4972f6a523232fc8002a03bc1865ee260e721662b7323",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        24,
+        50,
+        1204,
+        1176
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "background",
+      "source": "assets/source/realistic/background.png",
+      "runtime": "resources/campaign/realistic/background.png",
+      "prompt_file": "assets/source/realistic/background.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1672,
+        941
+      ],
+      "runtime_size": [
+        1672,
+        941
+      ],
+      "sha256": "27c39648e5e0d7344bb97cbff84eae3d6a06bb08ba4cd63a41e64366afd5e3c9",
+      "runtime_sha256": "27c39648e5e0d7344bb97cbff84eae3d6a06bb08ba4cd63a41e64366afd5e3c9",
+      "has_alpha_channel": false,
+      "transparent_background_requested": false,
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "alpha128_bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Opaque panel/environment art visually inspected. Dynamic UI must remain separately rendered."
+    },
+    {
+      "id": "dock",
+      "source": "assets/source/realistic/dock.png",
+      "runtime": "resources/campaign/realistic/dock.png",
+      "prompt_file": "assets/source/realistic/dock.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        2172,
+        724
+      ],
+      "runtime_size": [
+        2172,
+        724
+      ],
+      "sha256": "6b1ce8733fa0a715f98a8b3972931fc74bf04f7a687e12b105d2440eec39b1a2",
+      "runtime_sha256": "6b1ce8733fa0a715f98a8b3972931fc74bf04f7a687e12b105d2440eec39b1a2",
+      "has_alpha_channel": false,
+      "transparent_background_requested": false,
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "alpha128_bounds": [
+        0,
+        0,
+        2172,
+        724
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Opaque panel/environment art visually inspected. Dynamic UI must remain separately rendered."
+    },
+    {
+      "id": "engineer",
+      "source": "assets/source/realistic/engineer.png",
+      "runtime": "resources/campaign/realistic/engineer.png",
+      "prompt_file": "assets/source/realistic/engineer.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "10d3c63c79b6935630dcfefe0d4f397909ed092b2bcfea93a96b3efd7d8a327d",
+      "runtime_sha256": "10d3c63c79b6935630dcfefe0d4f397909ed092b2bcfea93a96b3efd7d8a327d",
+      "has_alpha_channel": false,
+      "transparent_background_requested": false,
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "alpha128_bounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Opaque panel/environment art visually inspected. Dynamic UI must remain separately rendered."
+    },
+    {
+      "id": "hauler",
+      "source": "assets/source/realistic/hauler.png",
+      "runtime": "resources/campaign/realistic/hauler.png",
+      "prompt_file": "assets/source/realistic/hauler.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "3c3c2e569ef624b26cdd1b8b119946483a9476d020309867bacda291090881e8",
+      "runtime_sha256": "3c3c2e569ef624b26cdd1b8b119946483a9476d020309867bacda291090881e8",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alpha128_bounds": [
+        62,
+        19,
+        1131,
+        1217
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "miner",
+      "source": "assets/source/realistic/miner.png",
+      "runtime": "resources/campaign/realistic/miner.png",
+      "prompt_file": "assets/source/realistic/miner.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "9f4b94c161787cb13ae90da198f6b8f379642da3b686f1bf27f751498c15ee73",
+      "runtime_sha256": "9f4b94c161787cb13ae90da198f6b8f379642da3b686f1bf27f751498c15ee73",
+      "has_alpha_channel": false,
+      "transparent_background_requested": false,
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "alpha128_bounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Opaque panel/environment art visually inspected. Dynamic UI must remain separately rendered."
+    },
+    {
+      "id": "prospector",
+      "source": "assets/source/realistic/prospector.png",
+      "runtime": "resources/campaign/realistic/prospector.png",
+      "prompt_file": "assets/source/realistic/prospector.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "03adfa480cf0e4984b83d36bb6fda049c90522012463111dd29630f82024fac7",
+      "runtime_sha256": "03adfa480cf0e4984b83d36bb6fda049c90522012463111dd29630f82024fac7",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        153,
+        21,
+        950,
+        1181
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "refinery",
+      "source": "assets/source/realistic/refinery.png",
+      "runtime": "resources/campaign/realistic/refinery.png",
+      "prompt_file": "assets/source/realistic/refinery.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "7d0af194cf02b1ca37a79cc83b86fac7d6ada0f3d2ebbb1722b72a0b056bde53",
+      "runtime_sha256": "7d0af194cf02b1ca37a79cc83b86fac7d6ada0f3d2ebbb1722b72a0b056bde53",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        10,
+        54,
+        1234,
+        1124
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "rival",
+      "source": "assets/source/realistic/rival.png",
+      "runtime": "resources/campaign/realistic/rival.png",
+      "prompt_file": "assets/source/realistic/rival.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "723f3c25580014724d5733fafb2bc79cecaabd78c71167c61fc2f05d976a8157",
+      "runtime_sha256": "723f3c25580014724d5733fafb2bc79cecaabd78c71167c61fc2f05d976a8157",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        15,
+        18,
+        1224,
+        1222
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": "up",
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    },
+    {
+      "id": "station",
+      "source": "assets/source/realistic/station.png",
+      "runtime": "resources/campaign/realistic/station.png",
+      "prompt_file": "assets/source/realistic/station.prompt.txt",
+      "generator": "built-in image_gen.imagegen",
+      "generated_date": "2026-11-20",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "runtime_size": [
+        1254,
+        1254
+      ],
+      "sha256": "bfd36a4d28ba5d1e85d82902f62596e3d5bb54a020c474f0cc8d7d60b7b713bd",
+      "runtime_sha256": "bfd36a4d28ba5d1e85d82902f62596e3d5bb54a020c474f0cc8d7d60b7b713bd",
+      "has_alpha_channel": true,
+      "transparent_background_requested": true,
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alpha128_bounds": [
+        16,
+        14,
+        1223,
+        1220
+      ],
+      "export": "Byte-identical PNG copy; no retouching, resampling, cropping or reference extraction. Renderer owns fit/rotation at load/draw.",
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "forward": null,
+      "review": "Material, silhouette and transparency visually inspected. Generated margin and minor alpha-edge residue vary; runtime renderer fits useful alpha bounds."
+    }
+  ],
+  "resolution_note": "Sprites and portraits1254x1254; dock2172x724; backdrop1672x941. These are generated source dimensions, not native4K art. Runtime may scale them; UI is separate."
+}

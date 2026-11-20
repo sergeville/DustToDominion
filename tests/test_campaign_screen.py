@@ -240,9 +240,8 @@ def test_visual_time_follows_consumed_steps_and_freezes_on_pause(screen):
 
 
 def test_thrust_uses_net_input_and_stops_on_focus_loss(screen, monkeypatch):
-    import dtd.screens.campaign as module
     calls = []
-    monkeypatch.setattr(module, 'draw_ship', lambda *args, **kwargs: calls.append(kwargs))
+    monkeypatch.setattr(screen._art, 'draw_ship', lambda *args, **kwargs: calls.append(kwargs))
     screen._launch(1)
     screen.update([key(pygame.K_w), key(pygame.K_s)])
     screen._draw_flight()

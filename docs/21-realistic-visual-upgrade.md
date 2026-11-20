@@ -159,3 +159,18 @@ The world canvas remains 1920x1080: 3840x2160 captures verify output, font rende
 and layout, not native 4K world detail. Native main-monitor fullscreen must report
 window and backbuffer separately. Physical input, audio, balance and final art
 acceptance remain separate from automated and native graphics evidence.
+
+
+### Polish validation — 2026-11-20
+
+Local product `957e96b`, test refinement `a61e8d6`: 1,860 tests passed. Independent
+QA reproduced the original collisions/contrast failures, caught and verified the
+nearby-bar correction, and reviewed all 32 updated EN/DE four-view captures.
+The earned trip again sold three iron (80→110 credits). Art review passed this
+scoped comparison; distant framing, baked lighting and prominent HUD remain.
+Native Cocoa graphics passed 3440×1440 fullscreen with a 1920×1080 backbuffer;
+offscreen 3840×2160 checks verify output-size fonts and layout with scaled world
+art. Physical input/audio/human acceptance and native 4K remain unverified.
+See the [polish report](reviews/2026-11-20-realistic-polish.md) for warnings,
+timings, screenshots, source hashes and reproduction commands. Proposed status
+is retained pending the original native play and human acceptance criteria.

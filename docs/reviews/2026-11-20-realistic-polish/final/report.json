@@ -1,0 +1,659 @@
+{
+  "revision": "957e96b8c4ddf99a59bcfb308dcdeb7d73761ce9",
+  "phase": "final",
+  "driver": "dummy",
+  "evidence": "Actual SDL dummy renderer; synthetic layout states; no physical native input",
+  "logical_world": [
+    1920,
+    1080
+  ],
+  "offscreen_4k_only": true,
+  "source_sha256": {
+    "src/dtd/__init__.py": "1b8c56e6bbee84931706ba956907d57a451bcd47ec1f2c9acd00f256d8b1e60d",
+    "src/dtd/audio.py": "7906bbab333eb7bbba1bde93dc58c82aa627b84cc7d68855b456decd0da70d8e",
+    "src/dtd/campaign.py": "ad70bff81d295572ca60f047193e9060bc49caa8abab52ae72ff20b6e38a03e0",
+    "src/dtd/campaign_art.py": "a5cec91a5d0cb0ba13a65f54aba3b215b7b00e849a2ebbba7fdf8d6c98d3e1bb",
+    "src/dtd/campaign_effects.py": "07cdff65addcad94566531f811780dc550fc071d8707b2b3cf8c8a37fa543614",
+    "src/dtd/campaign_guidance.py": "a069fe9e5fbc5bde37e55e4dd310dea6834af0f1871e12d41e6ecb49ae8d4d70",
+    "src/dtd/campaign_sprites.py": "29beb1def7e871fad4509d04925c834ad64a72cb24502e161dca7a301cfa51b4",
+    "src/dtd/campaign_store.py": "1f2dab3ad609daf60f0594fcba9b3fb3cf976a4981d9186aafca4a9e377b0fe8",
+    "src/dtd/config.py": "81fd3978cbed880289aa58f98420270e7d755f49b2a6e58d547078d6593b305d",
+    "src/dtd/errors.py": "3160702088d262df650239065f1304a6a89bc38a0c9b9c2cc4e1eb63499a154e",
+    "src/dtd/game_config.py": "d2f5e6891d931d7c200cdaf60eaa2ddf8d8df75ff6efe0b81661966a40bb6850",
+    "src/dtd/game_constants.py": "26ea340faaef489c765dedfe67f993c993c6993af71f8c3641dfcdac04d510a1",
+    "src/dtd/language.py": "25ec6ac218c857e969a62e5805df523069be33a290d799e4e6bc91bb36a3499e",
+    "src/dtd/main.py": "a422f2d1aeaaa236d7b5ff817d8e43a6020f54bd50aaddca58697eff63f81871",
+    "src/dtd/main_window.py": "0b3afa3387e56ddc7a425fc22d1af84bef806ec537b14edfe0791f58422d6177",
+    "src/dtd/pak.py": "741d6432942b43d6286702f54e34b8f3c869c867378547ea93c99ac4b00041c1",
+    "src/dtd/persistence.py": "17fe341f19c80b66d6b6902d3974a58930443365e95878a4910e1eaf9bc49ccb",
+    "src/dtd/resource_loader.py": "1252e777ef0fcf230f7027369168e7535d07c84173a5275a32292513610cbcb0",
+    "src/dtd/screens/__init__.py": "f036d95e3dd72815222765d31d15cf3cbe226ec15aecd15ce5c7beaef8c74dcd",
+    "src/dtd/screens/background.py": "ed2a3f5c3605d76fc7a90a2e8fe89ef27e92fcf66c4c7bb6aad5db42ebb3bd7f",
+    "src/dtd/screens/base.py": "60cef670f2b66a0502d719e6b54109395b011255779a895bf9f6364d5fcb335b",
+    "src/dtd/screens/campaign.py": "4dd6bbbcf5ef33d354197969733bfa4c1797a2340fa44e65a413c4769ea3a9c8",
+    "src/dtd/screens/options.py": "2c0b19c1c6040d721b77e9ec044ef80a045f5e3737a4b3f123bf995a10d1e346",
+    "src/dtd/screens/starfield.py": "0506e840b12302d94045971a74cf17bf547f71b13ce95accb5107f9d40ee852f",
+    "src/dtd/screens/title.py": "d4e8cca6fb3735dab7bac9eec2b08774c18b11d2afad7f51cfe88bc30fd16359",
+    "src/dtd/ui.py": "e59e7802882820746764461ee6cbfa1b5844704873a1458dc48720554f598661",
+    "src/dtd/widgets/__init__.py": "b885d26d2f831c76cf67fd545120cb6217463f00d8c9b90cf92f8161e77d385f",
+    "src/dtd/widgets/button.py": "f4a9d63c77c2599ef75b475bb484fb1eb97c0690c20448f2ed40badf6e9f9f13",
+    "src/dtd/widgets/checkbox.py": "5efa322110fe8c03ec59bab620a79a58810ec76271ea92e5442e2c51dbffafe0",
+    "src/dtd/widgets/choice_list.py": "b75f1e7b4d8ce0b26bfde4cbded17b6a2b7bf89fab5ef9029ab78d8b73f53a6b",
+    "src/dtd/widgets/label.py": "a733ae31093279c90ac6879707b8fec4d63bd1f407bf9fe955c0eaf4c7059e72",
+    "src/dtd/widgets/progress_bar.py": "b9cf6205c391c6be24af374a4de33f2ed3da1736ed193587df4bc95ec65dfe82",
+    "src/dtd/widgets/slider.py": "5b521c7c42fc013b9da0b0103606020e898857b8520bf3acee5b517cc5d76662",
+    "src/dtd/widgets/text_layout.py": "fc69af0177e5780dd6d45fdeea5aad60bfb2dd7e508ae03de08af251b51f7f94",
+    "src/dtd/widgets/text_panel.py": "785a60c1283cdc4bfabd25a05186cc6459130203481dd48fad365eeb6cb985ef",
+    "src/dtd/widgets/value_layout.py": "d28699fb703f716710322c42fdcbffcf4ee63e045e71c6775b4cfa31e42c9d13"
+  },
+  "captures": [
+    {
+      "file": "en-us-1280-mining.png",
+      "sha256": "0ec4e6d0020eeea29f797e412c40c1fa8628e3890bc9fb2350040216a450cc24",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-1280-combat.png",
+      "sha256": "01448569524a40f28d301a7a781c502acae75ff50e3af148d42038afcb305010",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-1280-station.png",
+      "sha256": "b29b53995d13b21466cad3ae3cd469b0665f414403736cc27300ddd7a3cf74dc",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-1280-fleet.png",
+      "sha256": "53ef994fa1c96fd9e6a5ce55cce67cd6807707963e9bd2e4fc6717367f0f5a66",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-1920-mining.png",
+      "sha256": "87882bca029dfa6c0c9100ed8f813b873b893b86e42aca06042c9bfc77faf1be",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-1920-combat.png",
+      "sha256": "1123f0b2038bdd8e2fb09f1051d18bc521f564105029fb802f97eaedc03ca6e8",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-1920-station.png",
+      "sha256": "6cc088d0a00eb90cf14411a835e3ff80a87e3a2fdb68d6ddd74a38dc1f122d9b",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-1920-fleet.png",
+      "sha256": "12c41e34d7ad8be0448932920db134fefd23655f668350b77b505e15694bf342",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-2560-mining.png",
+      "sha256": "53fd1a88111feccc2945a400d8177b01679ca88c04a17fda0ef287276aac24b8",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-2560-combat.png",
+      "sha256": "25d3ddd741f5f0b5e77ea029ab7036e54a83db4be4d36b6ff3dc23b528a72408",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-2560-station.png",
+      "sha256": "8dafcd20d4ff061e033d2f02f1fbbd7febdf1facb0e5215adccdc0cd6795fa72",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-2560-fleet.png",
+      "sha256": "bed122b7d5f5308fec4342ba201f4713ea2df21d7f21d47858493bd9baac4847",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-3840-mining.png",
+      "sha256": "37370ffc64dd3165b6868518b5088c17a467a5af7f2e4a2bf3494c144315c334",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-3840-combat.png",
+      "sha256": "33e78442d0409501b685b28a314203b76177dc4d9b65eedbd97a4499d62146ff",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "en-us-3840-station.png",
+      "sha256": "1acec81349c3bb89bf9624ad0c8b7ab2a8b95d02748d5896b1deb64f5ea2bb27",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "en-us-3840-fleet.png",
+      "sha256": "960bb73ac24bc7649aab94420e73cca13af0af86c2697ef126dc7d909e146cb4",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-1280-mining.png",
+      "sha256": "d3a0803f511adae321e3784f0fe2b8e435066491b12a45ac765133c495e52486",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-1280-combat.png",
+      "sha256": "66a25a555120399b121657d69c79f685e648d9190cdaedf9a1a7d30557d38d8b",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-1280-station.png",
+      "sha256": "3549b5ead21b2b324728ae4334bf5dba8d870bdd7981c70d1beede0894aa5087",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-1280-fleet.png",
+      "sha256": "9856ccb33163f89c1602c597487debed4870b3191c3874034878faf08541df6f",
+      "layout_warnings": [],
+      "pixels": [
+        1280,
+        720
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-1920-mining.png",
+      "sha256": "79859c404aafc4dcb4e2cba1adfe2dc0077e6183ec810dd83adc77d0b32d7e56",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-1920-combat.png",
+      "sha256": "5a22d82a866d482a92bcb4af5bbf2097574e7c447ce3d572dc41d8390598af04",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-1920-station.png",
+      "sha256": "b7e17bbf0a01c95e14b02d3863f151b1aef4c58b3cae4ed86f3b93c25f81d35f",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-1920-fleet.png",
+      "sha256": "97f0f3afeade7aea59903e6f49c500862a8af5c08346dbc02efdd7a65f118bb8",
+      "layout_warnings": [],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-2560-mining.png",
+      "sha256": "286cdebe4dfab0d8adc7bb2e8ca526b1fc5a53957719a12d90b493ece3ef6168",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-2560-combat.png",
+      "sha256": "ad07a4baffcb77221dd291bb0f71c4c1f5e08973e076a18641cf8ac1e9a277ae",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-2560-station.png",
+      "sha256": "1894773c89e4a5ac8f3f21aee52530402e12d04e7e84487cb1361d3954ae404f",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-2560-fleet.png",
+      "sha256": "1be72ba57f20e2d6f96a3ab9f07c62d3dc93daae53d6014b454c1b2d988ed915",
+      "layout_warnings": [],
+      "pixels": [
+        2560,
+        1440
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-3840-mining.png",
+      "sha256": "8a237a56bffe4661500e4b31f136f91326ad25f3cd4d0dc22013c374b26ba232",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-3840-combat.png",
+      "sha256": "8f0f6c32663782898301f5f790011d325de6433cd4adc43e4e3241605b74e7f7",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "flight",
+      "world_label_warnings": [],
+      "world_bar_warnings": []
+    },
+    {
+      "file": "de-3840-station.png",
+      "sha256": "fb26d00b1d4705bd1df383e6bcdbd0c67233b3ddc984885ed8b1276a384646bf",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "station",
+      "world_label_warnings": []
+    },
+    {
+      "file": "de-3840-fleet.png",
+      "sha256": "8af9550a562e3c563081912764e5a1a09fea7751da7e4d782ccce6badf56dae8",
+      "layout_warnings": [],
+      "pixels": [
+        3840,
+        2160
+      ],
+      "origin": "synthetic stress layout fixture",
+      "mode": "fleet",
+      "world_label_warnings": []
+    }
+  ],
+  "trip": {
+    "passed": true,
+    "credits_before": 80,
+    "credits_after": 110,
+    "ore_mined_collected_sold": 3,
+    "checkpoint_after_dock": [
+      0,
+      0,
+      0
+    ],
+    "collect_and_cut_reproduced": true,
+    "captures": [
+      {
+        "file": "trip-fresh.png",
+        "sha256": "b8442b631bbaf934d0362152894a2bdc1c030fe5bfcb6ea50eca32072d14b38f",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-mining.png",
+        "sha256": "1c2424b9345273accda966e6f7e1d7d97235f90686aa0cd2e0b965a770d8a458",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-collected.png",
+        "sha256": "cba44ecfcb21097d3c6509face2fafc9cfdb47364743bc22a0935229d6876bfa",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "flight"
+      },
+      {
+        "file": "trip-docked.png",
+        "sha256": "f33a2808096d5604c93a7f023fe880d1db132141829268a44c7fce90e22ce55c",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "result"
+      },
+      {
+        "file": "trip-sold.png",
+        "sha256": "6129c5b16103bac98948fb0a1b25dd639e94de215761e453fe9e2790957508ab",
+        "layout_warnings": [],
+        "pixels": [
+          1920,
+          1080
+        ],
+        "origin": "pygame-event-driven earned mining trip",
+        "mode": "station"
+      }
+    ],
+    "native_input": false
+  },
+  "benchmark": [
+    {
+      "pixels": [
+        1280,
+        720
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 133.839,
+      "first_frame_ms": 7.037,
+      "median_ms": 3.645,
+      "p95_ms": 4.022,
+      "p99_ms": 5.776,
+      "max_ms": 7.895,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        1280,
+        720
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 134.296,
+      "first_frame_ms": 8.13,
+      "median_ms": 3.973,
+      "p95_ms": 4.261,
+      "p99_ms": 4.946,
+      "max_ms": 5.55,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 131.426,
+      "first_frame_ms": 5.777,
+      "median_ms": 2.357,
+      "p95_ms": 2.553,
+      "p99_ms": 2.654,
+      "max_ms": 2.664,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 131.109,
+      "first_frame_ms": 6.659,
+      "median_ms": 2.788,
+      "p95_ms": 3.229,
+      "p99_ms": 3.535,
+      "max_ms": 3.719,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        2560,
+        1440
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 133.317,
+      "first_frame_ms": 8.291,
+      "median_ms": 4.395,
+      "p95_ms": 4.743,
+      "p99_ms": 4.851,
+      "max_ms": 5.172,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        2560,
+        1440
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 133.235,
+      "first_frame_ms": 8.53,
+      "median_ms": 4.535,
+      "p95_ms": 4.939,
+      "p99_ms": 5.117,
+      "max_ms": 5.209,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "scene": "normal",
+      "frames": 120,
+      "construction_ms": 129.458,
+      "first_frame_ms": 11.445,
+      "median_ms": 6.219,
+      "p95_ms": 6.759,
+      "p99_ms": 6.882,
+      "max_ms": 6.915,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    },
+    {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "scene": "effect-heavy",
+      "frames": 120,
+      "construction_ms": 127.927,
+      "first_frame_ms": 10.712,
+      "median_ms": 6.447,
+      "p95_ms": 6.775,
+      "p99_ms": 7.138,
+      "max_ms": 7.302,
+      "over_16_67_ms": 0,
+      "process_peak_rss_before_mib": 618.06,
+      "process_peak_rss_after_mib": 618.06
+    }
+  ]
+}

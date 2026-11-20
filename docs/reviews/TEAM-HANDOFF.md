@@ -7,8 +7,9 @@ status: active
 
 ## 1. Start here
 
-**Latest:** [Realistic visual upgrade](2026-11-20-realistic.md), product `6566c42`,
-1,841 passing tests, 13 artwork assets and native graphics smoke evidence.
+**Latest:** [Realistic presentation polish](2026-11-20-realistic-polish.md), product
+`957e96b` / test refinement `a61e8d6`: 1,860 passing tests, corrected labels/rivals,
+updated station/fleet artwork presentation and separate native/offscreen evidence.
 Earlier sections retain their dated implementation history.
 
 This handoff records work authorized by Serge on 2026-11-20: update the requested
@@ -33,12 +34,12 @@ checkout; do not assume those changes are present.
 | Need | Source |
 | --- | --- |
 | Rules, balance, scope and acceptance | [Campaign spec](../19-complete-small-game.md) |
-| What passed and what did not | [Review report](2026-11-20-playable-game.md) |
+| Current validation and remaining acceptance | [Polish report](2026-11-20-realistic-polish.md) |
 | Executable player-input acceptance | [Acceptance tests](../../tests/test_campaign_acceptance.py) |
 | Progression and stress numbers | [Probe results](campaign-validation.json) |
 | Scaled bilingual UI checks | [Visual records](fleet-visual-validation.json) |
 | Fleet preview | [English](campaign-fleet.png), [German](campaign-fleet-de.png) |
-| All retained visual evidence | [124 screenshots ZIP](2026-11-20-evidence/screenshots.zip), [SHA-256 manifest](2026-11-20-evidence/screenshot-manifest.json) |
+| Original campaign visual evidence | [124 screenshots ZIP](2026-11-20-evidence/screenshots.zip), [SHA-256 manifest](2026-11-20-evidence/screenshot-manifest.json) |
 | Replayed draw costs | [Raw measurements](2026-11-20-evidence/draw-benchmark.txt) |
 | Player controls and setup | [README](../../README.md) |
 
@@ -249,3 +250,30 @@ not 3D/layered files; baked lighting rotates and world detail scales from 1080p.
 The README now links the moved team prompt, actual screenshot, source assets and
 current evidence. Work remains local; no push or PR. User saves and unrelated
 drafts remain intact. Reopen `Open Dust to Dominion.command` to use current code.
+
+
+## Realistic presentation polish — 2026-11-20
+
+[Current polish report](2026-11-20-realistic-polish.md) supersedes the two minor
+visual issues listed above: localized CUT/health bars now avoid hulls and each
+other; rivals have cached dark/red separation and brackets. Labels prefer nearby
+placements after QA caught a distant-bar regression. A faint shield, sparse
+peripheral debris, broad docking image and larger fleet previews improve the
+reference match without altering gameplay, saves or asset originals.
+
+Product `957e96b`, test refinement `a61e8d6`: **1,860 passed in 48.45s**. Independent
+QA reviewed 32 updated EN/DE mining/combat/station/fleet captures through offscreen
+3840×2160; all overlap checks pass. Earned trip again sold three iron, 80→110 CR.
+Art and renderer reviews passed the scoped changes. Native Cocoa graphics again
+passed windowed/fullscreen/returned: 3440×1440 fullscreen window, 1920×1080
+backbuffer, unchanged desktop modes. Native render/flip p50 was 6.89–8.27 ms;
+paced intervals around 17.36–17.79 ms do not prove fixed 60 fps. One expected
+SDL dummy test warning; no warning/error in final capture/native logs.
+
+[Independent review](2026-11-20-realistic-polish/independent-review.md),
+[evidence manifest](2026-11-20-realistic-polish/evidence-manifest.json) and current
+README separate actual rendering from human acceptance. Physical input/audio,
+balance/art approval, physical 4K fullscreen and other platforms remain open.
+World detail still scales from 1080p and the reference's close-up composition is
+not reproduced. No new dependencies/assets, no push/PR, no user save mutation.
+Owned probe windows closed; reopen the existing launcher to load current code.

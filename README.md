@@ -6,9 +6,9 @@ ships, hire two crew members and build a three-ship operation. Win with both
 crew members, three ships and 1,200 credits in the bank; you can keep playing.
 
 This local continuation includes a complete playable ruleset and textured campaign
-artwork. **1,841 tests pass**; a native graphics check verified fullscreen at
+artwork. **1,860 tests pass**; a native graphics check verified fullscreen at
 3440×1440 on this Mac. Hands-on campaign play, audio and difficulty balance still
-need human acceptance. See the [current validation report](docs/reviews/2026-11-20-realistic.md)
+need human acceptance. See the [current validation report](docs/reviews/2026-11-20-realistic-polish.md)
 and [campaign specification](docs/19-complete-small-game.md).
 The [team handoff](docs/reviews/TEAM-HANDOFF.md) records the design, decisions,
 validation commands, full screenshot archive and work still needing acceptance.
@@ -18,12 +18,15 @@ validation commands, full screenshot archive and work still needing acceptance.
 The campaign now uses 13 standalone artwork assets: four ships, Kepler Station,
 four mineral asteroid forms, two crew portraits, a docking bay and a starfield.
 Mining beams, contact sparks, exhaust, projectile trails and hit flashes respond
-to play. Station and fleet panels show the new artwork alongside live values.
+to play. A broad docking panorama and larger fleet previews show the artwork
+alongside live values. Labels and health bars avoid ships and each other; red rims and brackets
+keep rivals visible over ore. A faint shield and sparse distant debris add depth.
 The gameplay rules and version-one saves are unchanged.
 
-![Actual gameplay with the new artwork](docs/reviews/2026-11-20-realistic/final/en-us-1920-mining.png)
+![Actual gameplay with the new artwork](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-mining.png)
 
-This is an actual rendered game scene. The supplied
+This is an actual rendered game scene from a synthetic stress fixture, separate
+from the earned mining-trip captures. The supplied
 [visual target](docs/concepts/realistic-visual-target-2026-11-20.png) is concept art;
 the game preserves its existing small-scale geometry and does not yet match the
 reference's cinematic detail. The
@@ -31,22 +34,30 @@ reference's cinematic detail. The
 [plan](docs/21-realistic-visual-upgrade.md) and
 [asset sources and prompts](assets/source/realistic/README.md) are retained.
 
-Validation at local product revision `6566c42`:
+Validation: product `957e96b`, final test refinement `a61e8d6`:
 
-- **1,841 tests passed**, including earned progression, combat, defeat and saves.
-- A playable automated mining trip launched, mined, collected, docked and sold
-  three iron units: **80 → 110 credits**. It passed before expanding the artwork
-  and again with all assets integrated.
-- **64 English/German captures** reviewed at 720p, 1080p, 1440p and offscreen 4K.
+- **1,860 tests passed**, including earned progression, combat, defeat and saves.
+- The repeated automated trip launched, mined, collected, docked and sold three
+  iron units: **80 → 110 credits**. Physical input acceptance remains separate.
+- **32 updated English/German captures** at 720p, 1080p, 1440p and offscreen 4K;
+  zero detected label/bar/ship overlaps. Independent QA and art review passed.
 - Native windowed/fullscreen/windowed graphics checks passed on the main monitor.
-  Fullscreen uses its 3440×1440 desktop resolution, scaling a 1920×1080 backbuffer.
-  Font choice and proportional scaling are preserved; this is not native 4K art.
+  Fullscreen uses its **3440×1440** desktop resolution and a **1920×1080 backbuffer**.
+  Offscreen 3840×2160 output uses output-size text with an upscaled 1080p world;
+  physical 4K fullscreen and native 4K artwork are unverified.
+- One test warning: `no fast renderer available` in the dummy-display save-failure
+  test. See the report for native probe warnings and timing details.
 
-Remaining: physical mouse/keyboard play and audio acceptance, human judgment of
-balance and art, plus minor combat-label overlap and rival contrast when ships
-cross rocks. Detailed timings, screenshots and limitations are in the
-[validation report](docs/reviews/2026-11-20-realistic.md) and
-[independent review](docs/reviews/2026-11-20-realistic/independent-review.md).
+Updated screenshots: [mining](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-mining.png),
+[combat](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-combat.png),
+[station](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-station.png),
+[fleet](docs/reviews/2026-11-20-realistic-polish/final/en-us-1920-fleet.png).
+
+Remaining: physical mouse/keyboard play, audio, human judgment of balance and art,
+and other displays/platforms. Distant framing, baked lighting and prominent HUD
+panels remain differences from the reference. Detailed evidence and limitations:
+[validation report](docs/reviews/2026-11-20-realistic-polish.md) and
+[independent review](docs/reviews/2026-11-20-realistic-polish/independent-review.md).
 
 Changes are committed locally. Nothing was pushed to the upstream repository.
 Earlier [vector-art screenshots](docs/reviews/2026-11-20-feedback.md) and the

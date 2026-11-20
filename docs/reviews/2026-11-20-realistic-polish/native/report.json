@@ -1,0 +1,217 @@
+{
+  "kind": "native graphics smoke; synthetic state; no OS input; audio disabled",
+  "revision": "a61e8d6a078ae05306d0e74ac262e9a742d42f2f",
+  "source_sha256": {
+    "src/dtd/__init__.py": "1b8c56e6bbee84931706ba956907d57a451bcd47ec1f2c9acd00f256d8b1e60d",
+    "src/dtd/audio.py": "7906bbab333eb7bbba1bde93dc58c82aa627b84cc7d68855b456decd0da70d8e",
+    "src/dtd/campaign.py": "ad70bff81d295572ca60f047193e9060bc49caa8abab52ae72ff20b6e38a03e0",
+    "src/dtd/campaign_art.py": "a5cec91a5d0cb0ba13a65f54aba3b215b7b00e849a2ebbba7fdf8d6c98d3e1bb",
+    "src/dtd/campaign_effects.py": "07cdff65addcad94566531f811780dc550fc071d8707b2b3cf8c8a37fa543614",
+    "src/dtd/campaign_guidance.py": "a069fe9e5fbc5bde37e55e4dd310dea6834af0f1871e12d41e6ecb49ae8d4d70",
+    "src/dtd/campaign_sprites.py": "29beb1def7e871fad4509d04925c834ad64a72cb24502e161dca7a301cfa51b4",
+    "src/dtd/campaign_store.py": "1f2dab3ad609daf60f0594fcba9b3fb3cf976a4981d9186aafca4a9e377b0fe8",
+    "src/dtd/config.py": "81fd3978cbed880289aa58f98420270e7d755f49b2a6e58d547078d6593b305d",
+    "src/dtd/errors.py": "3160702088d262df650239065f1304a6a89bc38a0c9b9c2cc4e1eb63499a154e",
+    "src/dtd/game_config.py": "d2f5e6891d931d7c200cdaf60eaa2ddf8d8df75ff6efe0b81661966a40bb6850",
+    "src/dtd/game_constants.py": "26ea340faaef489c765dedfe67f993c993c6993af71f8c3641dfcdac04d510a1",
+    "src/dtd/language.py": "25ec6ac218c857e969a62e5805df523069be33a290d799e4e6bc91bb36a3499e",
+    "src/dtd/main.py": "a422f2d1aeaaa236d7b5ff817d8e43a6020f54bd50aaddca58697eff63f81871",
+    "src/dtd/main_window.py": "0b3afa3387e56ddc7a425fc22d1af84bef806ec537b14edfe0791f58422d6177",
+    "src/dtd/pak.py": "741d6432942b43d6286702f54e34b8f3c869c867378547ea93c99ac4b00041c1",
+    "src/dtd/persistence.py": "17fe341f19c80b66d6b6902d3974a58930443365e95878a4910e1eaf9bc49ccb",
+    "src/dtd/resource_loader.py": "1252e777ef0fcf230f7027369168e7535d07c84173a5275a32292513610cbcb0",
+    "src/dtd/screens/__init__.py": "f036d95e3dd72815222765d31d15cf3cbe226ec15aecd15ce5c7beaef8c74dcd",
+    "src/dtd/screens/background.py": "ed2a3f5c3605d76fc7a90a2e8fe89ef27e92fcf66c4c7bb6aad5db42ebb3bd7f",
+    "src/dtd/screens/base.py": "60cef670f2b66a0502d719e6b54109395b011255779a895bf9f6364d5fcb335b",
+    "src/dtd/screens/campaign.py": "4dd6bbbcf5ef33d354197969733bfa4c1797a2340fa44e65a413c4769ea3a9c8",
+    "src/dtd/screens/options.py": "2c0b19c1c6040d721b77e9ec044ef80a045f5e3737a4b3f123bf995a10d1e346",
+    "src/dtd/screens/starfield.py": "0506e840b12302d94045971a74cf17bf547f71b13ce95accb5107f9d40ee852f",
+    "src/dtd/screens/title.py": "d4e8cca6fb3735dab7bac9eec2b08774c18b11d2afad7f51cfe88bc30fd16359",
+    "src/dtd/ui.py": "e59e7802882820746764461ee6cbfa1b5844704873a1458dc48720554f598661",
+    "src/dtd/widgets/__init__.py": "b885d26d2f831c76cf67fd545120cb6217463f00d8c9b90cf92f8161e77d385f",
+    "src/dtd/widgets/button.py": "f4a9d63c77c2599ef75b475bb484fb1eb97c0690c20448f2ed40badf6e9f9f13",
+    "src/dtd/widgets/checkbox.py": "5efa322110fe8c03ec59bab620a79a58810ec76271ea92e5442e2c51dbffafe0",
+    "src/dtd/widgets/choice_list.py": "b75f1e7b4d8ce0b26bfde4cbded17b6a2b7bf89fab5ef9029ab78d8b73f53a6b",
+    "src/dtd/widgets/label.py": "a733ae31093279c90ac6879707b8fec4d63bd1f407bf9fe955c0eaf4c7059e72",
+    "src/dtd/widgets/progress_bar.py": "b9cf6205c391c6be24af374a4de33f2ed3da1736ed193587df4bc95ec65dfe82",
+    "src/dtd/widgets/slider.py": "5b521c7c42fc013b9da0b0103606020e898857b8520bf3acee5b517cc5d76662",
+    "src/dtd/widgets/text_layout.py": "fc69af0177e5780dd6d45fdeea5aad60bfb2dd7e508ae03de08af251b51f7f94",
+    "src/dtd/widgets/text_panel.py": "785a60c1283cdc4bfabd25a05186cc6459130203481dd48fad365eeb6cb985ef",
+    "src/dtd/widgets/value_layout.py": "d28699fb703f716710322c42fdcbffcf4ee63e045e71c6775b4cfa31e42c9d13"
+  },
+  "desktop_before": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "phases": [
+    {
+      "phase": "windowed-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 6.894520542118698,
+      "render_flip_p95_ms": 8.879332919605076,
+      "render_flip_max_ms": 12.011582963168621,
+      "paced_interval_p50_ms": 17.76891655754298,
+      "paced_interval_max_ms": 18.768707988783717,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "windowed-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 7.895333459600806,
+      "render_flip_p95_ms": 8.937959093600512,
+      "render_flip_max_ms": 9.940459043718874,
+      "paced_interval_p50_ms": 17.738604045007378,
+      "paced_interval_max_ms": 18.968417076393962,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "fullscreen-normal",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "render_flip_p50_ms": 7.5936459470540285,
+      "render_flip_p95_ms": 9.350917069241405,
+      "render_flip_max_ms": 10.45912504196167,
+      "paced_interval_p50_ms": 17.79335452010855,
+      "paced_interval_max_ms": 18.863625009544194,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "fullscreen-heavy",
+      "window_pixels": [
+        3440,
+        1440
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": true,
+      "render_flip_p50_ms": 7.918875489849597,
+      "render_flip_p95_ms": 9.579416015185416,
+      "render_flip_max_ms": 10.89162495918572,
+      "paced_interval_p50_ms": 17.697812465485185,
+      "paced_interval_max_ms": 18.861207994632423,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "returned-normal",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 8.267250552307814,
+      "render_flip_p95_ms": 9.951458079740405,
+      "render_flip_max_ms": 10.945416055619717,
+      "paced_interval_p50_ms": 17.362062993925065,
+      "paced_interval_max_ms": 18.90016603283584,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    },
+    {
+      "phase": "returned-heavy",
+      "window_pixels": [
+        1920,
+        1080
+      ],
+      "surface_pixels": [
+        1920,
+        1080
+      ],
+      "fullscreen": false,
+      "render_flip_p50_ms": 8.11579154105857,
+      "render_flip_p95_ms": 9.925208054482937,
+      "render_flip_max_ms": 11.957625043578446,
+      "paced_interval_p50_ms": 17.60608347831294,
+      "paced_interval_max_ms": 18.97058403119445,
+      "cache": {
+        "entries": 9,
+        "bytes": 6698644,
+        "entry_limit": 128,
+        "byte_limit": 33554432,
+        "source_bytes": 28314936,
+        "field_detail_bytes": 6200
+      }
+    }
+  ],
+  "native_input": "Not exercised by this probe; physical keyboard/mouse acceptance remains pending",
+  "driver": "cocoa",
+  "desktop_after": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "passed": true
+}

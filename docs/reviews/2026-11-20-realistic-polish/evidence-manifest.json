@@ -1,0 +1,824 @@
+{
+  "schema": 1,
+  "product_revision": "957e96b8c4ddf99a59bcfb308dcdeb7d73761ce9",
+  "tested_revision": "a61e8d6a078ae05306d0e74ac262e9a742d42f2f",
+  "note": "Paths relative to this manifest. Baseline/interim/final/native evidence remain distinct. Manifest excludes itself, Finder metadata and Python bytecode. Native PNGs capture the1920x1080 backbuffer;4K PNGs are offscreen outputs with scaled world and output-sized text.",
+  "files": [
+    {
+      "path": "baseline/de-1280-combat.png",
+      "bytes": 438293,
+      "sha256": "dab5da9cbd739460fa17f23b2b5b079f2bc0286202962f0a59732c66ef91c4cb",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/de-1280-fleet.png",
+      "bytes": 131673,
+      "sha256": "af9513434b49f89fb60decda1e24230519342e22e04e59c18d722dacc81df06a",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/de-1280-mining.png",
+      "bytes": 419037,
+      "sha256": "15cd03cad7299e8a2e2037544d25daf5ce16f684037e576ab2698d6aa048c5f5",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/de-1280-station.png",
+      "bytes": 352459,
+      "sha256": "8d05702b17abb2dbd4da9a3f72f79f07093d7d9e3bcafca098a9534c7f7a45ad",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/de-1920-combat.png",
+      "bytes": 826445,
+      "sha256": "8a63a11f2aba2165c718ff1a162de9a586a566b6324fbe581f4645b7a288b7d8",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/de-1920-fleet.png",
+      "bytes": 241280,
+      "sha256": "03f02ed5e6938a74ca193c6f5a5399a55c91c5ea109bf07aa0a562800ed1bdd4",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/de-1920-mining.png",
+      "bytes": 792600,
+      "sha256": "80f02afa014bd7093dde09c3209714f82cab235dbefe00d9e02dd82702da3182",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/de-1920-station.png",
+      "bytes": 661861,
+      "sha256": "aa5db7630999366c2261e4738a44b13df780392ec698d446ee5c0974c70dfa3d",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/de-2560-combat.png",
+      "bytes": 909586,
+      "sha256": "406f25acee850adeaa0926df040e72d339f2ee72888a05d73e4b130211f7baa2",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/de-2560-fleet.png",
+      "bytes": 303472,
+      "sha256": "976fdf0fd846dd3841eeabc1f2ec9e0c55eca1b65797472b552b12e337dd32c0",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/de-2560-mining.png",
+      "bytes": 848569,
+      "sha256": "720d6e3ed34feee2920c35bdbc8ff97100325f5657476edbdc5837f33a1581dd",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/de-2560-station.png",
+      "bytes": 753318,
+      "sha256": "3ced27a68c27f83f9fcc96d2d9c0fb36e408bcd37ee8e9fd8bc7fd968dde9cd3",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/de-3840-combat.png",
+      "bytes": 1287963,
+      "sha256": "73742139e503928eac3828d91486b16fda1d82cf8def887d237c3c5566c3e20c",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/de-3840-fleet.png",
+      "bytes": 509407,
+      "sha256": "55f8cfde8495f5fca82b619967958347612825fbd5d8d61256fc078b90d3b8a3",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/de-3840-mining.png",
+      "bytes": 1166465,
+      "sha256": "2b904f5f8428ebdfb21a1cf1afb620492ed1ca3eb465850039b7177dd72fcca5",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/de-3840-station.png",
+      "bytes": 1146975,
+      "sha256": "a2c6504cfda8fd5c0b835b153017ef8a6d815d0b6a7f374f5cab179e105ebdab",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/en-us-1280-combat.png",
+      "bytes": 437317,
+      "sha256": "c92ba79c369b588b1d7e8810724b2d68e92b52f229e81863f0a35971bc77b80e",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/en-us-1280-fleet.png",
+      "bytes": 128601,
+      "sha256": "b9fc51ca85a85487808456a9f80f940e48be893eeb3564d7b09da71c85d42284",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/en-us-1280-mining.png",
+      "bytes": 417713,
+      "sha256": "4dbcda2581eb7c67d18fff3071fe9aca573c8707c03e73d582cc9747ec01c053",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/en-us-1280-station.png",
+      "bytes": 347450,
+      "sha256": "4a4f6e8311541cadf0edb675ec8d2d2d3c2415e91b919ab740f14c8d8dae2461",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "baseline/en-us-1920-combat.png",
+      "bytes": 825249,
+      "sha256": "f890d5118542ffa82a8c9729486e72cc10213becd46d3239e237026f93b40819",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/en-us-1920-fleet.png",
+      "bytes": 236363,
+      "sha256": "5361d71d5b85b514ad3ebd40ed50337dab5ddcbb42500daaed4867f0a3b4eceb",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/en-us-1920-mining.png",
+      "bytes": 791201,
+      "sha256": "4bde4906d11e617b4364914ad48210bc366af58340ab9fc6e5034c5aaf496378",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/en-us-1920-station.png",
+      "bytes": 655295,
+      "sha256": "6474d04d26ecd22f0d6cca8e1d7d9e60bd63ac7f85b8af1f7e0a5e5e4f28870f",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "baseline/en-us-2560-combat.png",
+      "bytes": 908328,
+      "sha256": "dd639932394e96d002520ad09f9c7ab6f5698065b873babdadb3ded7b8639276",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/en-us-2560-fleet.png",
+      "bytes": 297266,
+      "sha256": "2a7141ce1ac3a42b5356b81eefeabb2e648e0b2e53b4b9567961392cc5025acc",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/en-us-2560-mining.png",
+      "bytes": 846928,
+      "sha256": "11662116c7f0688a0fcf9121a58d13656bf397a48c7c7c6304f72b5fb3828a46",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/en-us-2560-station.png",
+      "bytes": 745297,
+      "sha256": "4f6bf5139036a5f022d0b5a1b7ef55e4f6832259192d0c1c3638313dea16e270",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "baseline/en-us-3840-combat.png",
+      "bytes": 1285674,
+      "sha256": "671f061434b896b3e82b0dcab7a8e2db7fcfccacf14cf1df11ce76dd49df3b2d",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/en-us-3840-fleet.png",
+      "bytes": 499502,
+      "sha256": "c6fc50643cf56479fb1d109a5c96059c3f5c8f10530a48c58e8ed23ed6cbcdab",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/en-us-3840-mining.png",
+      "bytes": 1163723,
+      "sha256": "4997e9f7c95d19b66f0a0779a7299a39f90e139c3277b65664ad1bfa7db81d18",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/en-us-3840-station.png",
+      "bytes": 1136442,
+      "sha256": "4725745f3d15329f9ed70b376a94228f7354a93e76cc593cd78bcec60d89fa1b",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "baseline/report.json",
+      "bytes": 16745,
+      "sha256": "81986369eddba2437aba32093ec1d897b0b37f0639deb3c7b50e41808ebb7f38"
+    },
+    {
+      "path": "baseline-capture.log",
+      "bytes": 481,
+      "sha256": "c8057b32e971da38f320b331ccdd0eb80ecea2e8afa5cd395c0be98fb2090ac7"
+    },
+    {
+      "path": "baseline-regressions.log",
+      "bytes": 22058,
+      "sha256": "e01361ae7f07c734d9f58587337be00fd87ec6b7e68d9e4b041cdc521209e5d6"
+    },
+    {
+      "path": "final/contact-de-1280.png",
+      "bytes": 684261,
+      "sha256": "cb1f5fd9b59952ad296a146ccaad4ec1170856e7e02532da8437f5b3c5838879",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-de-1920.png",
+      "bytes": 674341,
+      "sha256": "f961868279f04ea60b48538f031d383bb7d66147102c3682e21dcfc1f8bbf2f4",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-de-2560.png",
+      "bytes": 635247,
+      "sha256": "15631419c549caa6cafca2b392671e8053a2d6b7a5eb377f668654d769335b82",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-de-3840.png",
+      "bytes": 639384,
+      "sha256": "e65b70de5dfaa0e4ee73fd4e58328756616b45e148e16a3f0cfb61e130d4cb9f",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-en-us-1280.png",
+      "bytes": 675011,
+      "sha256": "8d37ecae7bbb1ab72cc18418558317c21140c10da531d8189894e9ec9522d2b4",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-en-us-1920.png",
+      "bytes": 665768,
+      "sha256": "7eca7888432e0f38d599fab852b9494f307d88f0eeea21d69fa117ccbedb4210",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-en-us-2560.png",
+      "bytes": 626157,
+      "sha256": "d0eadc6117710527793ade0f53216f6002b98010539f4ef9246b5c048f02c9c4",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/contact-en-us-3840.png",
+      "bytes": 631434,
+      "sha256": "555611649d63e6fd8fc0b79097d25e569bc327a9a08e73641646b5fbd3dee4f0",
+      "pixels": [
+        1600,
+        948
+      ]
+    },
+    {
+      "path": "final/de-1280-combat.png",
+      "bytes": 464463,
+      "sha256": "66a25a555120399b121657d69c79f685e648d9190cdaedf9a1a7d30557d38d8b",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/de-1280-fleet.png",
+      "bytes": 165490,
+      "sha256": "9856ccb33163f89c1602c597487debed4870b3191c3874034878faf08541df6f",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/de-1280-mining.png",
+      "bytes": 445976,
+      "sha256": "d3a0803f511adae321e3784f0fe2b8e435066491b12a45ac765133c495e52486",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/de-1280-station.png",
+      "bytes": 504487,
+      "sha256": "3549b5ead21b2b324728ae4334bf5dba8d870bdd7981c70d1beede0894aa5087",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/de-1920-combat.png",
+      "bytes": 869241,
+      "sha256": "5a22d82a866d482a92bcb4af5bbf2097574e7c447ce3d572dc41d8390598af04",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/de-1920-fleet.png",
+      "bytes": 313836,
+      "sha256": "97f0f3afeade7aea59903e6f49c500862a8af5c08346dbc02efdd7a65f118bb8",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/de-1920-mining.png",
+      "bytes": 834169,
+      "sha256": "79859c404aafc4dcb4e2cba1adfe2dc0077e6183ec810dd83adc77d0b32d7e56",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/de-1920-station.png",
+      "bytes": 1003227,
+      "sha256": "b7e17bbf0a01c95e14b02d3863f151b1aef4c58b3cae4ed86f3b93c25f81d35f",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/de-2560-combat.png",
+      "bytes": 945377,
+      "sha256": "ad07a4baffcb77221dd291bb0f71c4c1f5e08973e076a18641cf8ac1e9a277ae",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/de-2560-fleet.png",
+      "bytes": 412213,
+      "sha256": "1be72ba57f20e2d6f96a3ab9f07c62d3dc93daae53d6014b454c1b2d988ed915",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/de-2560-mining.png",
+      "bytes": 883859,
+      "sha256": "286cdebe4dfab0d8adc7bb2e8ca526b1fc5a53957719a12d90b493ece3ef6168",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/de-2560-station.png",
+      "bytes": 1255625,
+      "sha256": "1894773c89e4a5ac8f3f21aee52530402e12d04e7e84487cb1361d3954ae404f",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/de-3840-combat.png",
+      "bytes": 1333593,
+      "sha256": "8f0f6c32663782898301f5f790011d325de6433cd4adc43e4e3241605b74e7f7",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/de-3840-fleet.png",
+      "bytes": 709671,
+      "sha256": "8af9550a562e3c563081912764e5a1a09fea7751da7e4d782ccce6badf56dae8",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/de-3840-mining.png",
+      "bytes": 1211239,
+      "sha256": "8a237a56bffe4661500e4b31f136f91326ad25f3cd4d0dc22013c374b26ba232",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/de-3840-station.png",
+      "bytes": 2085732,
+      "sha256": "fb26d00b1d4705bd1df383e6bcdbd0c67233b3ddc984885ed8b1276a384646bf",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/en-us-1280-combat.png",
+      "bytes": 463982,
+      "sha256": "01448569524a40f28d301a7a781c502acae75ff50e3af148d42038afcb305010",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/en-us-1280-fleet.png",
+      "bytes": 162691,
+      "sha256": "53ef994fa1c96fd9e6a5ce55cce67cd6807707963e9bd2e4fc6717367f0f5a66",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/en-us-1280-mining.png",
+      "bytes": 445155,
+      "sha256": "0ec4e6d0020eeea29f797e412c40c1fa8628e3890bc9fb2350040216a450cc24",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/en-us-1280-station.png",
+      "bytes": 499606,
+      "sha256": "b29b53995d13b21466cad3ae3cd469b0665f414403736cc27300ddd7a3cf74dc",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "final/en-us-1920-combat.png",
+      "bytes": 868348,
+      "sha256": "1123f0b2038bdd8e2fb09f1051d18bc521f564105029fb802f97eaedc03ca6e8",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-1920-fleet.png",
+      "bytes": 309377,
+      "sha256": "12c41e34d7ad8be0448932920db134fefd23655f668350b77b505e15694bf342",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-1920-mining.png",
+      "bytes": 833341,
+      "sha256": "87882bca029dfa6c0c9100ed8f813b873b893b86e42aca06042c9bfc77faf1be",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-1920-station.png",
+      "bytes": 998464,
+      "sha256": "6cc088d0a00eb90cf14411a835e3ff80a87e3a2fdb68d6ddd74a38dc1f122d9b",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/en-us-2560-combat.png",
+      "bytes": 944256,
+      "sha256": "25d3ddd741f5f0b5e77ea029ab7036e54a83db4be4d36b6ff3dc23b528a72408",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/en-us-2560-fleet.png",
+      "bytes": 405715,
+      "sha256": "bed122b7d5f5308fec4342ba201f4713ea2df21d7f21d47858493bd9baac4847",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/en-us-2560-mining.png",
+      "bytes": 882562,
+      "sha256": "53fd1a88111feccc2945a400d8177b01679ca88c04a17fda0ef287276aac24b8",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/en-us-2560-station.png",
+      "bytes": 1250154,
+      "sha256": "8dafcd20d4ff061e033d2f02f1fbbd7febdf1facb0e5215adccdc0cd6795fa72",
+      "pixels": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "final/en-us-3840-combat.png",
+      "bytes": 1331997,
+      "sha256": "33e78442d0409501b685b28a314203b76177dc4d9b65eedbd97a4499d62146ff",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/en-us-3840-fleet.png",
+      "bytes": 699515,
+      "sha256": "960bb73ac24bc7649aab94420e73cca13af0af86c2697ef126dc7d909e146cb4",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/en-us-3840-mining.png",
+      "bytes": 1208968,
+      "sha256": "37370ffc64dd3165b6868518b5088c17a467a5af7f2e4a2bf3494c144315c334",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/en-us-3840-station.png",
+      "bytes": 2078529,
+      "sha256": "1acec81349c3bb89bf9624ad0c8b7ab2a8b95d02748d5896b1deb64f5ea2bb27",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "final/report.json",
+      "bytes": 19827,
+      "sha256": "f9e31fe3d37064d8023d4f719256581d306aa00d4a247135d420e7fdac97f64d"
+    },
+    {
+      "path": "final/trip-collected.png",
+      "bytes": 820058,
+      "sha256": "cba44ecfcb21097d3c6509face2fafc9cfdb47364743bc22a0935229d6876bfa",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/trip-docked.png",
+      "bytes": 267254,
+      "sha256": "f33a2808096d5604c93a7f023fe880d1db132141829268a44c7fce90e22ce55c",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/trip-fresh.png",
+      "bytes": 833764,
+      "sha256": "b8442b631bbaf934d0362152894a2bdc1c030fe5bfcb6ea50eca32072d14b38f",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/trip-mining.png",
+      "bytes": 834150,
+      "sha256": "1c2424b9345273accda966e6f7e1d7d97235f90686aa0cd2e0b965a770d8a458",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final/trip-sold.png",
+      "bytes": 1003661,
+      "sha256": "6129c5b16103bac98948fb0a1b25dd639e94de215761e453fe9e2790957508ab",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "final-capture.log",
+      "bytes": 478,
+      "sha256": "0b2a4700adc4cd11123a13043856757c29b27b19c138493331125b6b9fa6cf10"
+    },
+    {
+      "path": "final-pytest.log",
+      "bytes": 2605,
+      "sha256": "b4c4d6f9054a17103af29e85c383ad0312a92bf824e7214b6097bb2cff7ce557"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 8244,
+      "sha256": "147f25983e7fea92d88a6aea0c91f02a8df6a306420b680f253d855bd6e38121"
+    },
+    {
+      "path": "interim-capture.log",
+      "bytes": 478,
+      "sha256": "68cd90bfdf7145c45bca5d4cc67848636e9dd77e9906115da7f7958586210c0f"
+    },
+    {
+      "path": "interim-distant-rival-bar.png",
+      "bytes": 870297,
+      "sha256": "63186b012391f700eb99663dd3251ce3977153d8ca21cc95cffe3788d7b8647a",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "interim-regressions.log",
+      "bytes": 9478,
+      "sha256": "cfbdaa461e960224597d387bbf2fb0e6b667dd43b9690ee97d2efe716396d070"
+    },
+    {
+      "path": "native/fullscreen-heavy.png",
+      "bytes": 835496,
+      "sha256": "9df70afee09e922c6e05a08e04fe86c606bcfc0cad55f52826029bf45af003dc",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native/fullscreen-normal.png",
+      "bytes": 833764,
+      "sha256": "b8442b631bbaf934d0362152894a2bdc1c030fe5bfcb6ea50eca32072d14b38f",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native/report.json",
+      "bytes": 7964,
+      "sha256": "771f5de3835379b338e5d8f3fa08b3aee05eb0195e8124ca37392885ab7c6283"
+    },
+    {
+      "path": "native/returned-heavy.png",
+      "bytes": 918728,
+      "sha256": "df7480c8da6a29e932053ab06d6f39268fb2ab1beaf25947f0cac9aeadcb7d55",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native/returned-normal.png",
+      "bytes": 915994,
+      "sha256": "e756a91e6eba177af9adff861c08cfa68ecb46e8bb5a44aa269ed231bcb94ff9",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native/windowed-heavy.png",
+      "bytes": 918728,
+      "sha256": "df7480c8da6a29e932053ab06d6f39268fb2ab1beaf25947f0cac9aeadcb7d55",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native/windowed-normal.png",
+      "bytes": 915994,
+      "sha256": "e756a91e6eba177af9adff861c08cfa68ecb46e8bb5a44aa269ed231bcb94ff9",
+      "pixels": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "native-probe.log",
+      "bytes": 3010,
+      "sha256": "96895452621a677aae3d7160c5ed8baa9bbd815fb799e30967aadeca0f879563"
+    },
+    {
+      "path": "validate.py",
+      "bytes": 6782,
+      "sha256": "d386b9f3d2d8fc666d4e497e0b7441ca0da42296e7f607ede1ae12627c461591"
+    }
+  ]
+}

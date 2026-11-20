@@ -1,0 +1,160 @@
+..........FFF                                                            [100%]
+=================================== FAILURES ===================================
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[0] _
+
+player_factory = <function player_factory.<locals>.create at 0x10b3a72e0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b376540>, ore = 0
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, monkeypatch, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        health_bars = []
+        draw_bar = screen._bar
+        def record_bar(x, y, width, fraction, color):
+            if width < 150 and color[0] > 150 and color[0] > color[1]*1.4:
+                health_bars.append(pygame.Rect(x, y, width, 10))
+            return draw_bar(x, y, width, fraction, color)
+        monkeypatch.setattr(screen, '_bar', record_bar)
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+        assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+        assert len(health_bars) == 1, 'The rival health bar must remain visible'
+>       assert math.dist(health_bars[0].center, (rival.x, rival.y)) <= 150, 'A bar across the screen is not an understandable rival health indicator'
+E       AssertionError: A bar across the screen is not an understandable rival health indicator
+E       assert 422.6819134999746 <= 150
+E        +  where 422.6819134999746 = <built-in function dist>((48, 166), (400, 400))
+E        +    where <built-in function dist> = math.dist
+E        +    and   (48, 166) = Rect(23, 161, 50, 10).center
+
+tests/test_visual_polish_acceptance.py:116: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:35:23.142 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[1] _
+
+player_factory = <function player_factory.<locals>.create at 0x10b3a6700>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b3766c0>, ore = 1
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, monkeypatch, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        health_bars = []
+        draw_bar = screen._bar
+        def record_bar(x, y, width, fraction, color):
+            if width < 150 and color[0] > 150 and color[0] > color[1]*1.4:
+                health_bars.append(pygame.Rect(x, y, width, 10))
+            return draw_bar(x, y, width, fraction, color)
+        monkeypatch.setattr(screen, '_bar', record_bar)
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+        assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+        assert len(health_bars) == 1, 'The rival health bar must remain visible'
+>       assert math.dist(health_bars[0].center, (rival.x, rival.y)) <= 150, 'A bar across the screen is not an understandable rival health indicator'
+E       AssertionError: A bar across the screen is not an understandable rival health indicator
+E       assert 422.6819134999746 <= 150
+E        +  where 422.6819134999746 = <built-in function dist>((48, 166), (400, 400))
+E        +    where <built-in function dist> = math.dist
+E        +    and   (48, 166) = Rect(23, 161, 50, 10).center
+
+tests/test_visual_polish_acceptance.py:116: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:35:23.539 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[2] _
+
+player_factory = <function player_factory.<locals>.create at 0x10b461080>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b33ca40>, ore = 2
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, monkeypatch, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        health_bars = []
+        draw_bar = screen._bar
+        def record_bar(x, y, width, fraction, color):
+            if width < 150 and color[0] > 150 and color[0] > color[1]*1.4:
+                health_bars.append(pygame.Rect(x, y, width, 10))
+            return draw_bar(x, y, width, fraction, color)
+        monkeypatch.setattr(screen, '_bar', record_bar)
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+        assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+        assert len(health_bars) == 1, 'The rival health bar must remain visible'
+>       assert math.dist(health_bars[0].center, (rival.x, rival.y)) <= 150, 'A bar across the screen is not an understandable rival health indicator'
+E       AssertionError: A bar across the screen is not an understandable rival health indicator
+E       assert 422.6819134999746 <= 150
+E        +  where 422.6819134999746 = <built-in function dist>((48, 166), (400, 400))
+E        +    where <built-in function dist> = math.dist
+E        +    and   (48, 166) = Rect(23, 161, 50, 10).center
+
+tests/test_visual_polish_acceptance.py:116: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:35:23.926 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+=========================== short test summary info ============================
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[0]
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[1]
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[2]
+3 failed, 10 passed in 5.08s

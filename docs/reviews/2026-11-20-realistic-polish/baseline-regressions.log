@@ -1,0 +1,358 @@
+FF....FF.FFFF                                                            [100%]
+=================================== FAILURES ===================================
+_ test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged[en-us] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cce8c20>
+locale = 'en-us'
+
+    @pytest.mark.parametrize('locale', ['en-us', 'de'])
+    def test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged(player_factory, locale):
+        player = player_factory(locale, (1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        run = player.screen.expedition
+        rock = run.asteroids[0]
+        player.travel(rock.x, rock.y-80)
+        player.aim(rock.x, rock.y)
+        player.key(pygame.K_SPACE)
+        player.screen.advance(1/60)
+        player.key(pygame.K_SPACE, False)
+        assert rock.health == 2 and len(run.pickups) == 1
+        checkpoint = CampaignStore().path.read_bytes()
+        before = copy.deepcopy((player.screen.campaign, run))
+        rng = random.getstate()
+        for size in ((1280, 720), (1920, 1080), (3840, 2160)):
+            surface = pygame.display.set_mode(size)
+            player.screen.draw(surface)
+>           assert_clear_cut(player, 33)
+
+tests/test_visual_polish_acceptance.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+player = <test_campaign_acceptance.PlayerClient object at 0x10c43e0f0>
+progress = 33
+
+    def assert_clear_cut(player, progress=0):
+        bounds = cut_bounds(player, progress)
+        run = player.screen.expedition
+        assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
+>       assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+E       AssertionError: Cut text/backing crosses pilot
+E       assert not True
+E        +  where True = <built-in method colliderect of pygame.rect.Rect object at 0x10ccbaf70>(Rect(312, 512, 76, 76))
+E        +    where <built-in method colliderect of pygame.rect.Rect object at 0x10ccbaf70> = Rect(284, 537, 110, 32).colliderect
+E        +    and   Rect(312, 512, 76, 76) = <class 'pygame.rect.Rect'>((350.0 - 38), (550.0 - 38), 76, 76)
+E        +      where <class 'pygame.rect.Rect'> = pygame.Rect
+E        +      and   350.0 = Expedition(sector=1, x=350.0, y=550.0, heading=1.5707963267948966, asteroids=[Asteroid(id=0, x=350, y=630, radius=46, ...=630, ore=0, radius=12.0)], enemies=[], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).x
+E        +      and   550.0 = Expedition(sector=1, x=350.0, y=550.0, heading=1.5707963267948966, asteroids=[Asteroid(id=0, x=350, y=630, radius=46, ...=630, ore=0, radius=12.0)], enemies=[], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).y
+
+tests/test_visual_polish_acceptance.py:32: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:07.570 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+__ test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged[de] __
+
+player_factory = <function player_factory.<locals>.create at 0x10cce8ea0>
+locale = 'de'
+
+    @pytest.mark.parametrize('locale', ['en-us', 'de'])
+    def test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged(player_factory, locale):
+        player = player_factory(locale, (1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        run = player.screen.expedition
+        rock = run.asteroids[0]
+        player.travel(rock.x, rock.y-80)
+        player.aim(rock.x, rock.y)
+        player.key(pygame.K_SPACE)
+        player.screen.advance(1/60)
+        player.key(pygame.K_SPACE, False)
+        assert rock.health == 2 and len(run.pickups) == 1
+        checkpoint = CampaignStore().path.read_bytes()
+        before = copy.deepcopy((player.screen.campaign, run))
+        rng = random.getstate()
+        for size in ((1280, 720), (1920, 1080), (3840, 2160)):
+            surface = pygame.display.set_mode(size)
+            player.screen.draw(surface)
+>           assert_clear_cut(player, 33)
+
+tests/test_visual_polish_acceptance.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+player = <test_campaign_acceptance.PlayerClient object at 0x10ccac770>
+progress = 33
+
+    def assert_clear_cut(player, progress=0):
+        bounds = cut_bounds(player, progress)
+        run = player.screen.expedition
+        assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
+>       assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+E       AssertionError: Cut text/backing crosses pilot
+E       assert not True
+E        +  where True = <built-in method colliderect of pygame.rect.Rect object at 0x10cccd080>(Rect(312, 512, 76, 76))
+E        +    where <built-in method colliderect of pygame.rect.Rect object at 0x10cccd080> = Rect(284, 537, 147, 32).colliderect
+E        +    and   Rect(312, 512, 76, 76) = <class 'pygame.rect.Rect'>((350.0 - 38), (550.0 - 38), 76, 76)
+E        +      where <class 'pygame.rect.Rect'> = pygame.Rect
+E        +      and   350.0 = Expedition(sector=1, x=350.0, y=550.0, heading=1.5707963267948966, asteroids=[Asteroid(id=0, x=350, y=630, radius=46, ...=630, ore=0, radius=12.0)], enemies=[], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).x
+E        +      and   550.0 = Expedition(sector=1, x=350.0, y=550.0, heading=1.5707963267948966, asteroids=[Asteroid(id=0, x=350, y=630, radius=46, ...=630, ore=0, radius=12.0)], enemies=[], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).y
+
+tests/test_visual_polish_acceptance.py:32: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:08.011 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_synthetic_edge_target_retains_readable_cut_without_covering_ships[55-980-55-900-en-us] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cc34680>
+locale = 'en-us', rx = 55, ry = 980, px = 55, py = 900
+
+    @pytest.mark.parametrize('locale', ['en-us', 'de'])
+    @pytest.mark.parametrize('rx,ry,px,py', [(55, 185, 55, 265), (1865, 185, 1865, 265),
+                                          (55, 980, 55, 900), (1865, 980, 1865, 900)])
+    def test_synthetic_edge_target_retains_readable_cut_without_covering_ships(player_factory, locale, rx, ry, px, py):
+        player = player_factory(locale)
+        player.click('new_game')
+        player.click('launch', sector=1)
+        run = player.screen.expedition
+        run.asteroids = [Asteroid(0, rx, ry, 46, 0)]
+        run.x, run.y = px, py
+        ex = rx+80 if rx < 960 else rx-80
+        run.enemies = [Enemy(99, ex, py)]
+        player.screen.draw(pygame.display.get_surface())
+>       assert_clear_cut(player)
+
+tests/test_visual_polish_acceptance.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+player = <test_campaign_acceptance.PlayerClient object at 0x10ccad130>
+progress = 0
+
+    def assert_clear_cut(player, progress=0):
+        bounds = cut_bounds(player, progress)
+        run = player.screen.expedition
+        assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
+>       assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+E       AssertionError: Cut text/backing crosses pilot
+E       assert not True
+E        +  where True = <built-in method colliderect of pygame.rect.Rect object at 0x10cd826a0>(Rect(17, 862, 76, 76))
+E        +    where <built-in method colliderect of pygame.rect.Rect object at 0x10cd826a0> = Rect(44, 887, 101, 32).colliderect
+E        +    and   Rect(17, 862, 76, 76) = <class 'pygame.rect.Rect'>((55 - 38), (900 - 38), 76, 76)
+E        +      where <class 'pygame.rect.Rect'> = pygame.Rect
+E        +      and   55 = Expedition(sector=1, x=55, y=900, heading=-1.5707963267948966, asteroids=[Asteroid(id=0, x=55, y=980, radius=46, ore=0...ading=0.0, radius=24.0, cooldown=1.0)], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).x
+E        +      and   900 = Expedition(sector=1, x=55, y=900, heading=-1.5707963267948966, asteroids=[Asteroid(id=0, x=55, y=980, radius=46, ore=0...ading=0.0, radius=24.0, cooldown=1.0)], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).y
+
+tests/test_visual_polish_acceptance.py:32: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:09.966 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_synthetic_edge_target_retains_readable_cut_without_covering_ships[55-980-55-900-de] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cce98a0>
+locale = 'de', rx = 55, ry = 980, px = 55, py = 900
+
+    @pytest.mark.parametrize('locale', ['en-us', 'de'])
+    @pytest.mark.parametrize('rx,ry,px,py', [(55, 185, 55, 265), (1865, 185, 1865, 265),
+                                          (55, 980, 55, 900), (1865, 980, 1865, 900)])
+    def test_synthetic_edge_target_retains_readable_cut_without_covering_ships(player_factory, locale, rx, ry, px, py):
+        player = player_factory(locale)
+        player.click('new_game')
+        player.click('launch', sector=1)
+        run = player.screen.expedition
+        run.asteroids = [Asteroid(0, rx, ry, 46, 0)]
+        run.x, run.y = px, py
+        ex = rx+80 if rx < 960 else rx-80
+        run.enemies = [Enemy(99, ex, py)]
+        player.screen.draw(pygame.display.get_surface())
+>       assert_clear_cut(player)
+
+tests/test_visual_polish_acceptance.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+player = <test_campaign_acceptance.PlayerClient object at 0x10cd9b8c0>
+progress = 0
+
+    def assert_clear_cut(player, progress=0):
+        bounds = cut_bounds(player, progress)
+        run = player.screen.expedition
+        assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
+>       assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+E       AssertionError: Cut text/backing crosses pilot
+E       assert not True
+E        +  where True = <built-in method colliderect of pygame.rect.Rect object at 0x10ccd7ab0>(Rect(17, 862, 76, 76))
+E        +    where <built-in method colliderect of pygame.rect.Rect object at 0x10ccd7ab0> = Rect(44, 887, 138, 32).colliderect
+E        +    and   Rect(17, 862, 76, 76) = <class 'pygame.rect.Rect'>((55 - 38), (900 - 38), 76, 76)
+E        +      where <class 'pygame.rect.Rect'> = pygame.Rect
+E        +      and   55 = Expedition(sector=1, x=55, y=900, heading=-1.5707963267948966, asteroids=[Asteroid(id=0, x=55, y=980, radius=46, ore=0...ading=0.0, radius=24.0, cooldown=1.0)], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).x
+E        +      and   900 = Expedition(sector=1, x=55, y=900, heading=-1.5707963267948966, asteroids=[Asteroid(id=0, x=55, y=980, radius=46, ore=0...ading=0.0, radius=24.0, cooldown=1.0)], projectiles=[], hull=100.0, cargo=[], finished=False, defeated=False, bounty=0).y
+
+tests/test_visual_polish_acceptance.py:32: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:10.349 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_synthetic_edge_target_retains_readable_cut_without_covering_ships[1865-980-1865-900-de] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cce9440>
+locale = 'de', rx = 1865, ry = 980, px = 1865, py = 900
+
+    @pytest.mark.parametrize('locale', ['en-us', 'de'])
+    @pytest.mark.parametrize('rx,ry,px,py', [(55, 185, 55, 265), (1865, 185, 1865, 265),
+                                          (55, 980, 55, 900), (1865, 980, 1865, 900)])
+    def test_synthetic_edge_target_retains_readable_cut_without_covering_ships(player_factory, locale, rx, ry, px, py):
+        player = player_factory(locale)
+        player.click('new_game')
+        player.click('launch', sector=1)
+        run = player.screen.expedition
+        run.asteroids = [Asteroid(0, rx, ry, 46, 0)]
+        run.x, run.y = px, py
+        ex = rx+80 if rx < 960 else rx-80
+        run.enemies = [Enemy(99, ex, py)]
+        player.screen.draw(pygame.display.get_surface())
+>       assert_clear_cut(player)
+
+tests/test_visual_polish_acceptance.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+player = <test_campaign_acceptance.PlayerClient object at 0x10ccd5430>
+progress = 0
+
+    def assert_clear_cut(player, progress=0):
+        bounds = cut_bounds(player, progress)
+        run = player.screen.expedition
+        assert pygame.Rect(0, 145, 1920, 875).contains(bounds), 'Label must clear HUD and screen edges'
+        assert not bounds.colliderect(pygame.Rect(run.x-38, run.y-38, 76, 76)), 'Cut text/backing crosses pilot'
+        for enemy in run.enemies:
+>           assert not bounds.colliderect(pygame.Rect(enemy.x-30, enemy.y-30, 60, 60)), 'Cut text/backing crosses rival'
+E           AssertionError: Cut text/backing crosses rival
+E           assert not True
+E            +  where True = <built-in method colliderect of pygame.rect.Rect object at 0x10ccc13b0>(Rect(1755, 870, 60, 60))
+E            +    where <built-in method colliderect of pygame.rect.Rect object at 0x10ccc13b0> = Rect(1644, 887, 138, 32).colliderect
+E            +    and   Rect(1755, 870, 60, 60) = <class 'pygame.rect.Rect'>((1785 - 30), (900 - 30), 60, 60)
+E            +      where <class 'pygame.rect.Rect'> = pygame.Rect
+E            +      and   1785 = Enemy(id=99, x=1785, y=900, hull=75.0, heading=0.0, radius=24.0, cooldown=1.0).x
+E            +      and   900 = Enemy(id=99, x=1785, y=900, hull=75.0, heading=0.0, radius=24.0, cooldown=1.0).y
+
+tests/test_visual_polish_acceptance.py:34: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:11.109 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[0] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cc340e0>
+ore = 0
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+>       assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+E       AssertionError: Rival needs a visible hostile marker around its hull, not only a health bar
+E       assert 0 >= 20
+
+tests/test_visual_polish_acceptance.py:105: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:11.495 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[1] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cc35a80>
+ore = 1
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+>       assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+E       AssertionError: Rival needs a visible hostile marker around its hull, not only a health bar
+E       assert 0 >= 20
+
+tests/test_visual_polish_acceptance.py:105: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:11.880 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+_ test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[2] _
+
+player_factory = <function player_factory.<locals>.create at 0x10cc36020>
+ore = 2
+
+    @pytest.mark.parametrize('ore', [0, 1, 2])
+    def test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes(player_factory, ore):
+        player = player_factory(size=(1920, 1080))
+        player.click('new_game')
+        player.click('launch', sector=1)
+        screen, surface = player.screen, pygame.display.get_surface()
+        run = screen.expedition
+        run.x, run.y = 900, 500
+        run.asteroids = [Asteroid(0, 400, 400, 46, ore)]
+        rival = Enemy(99, 400, 400, heading=-.7)
+        run.enemies = []
+        screen.draw(surface)
+        without = surface.copy()
+        run.enemies = [rival]
+        before = copy.deepcopy((screen.campaign, run))
+        rng = random.getstate()
+        checkpoint = CampaignStore().path.read_bytes()
+        screen.draw(surface)
+        red_separation = 0
+        for dy in range(-40, 30):  # Exclude the existing lower health-bar region.
+            for dx in range(-40, 41):
+                if not 24 < math.hypot(dx, dy) <= 40:
+                    continue
+                actual = surface.get_at((400+dx, 400+dy))
+                prior = without.get_at((400+dx, 400+dy))
+                if actual != prior and actual.r > 150 and actual.r > actual.g*1.4 and actual.r > actual.b*1.2:
+                    red_separation += 1
+>       assert red_separation >= 20, 'Rival needs a visible hostile marker around its hull, not only a health bar'
+E       AssertionError: Rival needs a visible hostile marker around its hull, not only a health bar
+E       assert 0 >= 20
+
+tests/test_visual_polish_acceptance.py:105: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-11-20 12:32:12.278 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 25 resource(s) total (including 0 override(s)) from the resource search path
+=========================== short test summary info ============================
+FAILED tests/test_visual_polish_acceptance.py::test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged[en-us]
+FAILED tests/test_visual_polish_acceptance.py::test_earned_mining_above_rock_keeps_cut_clear_and_checkpoint_unchanged[de]
+FAILED tests/test_visual_polish_acceptance.py::test_synthetic_edge_target_retains_readable_cut_without_covering_ships[55-980-55-900-en-us]
+FAILED tests/test_visual_polish_acceptance.py::test_synthetic_edge_target_retains_readable_cut_without_covering_ships[55-980-55-900-de]
+FAILED tests/test_visual_polish_acceptance.py::test_synthetic_edge_target_retains_readable_cut_without_covering_ships[1865-980-1865-900-de]
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[0]
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[1]
+FAILED tests/test_visual_polish_acceptance.py::test_rival_over_each_rock_material_has_visible_red_separation_without_geometry_changes[2]
+8 failed, 5 passed in 5.66s

@@ -17,7 +17,7 @@ import pygame
 from dtd.audio import init_audio_manager
 from dtd.language import init_language_manager
 from dtd.resource_loader import ResourceLoader
-from dtd.campaign import Campaign, STATION_X, STATION_Y
+from dtd.campaign import Campaign, STATION_X, WORLD_BOTTOM
 from dtd.campaign_store import CampaignStore
 from dtd.screens.campaign import CampaignScreen
 from dtd.ui import Theme
@@ -52,7 +52,7 @@ for locale in ('en-us', 'de'):
                     run.x, run.y = 1000, 500
                     run.cargo = [0] * campaign.capacity
                 elif view == 'bottom-edge':
-                    run.x, run.y = STATION_X, STATION_Y + 65
+                    run.x, run.y = STATION_X, WORLD_BOTTOM
             screen.draw(surface)
             filename = f'{locale}-{size[0]}-{view}.png'
             pygame.image.save(surface, str(root / filename))

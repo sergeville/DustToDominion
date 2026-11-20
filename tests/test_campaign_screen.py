@@ -5,7 +5,7 @@ from pathlib import Path
 import pygame
 import pytest
 
-from dtd.campaign import Campaign, STATION_X, STATION_Y
+from dtd.campaign import Campaign, STATION_X, STATION_Y, LAUNCH_Y
 from dtd.campaign_store import CampaignStore, SaveError
 from dtd.language import init_language_manager
 from dtd.resource_loader import ResourceLoader
@@ -53,7 +53,7 @@ def test_elapsed_time_is_bounded_and_nonfinite_ignored(screen):
     screen.update([key(pygame.K_w)])
     screen.advance(float('nan'))
     screen.advance(-1)
-    assert screen.expedition.y == STATION_Y
+    assert screen.expedition.y == LAUNCH_Y
     screen.advance(999)
     bounded_y = screen.expedition.y
     other = Campaign().launch(1)
@@ -65,6 +65,7 @@ def test_elapsed_time_is_bounded_and_nonfinite_ignored(screen):
 def test_dock_sells_then_checkpoint_restores_progress(screen):
     screen._launch(1)
     screen.expedition.cargo = [0, 0]
+    screen.expedition.x, screen.expedition.y = STATION_X, STATION_Y
     screen.update([key(pygame.K_e)])
     assert screen.mode == 'result'
     assert screen.store.load().cargo == [0, 0]
@@ -150,6 +151,7 @@ def test_bounty_can_trigger_victory_on_docking(screen):
     screen.campaign.credits = 1190
     screen._launch(1)
     screen.expedition.bounty = 20
+    screen.expedition.x, screen.expedition.y = STATION_X, STATION_Y
     screen.update([key(pygame.K_e)])
     assert screen.mode == 'victory'
     assert screen.store.load().won
@@ -297,3 +299,79 @@ def test_guidance_stays_in_header_and_does_not_cover_reachable_ship(screen, monk
     assert not any(panel.colliderect(ship) for panel in panels)
     advice = [item for item in text if item[0] == screen._t('guide_approach')]
     assert advice and advice[0][1] + advice[0][2] < WORLD_TOP
+
+
+def test_player_label_expires_on_simulated_time_and_resets_on_launch(screen, monkeypatch):
+    drawn = []
+    monkeypatch.setattr(screen, '_text', lambda text, *args, **kwargs: drawn.append(text))
+    screen._launch(1)
+    screen._draw_flight()
+    assert screen._t('player_label') in drawn
+    for _ in range(25):
+        screen.advance(.25)
+    drawn.clear()
+    screen._draw_flight()
+    assert screen._t('player_label') not in drawn
+    screen.expedition.x, screen.expedition.y = STATION_X, STATION_Y
+    screen.update([key(pygame.K_e)])
+    screen._station()
+    screen._launch(1)
+    drawn.clear()
+    screen._draw_flight()
+    assert screen._t('player_label') in drawn
+
+
+@pytest.mark.parametrize('locale', ['en-us', 'de'])
+@pytest.mark.parametrize('point', [(40, 190), (1880, 190), (40, 970), (1880, 970)])
+def test_hud_and_local_labels_leave_corner_ships_visible(screen, monkeypatch, point, locale):
+    from dtd.campaign import SAFE_RADIUS
+    screen._launch(1)
+    init_language_manager(screen._loader, locale)
+    screen.expedition.x, screen.expedition.y = point
+    panels, labels = [], []
+    original_text = screen._text
+    monkeypatch.setattr(screen, '_panel', lambda rect: panels.append(pygame.Rect(rect)))
+    def record(text, x, y, size=28, *args, **kwargs):
+        labels.append(pygame.Rect(x, y, *screen._theme.get_font(size).size(text)))
+        original_text(text, x, y, size, *args, **kwargs)
+    monkeypatch.setattr(screen, '_text', record)
+    screen._draw_flight()
+    ship = pygame.Rect(point[0] - 37, point[1] - 37, 74, 74)
+    assert pygame.Rect(0, 0, 1920, 1080).contains(ship)
+    assert not any(panel.colliderect(ship) for panel in panels)
+    station = pygame.Rect(STATION_X - SAFE_RADIUS, STATION_Y - SAFE_RADIUS,
+                          SAFE_RADIUS * 2, SAFE_RADIUS * 2)
+    assert not any(panel.colliderect(station) for panel in panels)
+    assert all(pygame.Rect(0, 0, 1920, 1080).contains(rect) for rect in labels)
+
+
+def test_ore_brackets_surround_rock_and_return_brackets_surround_dock(screen, monkeypatch):
+    from dtd.campaign import DOCK_RADIUS
+    from dtd.campaign_guidance import guidance
+    screen._launch(1)
+    calls = []
+    monkeypatch.setattr(screen, '_brackets', lambda *args: calls.append(args))
+    advice = guidance(screen.campaign, screen.expedition)
+    rock = next(r for r in screen.expedition.asteroids if r.id == advice.target_id)
+    screen._draw_guidance()
+    x, y, radius, color = calls[-1]
+    assert (x, y) == (rock.x, rock.y) and radius > rock.radius
+    screen.expedition.cargo = [0] * screen.campaign.capacity
+    screen._draw_guidance()
+    x, y, radius, color = calls[-1]
+    assert (x, y) == (STATION_X, STATION_Y) and radius > DOCK_RADIUS
+
+
+def test_bottom_edge_player_label_does_not_overlap_direction_arrow(screen, monkeypatch):
+    from dtd.campaign import WORLD_BOTTOM
+    from dtd.campaign_guidance import guidance
+    screen._launch(1)
+    screen.expedition.y = WORLD_BOTTOM
+    labels = []
+    monkeypatch.setattr(screen, '_flight_label',
+                        lambda text, x, y, color: labels.append(
+                            pygame.Rect(x, y, *screen._theme.get_font(20).size(text))))
+    screen._draw_player_label()
+    assert len(labels) == 1
+    for point in screen._direction_points(guidance(screen.campaign, screen.expedition)):
+        assert not labels[0].inflate(12, 6).collidepoint(point)

@@ -18,7 +18,7 @@ def test_fresh_launch_approaches_nearest_ore_instead_of_docking():
     campaign, run = flight()
     result = guidance(campaign, run)
     expected = min(run.asteroids, key=lambda r: ((r.x - run.x)**2 + (r.y - run.y)**2, r.id))
-    assert run.dock_ready
+    assert not run.dock_ready
     assert result.key == "approach"
     assert result.target == (expected.x, expected.y) and result.target_id == expected.id
     assert result.distance == pytest.approx(math.hypot(expected.x - run.x, expected.y - run.y))
@@ -28,6 +28,7 @@ def test_fresh_launch_approaches_nearest_ore_instead_of_docking():
 @pytest.mark.parametrize("cargo,hull", [([0], 100), ([], 99), ([0] * 12, 100), ([], 30)])
 def test_loaded_or_damaged_ship_at_dock_gets_dock_priority(cargo, hull):
     campaign, run = flight()
+    run.x, run.y = STATION_X, STATION_Y
     run.cargo, run.hull = cargo, hull
     run.pickups = [Pickup(0, run.x, run.y, 0)]
     result = guidance(campaign, run)
@@ -38,7 +39,7 @@ def test_loaded_or_damaged_ship_at_dock_gets_dock_priority(cargo, hull):
 def test_dock_radius_boundary_is_not_shield_radius():
     campaign, run = flight()
     run.cargo = [0]
-    run.x = STATION_X + 110
+    run.x, run.y = STATION_X + 110, STATION_Y
     assert guidance(campaign, run).key == "dock"
     run.x += 0.001
     assert guidance(campaign, run).key != "dock"

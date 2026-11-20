@@ -195,3 +195,15 @@ Native play acceptance remains open.
 Default window now prefers 1920x1080; fullscreen uses the monitor's desktop
 resolution with proportional text/art scaling. See [Display validation](2026-11-20-display.md)
 for 1,781 passing tests, native 3440x1440 toggles, and remaining multi-display limits.
+
+
+## Readability update — 2026-11-20
+
+[Readability validation](2026-11-20-readability.md) records the next local pass:
+station center (960,750), protected launch (960,595), player identification,
+gold target brackets and slimmer HUD panels. Full suite: **1,793 passed in
+36.66s**. Thirty EN/DE fixtures across three resolutions are retained with hashes.
+Serge's newer [realistic target](../concepts/realistic-visual-target-2026-11-20.png)
+is preserved separately from actual game renders. Textured assets, crew portraits
+and human play/balance acceptance remain open. No independent agent review was
+run for this focused amendment; scoped self-review and regression tests were run.

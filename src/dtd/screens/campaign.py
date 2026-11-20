@@ -160,6 +160,7 @@ class CampaignScreen(Screen):
 
     def _launch(self, sector: int) -> None:
         self.expedition = self.campaign.launch(sector)
+        self._visual_time = 0.0
         self.mode = "flight"
         self.message = ""
         self._clear_input()
@@ -375,24 +376,78 @@ class CampaignScreen(Screen):
         vertical = bool(keys & {pygame.K_s, pygame.K_DOWN}) != bool(keys & {pygame.K_w, pygame.K_UP})
         return self.mode == "flight" and (horizontal or vertical)
 
+    def _brackets(self, x, y, radius, color, width=2) -> None:
+        """Four open corners keep the target silhouette unobscured."""
+        length = min(18, radius / 2)
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                corner = (round(x + sx * radius), round(y + sy * radius))
+                pygame.draw.lines(self._canvas, color, False,
+                                  [(corner[0], corner[1] - sy * length), corner,
+                                   (corner[0] - sx * length, corner[1])], width)
+
+    def _flight_label(self, text, x, y, color) -> None:
+        # Measure with the selected font, so localization and custom fonts fit.
+        size = 20
+        width, height = self._theme.get_font(size).size(text)
+        x = max(12, min(1908 - width, x))
+        y = max(150, min(1010 - height, y))
+        pygame.draw.rect(self._canvas, _BG, (x - 6, y - 3, width + 12, height + 6),
+                         border_radius=4)
+        self._text(text, x, y, size, color)
+
+    def _direction_points(self, advice):
+        if advice.target is None or advice.distance <= 45:
+            return []
+        run = self.expedition
+        angle = math.atan2(advice.target[1] - run.y, advice.target[0] - run.x)
+        x = max(60, min(1860, run.x + math.cos(angle) * 70))
+        y = max(170, min(998, run.y + math.sin(angle) * 70))
+        return [(x + math.cos(angle + offset) * length,
+                 y + math.sin(angle + offset) * length)
+                for offset, length in ((0, 14), (2.5, 10), (-2.5, 10))]
+
+    def _draw_player_label(self):
+        run = self.expedition
+        text = self._t("player_label")
+        width, height = self._theme.get_font(20).size(text)
+        points = self._direction_points(guidance(self.campaign, run))
+        arrow = pygame.Rect(0, 0, 0, 0)
+        if points:
+            xs, ys = zip(*points)
+            arrow = pygame.Rect(min(xs), min(ys), max(xs) - min(xs) + 2,
+                                max(ys) - min(ys) + 2).inflate(12, 12)
+        candidates = [(run.x - width / 2, run.y - 50 - height),
+                      (run.x - width / 2, run.y + 50),
+                      (run.x - 50 - width, run.y - height / 2),
+                      (run.x + 50, run.y - height / 2)]
+        for x, y in candidates:
+            x = max(12, min(1908 - width, x))
+            rect = pygame.Rect(x, y, width, height).inflate(12, 6)
+            if pygame.Rect(0, 145, 1920, 875).contains(rect) and not rect.colliderect(arrow):
+                self._flight_label(text, x, y, _WHITE)
+                return
+
     def _draw_guidance(self) -> None:
         run = self.expedition
         advice = guidance(self.campaign, run)
-        color = _RED if advice.key == "return_damaged" else _GOLD if advice.key == "return_full" else _CYAN
+        color = _RED if advice.key == "return_damaged" else _GOLD
         if advice.target is not None:
             tx, ty = advice.target
-            pygame.draw.circle(self._canvas, color, (round(tx), round(ty)), 22, 1)
-            if advice.distance > 45:
-                angle = math.atan2(ty - run.y, tx - run.x)
-                # Keep the direction marker clear of the top/bottom HUD.
-                x = max(60, min(1860, run.x + math.cos(angle) * 70))
-                y = max(190, min(866, run.y + math.sin(angle) * 70))
-                points = [(x + math.cos(angle + offset) * length,
-                           y + math.sin(angle + offset) * length)
-                          for offset, length in ((0, 14), (2.5, 10), (-2.5, 10))]
+            returning = advice.key.startswith("return_") or advice.key == "dock"
+            radius = DOCK_RADIUS + 10 if returning else 18
+            if advice.key in ("approach", "mine"):
+                rock = next(r for r in run.asteroids if r.id == advice.target_id)
+                radius = rock.radius + 12
+            self._brackets(tx, ty, radius, color)
+            if advice.key == "approach":
+                self._flight_label(self._t("ore_target", value=round(advice.distance)),
+                                   tx - radius, ty - radius - 32, color)
+            points = self._direction_points(advice)
+            if points:
                 pygame.draw.polygon(self._canvas, color, points)
-        self._text(self._t("guide_" + advice.key), 60, 142, 23, color)
-        self._text(self._t("distance", value=round(advice.distance)), 1710, 142, 21, _MUTED)
+        self._text(self._t("guide_" + advice.key), 60, 108, 23, color)
+        self._text(self._t("distance", value=round(advice.distance)), 1710, 108, 21, _MUTED)
 
     def _draw_flight(self) -> None:
         run, c = self.expedition, self.campaign
@@ -429,26 +484,31 @@ class CampaignScreen(Screen):
             self._bar(enemy.x-25, enemy.y+34, 50, enemy.hull/75, _RED)
         for shot in run.projectiles:
             pygame.draw.circle(self._canvas, _GOLD if shot.friendly else _RED, (int(shot.x), int(shot.y)), 5)
+        # A quiet backing separates the hull from rocks and station machinery.
+        pygame.draw.circle(self._canvas, _BG, (round(run.x), round(run.y)), 37)
+        self._brackets(run.x, run.y, 36, _WHITE)
         draw_ship(self._canvas, run.x, run.y, run.heading, size=32,
-                  thrust=self._moving(), phase=self._visual_time)
+                  thrust=self._moving(), phase=self._visual_time, color=_CYAN)
+        if self._visual_time < 6:
+            self._draw_player_label()
         if self.mode == "flight":
             ax, ay = map(int, self._aim)
             pygame.draw.circle(self._canvas, _MUTED, (ax, ay), 13, 1)
             pygame.draw.line(self._canvas, _MUTED, (ax-18, ay), (ax+18, ay), 1)
             pygame.draw.line(self._canvas, _MUTED, (ax, ay-18), (ax, ay+18), 1)
-        self._panel((30, 24, 1860, 156))
-        self._text(self._t("sector_title", sector=run.sector), 60, 45, 32, _CYAN)
+        self._panel((30, 24, 1860, 116))
+        self._text(self._t("sector_title", sector=run.sector), 60, 35, 32, _CYAN)
         in_safe_zone = math.hypot(run.x - STATION_X, run.y - STATION_Y) <= SAFE_RADIUS
         status = "weapons_locked" if in_safe_zone else "danger" if run.sector > 1 else "safe"
-        self._text(self._t(status), 60, 96, 23, _CYAN if in_safe_zone else _RED if run.sector > 1 else _MUTED)
-        self._text(self._t("hull_value", value=int(run.hull), maximum=c.max_hull), 640, 45, 28)
-        self._bar(640, 113, 400, run.hull/c.max_hull, _RED if run.hull < 30 else _CYAN)
-        self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 45, 28, _GOLD)
-        self._bar(1130, 113, 400, len(run.cargo)/c.capacity, _GOLD)
-        self._text(self._t("credits", value=c.credits), 1590, 65, 27, _GOLD)
+        self._text(self._t(status), 60, 73, 23, _CYAN if in_safe_zone else _RED if run.sector > 1 else _MUTED)
+        self._text(self._t("hull_value", value=int(run.hull), maximum=c.max_hull), 640, 35, 28)
+        self._bar(640, 80, 400, run.hull/c.max_hull, _RED if run.hull < 30 else _CYAN)
+        self._text(self._t("cargo_value", count=len(run.cargo), capacity=c.capacity), 1130, 35, 28, _GOLD)
+        self._bar(1130, 80, 400, len(run.cargo)/c.capacity, _GOLD)
+        self._text(self._t("credits", value=c.credits), 1590, 47, 27, _GOLD)
         self._draw_guidance()
-        self._panel((30, 982, 1860, 78))
-        self._text(self._t("controls"), 60, 1008, 24, _WHITE)
+        self._panel((30, 1026, 1860, 42))
+        self._text(self._t("controls"), 60, 1034, 24, _WHITE)
 
     def _draw_fleet(self) -> None:
         shade = pygame.Surface((1920, 1080), pygame.SRCALPHA)

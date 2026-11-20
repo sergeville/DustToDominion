@@ -9,7 +9,8 @@ from dataclasses import dataclass, field
 import math
 from typing import Any
 
-STATION_X, STATION_Y = 960.0, 870.0
+STATION_X, STATION_Y = 960.0, 750.0
+LAUNCH_Y = STATION_Y - 155.0
 DOCK_RADIUS, SAFE_RADIUS = 110.0, 220.0
 WORLD_LEFT, WORLD_RIGHT = 40.0, 1880.0
 WORLD_TOP, WORLD_BOTTOM = 190.0, 970.0
@@ -226,7 +227,7 @@ class Expedition:
     campaign: Campaign = field(repr=False)
     sector: int
     x: float = STATION_X
-    y: float = STATION_Y
+    y: float = LAUNCH_Y
     heading: float = -math.pi / 2
     asteroids: list[Asteroid] = field(default_factory=list)
     pickups: list[Pickup] = field(default_factory=list)

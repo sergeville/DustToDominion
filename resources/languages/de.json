@@ -102,6 +102,8 @@
     "guide_mine": "IN REICHWEITE / LEERTASTE halten zum Abbau",
     "guide_approach": "ERZ SUCHEN / Zum markierten Asteroiden fliegen",
     "guide_return_depleted": "FELD LEER / Für den nächsten Flug wieder anlegen",
+    "player_label": "DEIN SCHIFF",
+    "ore_target": "ERZ / {value} m",
     "distance": "{value} m",
     "cut_progress": "ABBAU {value}%"
   }

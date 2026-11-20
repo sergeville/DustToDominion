@@ -16,3 +16,14 @@ the actual first sector remains safe, with no enemies. The roster inset is a
 concept presentation; the implemented roster remains a separate station view.
 
 The image is a direction to discuss, not human approval of the final art style.
+
+
+## Realistic visual target supplied by Serge
+
+[Realistic visual target](realistic-visual-target-2026-11-20.png) is the exact
+`goals.png` supplied on 2026-11-20. It is the newer visual direction: textured
+industrial hulls, a substantial docking bay, fractured ore, restrained cyan
+lighting and compact information panels. It is reference art, not a screenshot
+of the current build. Its crew portraits and painted materials are future work.
+The current readability pass establishes clear ship/target identification and
+station composition before replacing procedural artwork.

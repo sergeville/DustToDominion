@@ -102,6 +102,8 @@
     "guide_mine": "IN RANGE / Hold SPACE to cut the marked asteroid",
     "guide_approach": "FIND ORE / Fly toward the marked asteroid",
     "guide_return_depleted": "FIELD CLEARED / Return and dock for another run",
+    "player_label": "YOUR SHIP",
+    "ore_target": "ORE / {value} m",
     "distance": "{value} m",
     "cut_progress": "CUT {value}%"
   }

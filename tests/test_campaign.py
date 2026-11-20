@@ -5,7 +5,7 @@ import math
 import pytest
 
 from dtd.campaign import (
-    Campaign, InputState, Projectile, MAX_PROJECTILES, STATION_X, STATION_Y,
+    Campaign, InputState, Projectile, MAX_PROJECTILES, STATION_X, STATION_Y, LAUNCH_Y, DOCK_RADIUS,
     WORLD_LEFT, WORLD_TOP, WORLD_RIGHT, WORLD_BOTTOM, SAFE_RADIUS,
 )
 
@@ -58,7 +58,7 @@ def test_new_campaign_and_prices():
 def test_movement_normalization_bounds_and_stall_clamp():
     run = Campaign().launch(1)
     run.step(20, InputState(1, -1))
-    assert math.hypot(run.x - STATION_X, run.y - STATION_Y) == pytest.approx(75)
+    assert math.hypot(run.x - STATION_X, run.y - LAUNCH_Y) == pytest.approx(75)
     for _ in range(40):
         run.step(0.25, InputState(-1, -1))
     assert (run.x, run.y) == (WORLD_LEFT, WORLD_TOP)
@@ -73,6 +73,7 @@ def test_zero_time_and_finished_expedition_do_not_advance():
     run = Campaign().launch(1)
     run.step(0, InputState(1, 1, True, True))
     assert run.x == STATION_X and not run.projectiles
+    travel(run, STATION_X, STATION_Y)
     assert run.request_dock()
     run.step(0.25, InputState(1, 1, True, True))
     assert run.x == STATION_X and not run.projectiles
@@ -232,9 +233,10 @@ def test_station_cannot_be_used_to_farm_bounties_without_launching_into_danger()
         for _ in range(100):
             enemy = run.enemies[0]
             run.step(0.1, InputState(firing=True, aim_x=enemy.x, aim_y=enemy.y))
-        assert (run.x, run.y, run.hull) == (STATION_X, STATION_Y, 100)
+        assert (run.x, run.y, run.hull) == (STATION_X, LAUNCH_Y, 100)
         assert len(run.enemies) == sector - 1 and run.bounty == 0
         assert not run.projectiles
+        travel(run, STATION_X, STATION_Y)
         assert run.request_dock() and campaign.finish_run(run)
 
 
@@ -428,3 +430,15 @@ def test_checkpoint_rejects_unknown_fields_without_mutation():
     with pytest.raises(ValueError):
         Campaign.from_dict(payload)
     assert payload == before
+
+
+def test_launch_separates_ship_from_station_but_keeps_protection_and_docking():
+    campaign = Campaign()
+    run = campaign.launch(1)
+    distance = math.hypot(run.x - STATION_X, run.y - STATION_Y)
+    assert DOCK_RADIUS + 32 < distance < SAFE_RADIUS - 32
+    assert not run.dock_ready and not run.request_dock()
+    run.step(.25, InputState(firing=True, aim_x=run.x, aim_y=0))
+    assert not run.projectiles and run.hull == campaign.max_hull
+    travel(run, STATION_X, STATION_Y)
+    assert run.request_dock() and campaign.finish_run(run)

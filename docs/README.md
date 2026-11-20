@@ -11,6 +11,8 @@
 
 - [Display validation](reviews/2026-11-20-display.md): larger default window and native desktop fullscreen.
 
+- [Readability validation](reviews/2026-11-20-readability.md): separated launch position, visible station, clearer markers and compact HUD.
+
 ## Specification workflow
 
 Architecture documents for the project go here.

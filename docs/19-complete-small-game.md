@@ -191,3 +191,18 @@ The campaign rules, support-ship behavior and checkpoint schema remain unchanged
 
 Implement and validate spec 20's rendering/guidance layer while retaining the
 existing complete earned-progression and persistence regression coverage.
+
+
+## Readability geometry amendment — 2026-11-20
+
+Spec 20's follow-up moves the station center to (960, 750), with unchanged
+110-unit docking and 220-unit safety radii. A launch starts at (960, 595):
+clearly separated from station art, protected, and outside docking range.
+Returning inside the ring is required before E docks. The complete safe region
+fits above the flight controls. Economy, combat rules and save schema remain
+unchanged. Tests cover launch safety, travel back to dock and earned progression.
+
+### Additional dev stage
+
+Implement this geometry alongside spec 20's readability amendment, then run
+campaign/model/UI/acceptance tests and visual layout checks.

@@ -63,3 +63,44 @@ suite and independent review before local commit. Preserve user drafts/saves.
 3. Render/check layouts, run regression suite and independent review.
 4. Save evidence and update team handoff; commit locally only. Keep proposed
    until native visual/play acceptance has been recorded.
+
+
+## Readability amendment — 2026-11-20
+
+Serge approved a focused pass after reviewing native screenshots, then supplied
+`goals.png` as the visual reference: industrial hulls, cyan lighting, a readable
+docking bay and compact HUD. This pass improves identification and composition;
+it does not claim to deliver the reference's painted textures or crew portraits.
+
+- Move the modeled station center to (960, 750), so its 220-unit safety ring fits
+  above the controls. Launch at (960, 595), outside the 110-unit docking circle
+  but within the protected region. Docking now requires flying back to the ring.
+  Model and rendering use the same positions; saves remain station-only v1.
+- Draw a dark backing and bright segmented marker around the player, plus a
+  localized YOUR SHIP label for the first six seconds of each expedition.
+  The label timer resets per launch and pauses with the simulation.
+- Replace the tiny target circle with clearly visible corner brackets outside
+  the target silhouette. Gold identifies the guidance destination; cyan remains
+  the mining beam. Approach guidance includes a local target/distance label and
+  a directional arrow beside the ship. Return guidance marks the docking ring.
+- Keep the established readable HUD fonts; remove excess panel padding. Header
+  ends above the reachable ship, controls begin below its bottom-edge hull.
+  Guidance/labels must stay outside the HUD and inside the canvas.
+- Preserve progression, prices, mining selection, damage rules and save schema.
+  The station/spawn geometry change is intentional and receives gameplay tests.
+
+### Amendment testing and acceptance
+
+Cover safe spawn outside docking range, visible station safety ring, actual
+movement back to dock, harmless launch firing, player marker visibility at all
+world corners, timer reset/pause, target bracket size/placement and guide text
+in both locales. Re-run earned victory/combat/save acceptance. Render fresh,
+mining, return and edge states at all three resolutions with real fonts; inspect
+every generated fixture. Preserve the user's running session/checkpoint.
+
+### Additional dev stages
+
+5. Amend specs 19/20 before edits; implement station/spawn geometry, player
+   identification, target guidance and compact HUD.
+6. Validate gameplay regressions and rendered fixtures; save review/evidence,
+   commit locally, and provide the updated build without discarding live play.

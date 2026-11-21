@@ -13,7 +13,8 @@ Startup order per spec 03 as amended by specs 04, 05, and 13:
 6. Initialize the LanguageManager (spec 16, amending spec 03 step 5):
    validates the configured language against the loaded language
    resources and gates every user-facing string from here on.
-7. Initialize and display the main window (spec 03 step 6 / spec 02).
+7. Apply the optional resource-backed icon (spec 23), then initialize and
+   display the main window (spec 03 step 6 / spec 02).
 8. Create the startup screen through the transition dispatch table
    (spec 08, as amended by spec 13) and enter the loop. The screen's
    ``Theme`` is built fresh from the latest config by the factory -
@@ -40,7 +41,7 @@ from typing import Final
 import pygame
 from loguru import logger
 
-from dtd import audio, game_config, language, persistence
+from dtd import audio, game_config, game_constants, language, persistence
 from dtd.errors import ResourceError
 from dtd.game_config import GameConfig
 from dtd.main_window import MainWindow
@@ -100,6 +101,9 @@ def run() -> int:
     # codes). Everything from here on can look up strings.
     language.init_language_manager(resource_loader, config.language)
 
+    # Spec 23: the raw image works before the first display mode exists.
+    _apply_application_icon(resource_loader)
+
     # Spec 03 step 6: main window initialization and display.
     window = MainWindow()
     window.open(config.mainWindow)
@@ -114,6 +118,19 @@ def run() -> int:
     finally:
         window.close()
     return 0
+
+
+def _apply_application_icon(loader: ResourceLoader) -> None:
+    """Apply optional branding without making an unavailable OS icon fatal."""
+    resource_id = game_constants.APPLICATION_ICON_RESOURCE_ID
+    icon = loader.get_image_resource(resource_id)
+    if icon is None:
+        logger.warning("application icon resource {} is missing; using OS default", resource_id)
+        return
+    try:
+        pygame.display.set_icon(icon)
+    except pygame.error as exc:
+        logger.warning("could not set application icon {}: {}", resource_id, exc)
 
 
 def _init_pygame() -> None:

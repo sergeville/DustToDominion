@@ -13,6 +13,49 @@ remain open**. The
 [campaign specification](docs/19-complete-small-game.md) and
 [team handoff](docs/reviews/TEAM-HANDOFF.md) retain the rules and implementation history.
 
+## Application icon
+
+The selected icon is **01-original**, the original Prospector mining perspective.
+The runtime loads its 256px PNG before opening the first window. All six original
+views, exports and provenance remain in
+[the unmodified source pack](assets/source/icons/DustToDominion-Icon-Pack-v1/README.md).
+Compare them in the [offline preview](assets/source/icons/DustToDominion-Icon-Pack-v1/preview/index.html).
+
+- Runtime: `resources/graphics/app-icon.png` (selected view only).
+- Selected application inputs: `assets/icons/ready-to-use/` (PNG sizes, ICNS, ICO,
+  and `selection.json`).
+- [Integration and switching guide](docs/23-application-icon.md).
+- [Verification report and platform limits](docs/reviews/2026-11-21-application-icon/review.md).
+
+**Launch remains unchanged:** double-click **Open Dust to Dominion.command** in
+this folder or on Serge’s Desktop. Close an older game first, then reopen it.
+This is a Python launch, not a branded macOS `.app`. The runtime icon can be
+shown by SDL where the OS supports it; the prepared ICNS does not change the
+installed Terminal/Python application icon. No Windows executable builder exists.
+
+### Switch to another view
+
+From the project root, select one of `02-front`, `03-overhead`, `04-side`,
+`05-rear` or `06-docking` (or `01-original` to return to the default):
+
+```sh
+python3 assets/source/icons/DustToDominion-Icon-Pack-v1/tools/select_icon.py \
+  02-front --output assets/icons/selected-front
+cp assets/icons/selected-front/app-icon-* assets/icons/ready-to-use/
+cp assets/icons/selected-front/app-icon.icns assets/icons/ready-to-use/
+cp assets/icons/selected-front/app-icon.ico assets/icons/ready-to-use/
+cp assets/icons/selected-front/selection.json assets/icons/ready-to-use/
+cp assets/icons/ready-to-use/app-icon-256.png resources/graphics/app-icon.png
+.venv/bin/python -m pytest -q tests/test_application_icon.py
+```
+
+The selection output directory must be new; choose another name if it exists.
+Restart the game, update this selected-view description, and rebuild any `.pak`
+that distributes the icon. Leave `assets/source/icons/` unchanged so its original
+checksums remain valid. Do not package that source tree or all alternate views.
+Future native builds must wire the selected ICNS/ICO through their build settings
+and verify Finder/Dock or Windows Explorer separately.
+
 ## Native-resolution fullscreen
 
 Local product **`696c3bc`** passes **2,061 automated tests**.

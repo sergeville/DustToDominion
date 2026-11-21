@@ -2,6 +2,9 @@
 
 ## Local campaign work — start here
 
+- [Application icon](23-application-icon.md): selected view, asset locations and packaging boundaries.
+- [Icon integration verification](reviews/2026-11-21-application-icon/review.md): checks and native-platform limits.
+
 - [Native-resolution rendering review](reviews/2026-11-20-native-resolution/review.md): current implementation, exact content/window sizes, independent checks and open physical/visual acceptance.
 - [Human controls/audio results](reviews/2026-11-20-gameplay-audio/manual-results.md): Serge’s baseline play observations, separate from automated evidence.
 

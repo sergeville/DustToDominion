@@ -1,0 +1,26 @@
+{
+  "common": "Create one alternate square game application icon for Dust to Dominion, using the attached original icon as the exact visual design reference. Preserve the same Prospector mining spacecraft: two broad angular split-prong wings, central faceted luminous cyan cockpit, dark silver industrial armor with bronze shoulder panels and amber hazard stripes, and exactly two rear engines. Keep realistic polished 3D rendering, dark navy space, cyan and warm gold palette, strong separation, no text or watermark or UI, full-bleed square canvas, major details inside a safe 10% margin. This is a finished icon, not a contact sheet or diagram. Strong simple composition readable at 64 pixels; the ship dominates. Make a genuinely different camera angle while preserving recognizable ship identity. Prefer highest native square resolution. ",
+  "variations": [
+    {
+      "key": "02-front",
+      "prompt": "VIEW 02 — FRONT: dramatic head-on, slightly elevated front view, symmetrical composition. Look toward the ship's cyan cockpit between the two forward prongs. Its mining emitter sends a short cyan beam down into one small warm gold fractured rock at the bottom foreground. A softly lit partial circular station frames the ship in the background. Show the front plane and depth clearly, unlike the original diagonal overhead view."
+    },
+    {
+      "key": "03-overhead",
+      "prompt": "VIEW 03 — TOP: true direct overhead plan view of the same ship, nose pointing toward the top of the square, twin engine trails pointing down. Make the ship large and symmetric, occupying about 75% of canvas height, with the same split prow and central cyan cockpit fully visible from above. One gold-veined asteroid sits near the upper left edge, and a restrained section of the station ring curves behind the lower half. Preserve overhead camera, no perspective side view."
+    },
+    {
+      "key": "04-side",
+      "prompt": "VIEW 04 — SIDE: cinematic starboard side profile of the same ship, nose pointing left. Camera at shallow elevated side angle so the deep metal hull, cockpit height, near wing and one partially visible far wing are legible; show the two engines consistently but only as perspective permits. Ship occupies the center and most of the width, mining beam aimed at a compact gold-veined asteroid on the left. A subtle blurred station arc in the background completes the square composition. Distinct side view, not another overhead diagonal."
+    },
+    {
+      "key": "05-rear",
+      "prompt": "VIEW 05 — REAR THREE-QUARTER: look from behind and slightly above the same ship, with the twin cyan engine nozzles prominent in the lower foreground and the split prow pointing into the upper right depth. Preserve exactly two engines and the original hull design. The ship is flying toward a distant gold-veined asteroid field, with a subtle station ring far behind it. Strong luminous cyan exhaust, solid believable metal hull, warm rim lighting. Ship fills most of the square. This must be an unmistakable rear view, not a front view with rear engines added."
+    },
+    {
+      "key": "06-docking",
+      "prompt": "VIEW 06 — DOCKING: a low front-port three-quarter view of the same Prospector arriving inside a circular orbital station docking bay. The ship is large and centered, nose toward viewer and slightly right; its split prow, faceted cyan cockpit, bronze shoulder plates and two engines are clearly recognizable. An amber-lit industrial ring frames the ship, with a dark space opening and a few gold ore fragments outside. Landing guidance cyan lights beneath the ship, mining beam off. Make this a dramatic yet simple application icon, not a busy hangar illustration. Warm bay light and cyan cockpit create excellent small-size readability."
+    }
+  ],
+  "method": "Built-in image generation; derivative PNG sizes exported deterministically; originals unchanged."
+}

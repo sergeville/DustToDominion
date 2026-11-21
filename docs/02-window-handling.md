@@ -123,3 +123,12 @@ Evidence: [Display validation](reviews/2026-11-20-display.md).
    pointer aiming passed after correcting stale SDL transition events. Direct
    3840x2160 rendering and earned play passed offscreen; physical 4K and Retina
    density are unverified. See [native review](reviews/2026-11-20-native-resolution/review.md).
+
+## Application icon — 2026-11-21 amendment
+
+Spec [23](23-application-icon.md) defines the optional resource-backed icon.
+Startup applies it before MainWindow.open; mode creation and transitions are unchanged.
+
+## Dev plan — icon amendment
+
+- Apply and test the pre-window icon through the existing ResourceLoader (spec 23). **Completed 2026-11-21.**

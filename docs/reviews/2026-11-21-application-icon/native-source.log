@@ -1,0 +1,78 @@
+2026-11-21 08:13:24.187 | INFO     | dtd.resource_loader:_load_search_path:367 - loaded 40 resource(s) total (including 0 override(s)) from the resource search path
+pygame-ce 2.5.8 (SDL 2.32.10, Python 3.12.13)
+{
+  "name": "native-source",
+  "resource_mode": "source",
+  "isolated_persistence": true,
+  "foreign_cwd": true,
+  "physical_input": false,
+  "audio_driver": "dummy",
+  "phases": [
+    {
+      "phase": "windowed",
+      "window": [
+        1920,
+        1080
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": false
+    },
+    {
+      "phase": "fullscreen",
+      "window": [
+        3440,
+        1440
+      ],
+      "surface": [
+        2560,
+        1440
+      ],
+      "fullscreen": true
+    },
+    {
+      "phase": "returned",
+      "window": [
+        1920,
+        1080
+      ],
+      "surface": [
+        1920,
+        1080
+      ],
+      "fullscreen": false
+    }
+  ],
+  "icon_before_window": true,
+  "icon_size": [
+    256,
+    256
+  ],
+  "icon_rgba_sha256": "9ce22b6fccddde45310d7abca126dc1c8dac248f5c25f50f996777c29493ffe5",
+  "set_icon_returned": true,
+  "driver": "cocoa",
+  "desktop_before": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "desktop_after": [
+    [
+      3440,
+      1440
+    ],
+    [
+      1710,
+      1107
+    ]
+  ],
+  "exit_code": 0,
+  "display_closed": true
+}

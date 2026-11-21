@@ -7,6 +7,9 @@ from __future__ import annotations
 
 from typing import Final
 
+# Optional runtime window icon, resolved through the normal resource loader (spec 23).
+APPLICATION_ICON_RESOURCE_ID = "graphics/app-icon.png"
+
 # Fixed simulation step used by the test harness (spec 00: Testing). The
 # accumulator that consumes this step lives in the test harness, not the game.
 SIM_STEP = 1 / 60

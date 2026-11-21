@@ -43,7 +43,9 @@ be executed before the resource loader is invoked. So, the game's startup order 
    2026-11-03 per spec 16: Language support; the LanguageManager needs
    the loaded resources and the config's language value, and everything
    after it may look up strings.)
-7. Main window initialization and display (assuming previous steps did not stop on error).
+7. Apply the optional runtime icon from the loaded raw image before main window
+   initialization and display (spec 23). Missing icon or SDL rejection warns and
+   continues; corrupt resource decoding retains the normal fatal policy.
 
 ### Resource types and formats
 
@@ -699,3 +701,13 @@ The spec is too large to implement all at once. The following staged dev plan is
 Implement and test spec 22 silent startup when no mixer/device is available;
 retain fatal display/font errors and normal resource-integrity validation.
 After validation, restore this specification to active.
+
+## Application icon amendment — 2026-11-21
+
+See [spec 23](23-application-icon.md) for the selected resource and source-asset
+separation. Its loose-file and `.pak` tests extend the consumer/startup coverage.
+
+### Dev plan addition
+
+- Apply and test the selected icon before the first display mode using the existing
+  get_image_resource API; no loader or resource-format changes (spec 23). **Completed 2026-11-21.**

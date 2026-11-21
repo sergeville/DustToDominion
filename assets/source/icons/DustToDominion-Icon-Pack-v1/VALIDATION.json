@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "checked_on": "2026-11-21",
+  "views": 6,
+  "native_original_dimensions": [
+    1254,
+    1254
+  ],
+  "standard_png_exports": 36,
+  "standard_png_sizes": [
+    1024,
+    512,
+    256,
+    128,
+    64,
+    32
+  ],
+  "all_standalone_pngs_decoded": 49,
+  "macos_icns_variants_decoded": 6,
+  "windows_ico_variants_decoded": 6,
+  "embedded_images_match_png_pixels": true,
+  "python_files_syntax_checked": true,
+  "pending": [
+    "Integration into current game repository",
+    "Native Finder/Dock and Windows Explorer appearance",
+    "Runtime pygame adapter in the actual game"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "baseline": "e26d621",
+  "files_checked": 89,
+  "changed_existing_product_files": [
+    "src/dtd/game_constants.py",
+    "src/dtd/main.py"
+  ],
+  "existing_resources_launchers_and_user_saves_unchanged": true
+}

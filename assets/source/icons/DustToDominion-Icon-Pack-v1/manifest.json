@@ -1,0 +1,167 @@
+{
+  "name": "Dust to Dominion icon pack",
+  "version": "1.0",
+  "created": "2026-11-21",
+  "default_view": "01-original",
+  "png_sizes": [
+    1024,
+    512,
+    256,
+    128,
+    64,
+    32
+  ],
+  "ico_sizes": [
+    16,
+    24,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "icns_pixel_sizes": [
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "views": [
+    {
+      "id": "01-original",
+      "title": "Original mining perspective",
+      "original": "originals/01-original.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "79d2237773f7aa0ba83d70a12422fbb18c31a86e49bf2169cfaa1601d7cd3963",
+      "png": {
+        "1024": "png/01-original/1024.png",
+        "512": "png/01-original/512.png",
+        "256": "png/01-original/256.png",
+        "128": "png/01-original/128.png",
+        "64": "png/01-original/64.png",
+        "32": "png/01-original/32.png"
+      },
+      "icns": "macos/01-original.icns",
+      "ico": "windows/01-original.ico"
+    },
+    {
+      "id": "02-front",
+      "title": "Front view",
+      "original": "originals/02-front.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "6722714796043cb7c9899f3d577660c9e6e8378a35fcf8870a1c88504498b3e7",
+      "png": {
+        "1024": "png/02-front/1024.png",
+        "512": "png/02-front/512.png",
+        "256": "png/02-front/256.png",
+        "128": "png/02-front/128.png",
+        "64": "png/02-front/64.png",
+        "32": "png/02-front/32.png"
+      },
+      "icns": "macos/02-front.icns",
+      "ico": "windows/02-front.ico"
+    },
+    {
+      "id": "03-overhead",
+      "title": "Overhead view",
+      "original": "originals/03-overhead.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "efec698757888fabec1ea90f5f719102ab86c922a314d0ed495979fe2f7b1cbd",
+      "png": {
+        "1024": "png/03-overhead/1024.png",
+        "512": "png/03-overhead/512.png",
+        "256": "png/03-overhead/256.png",
+        "128": "png/03-overhead/128.png",
+        "64": "png/03-overhead/64.png",
+        "32": "png/03-overhead/32.png"
+      },
+      "icns": "macos/03-overhead.icns",
+      "ico": "windows/03-overhead.ico"
+    },
+    {
+      "id": "04-side",
+      "title": "Side perspective",
+      "original": "originals/04-side.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "3ff0515934f0a874d738a526ed4d4e911f8abde638fbd08df2624c97028bc2a0",
+      "png": {
+        "1024": "png/04-side/1024.png",
+        "512": "png/04-side/512.png",
+        "256": "png/04-side/256.png",
+        "128": "png/04-side/128.png",
+        "64": "png/04-side/64.png",
+        "32": "png/04-side/32.png"
+      },
+      "icns": "macos/04-side.icns",
+      "ico": "windows/04-side.ico"
+    },
+    {
+      "id": "05-rear",
+      "title": "Rear perspective",
+      "original": "originals/05-rear.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "d32e4ee1e753ca30ffce6deea5dbf2574a9a99b3316063b29785ba6d482ee43a",
+      "png": {
+        "1024": "png/05-rear/1024.png",
+        "512": "png/05-rear/512.png",
+        "256": "png/05-rear/256.png",
+        "128": "png/05-rear/128.png",
+        "64": "png/05-rear/64.png",
+        "32": "png/05-rear/32.png"
+      },
+      "icns": "macos/05-rear.icns",
+      "ico": "windows/05-rear.ico"
+    },
+    {
+      "id": "06-docking",
+      "title": "Station docking",
+      "original": "originals/06-docking.png",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "original_sha256": "25fca208f4fee157325e54cf0ccad46dd23a2aa9980d3858a2d48ef3f2569bd2",
+      "png": {
+        "1024": "png/06-docking/1024.png",
+        "512": "png/06-docking/512.png",
+        "256": "png/06-docking/256.png",
+        "128": "png/06-docking/128.png",
+        "64": "png/06-docking/64.png",
+        "32": "png/06-docking/32.png"
+      },
+      "icns": "macos/06-docking.icns",
+      "ico": "windows/06-docking.ico"
+    }
+  ],
+  "default_assets": {
+    "1024": "ready-to-use/app-icon-1024.png",
+    "512": "ready-to-use/app-icon-512.png",
+    "256": "ready-to-use/app-icon-256.png",
+    "128": "ready-to-use/app-icon-128.png",
+    "64": "ready-to-use/app-icon-64.png",
+    "32": "ready-to-use/app-icon-32.png"
+  },
+  "default_icns": "ready-to-use/app-icon.icns",
+  "default_ico": "ready-to-use/app-icon.ico",
+  "background": "Opaque navy square",
+  "native_4k": false,
+  "artwork_generation": "Original plus five reference-guided generated views; no shared 3D mesh.",
+  "integration_status": "Assets prepared; actual game integration and native OS appearance pending."
+}

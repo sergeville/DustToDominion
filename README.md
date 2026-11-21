@@ -33,6 +33,24 @@ This is a Python launch, not a branded macOS `.app`. The runtime icon can be
 shown by SDL where the OS supports it; the prepared ICNS does not change the
 installed Terminal/Python application icon. No Windows executable builder exists.
 
+### Desktop launcher icon (macOS)
+
+Serge’s Desktop `Open Dust to Dominion.command` displays **01-original**;
+verified in Finder and confirmed by his screenshot on 2026-11-21. The script's
+431 bytes and launch behavior are unchanged. This custom Finder file icon is
+stored in macOS metadata/resource fork, separately from the pygame icon and
+future application-bundle branding. Git does not retain that Desktop metadata.
+
+To reapply after recreating/copying the launcher, or when switching views:
+
+1. Open `assets/icons/ready-to-use/app-icon-1024.png` in Preview.
+2. Select the image with Command+A, then copy with Command+C.
+3. Select the Desktop launcher in Finder and choose Get Info (Command+I).
+4. Click the small icon at the top left, then paste with Command+V.
+
+To restore the generic file icon, select that small icon in Get Info and press
+Delete. This affects only the launcher file's custom icon, not Terminal/Python.
+
 ### Switch to another view
 
 From the project root, select one of `02-front`, `03-overhead`, `04-side`,

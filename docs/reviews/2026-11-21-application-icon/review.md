@@ -107,3 +107,19 @@ python3 assets/source/icons/DustToDominion-Icon-Pack-v1/tools/verify_package.py
 The native probe overwrites its named report/log only when the invoking command
 redirects logs; use a new --name to retain previous JSON evidence. Tests/probes
 never use the player's saved campaign as fixtures.
+
+## Desktop icon follow-up — 2026-11-21
+
+Serge's 08:18 screenshot showed the unchanged generic `.command` file icon,
+which is separate from the pygame runtime icon. Applied the selected 1024px
+PNG through Preview copy → Finder Get Info → icon paste to the exact Desktop
+launcher. Finder screenshot showed the ship, and Serge's 08:21:10 screenshot
+confirmed it. **Desktop Finder file-icon appearance is now verified.** This does
+not resolve the remaining running-game Dock/window or native-bundle checks above.
+
+The launcher data fork remains exactly 431 bytes with the same SHA-256; only
+macOS custom-icon metadata/resource fork was added (Finder includes that extra
+data in its displayed file size). [Verification](desktop-icon.json). No code,
+save, setting or launcher logic changed; no test suite rerun was necessary.
+Root README explains reapplication/removal; the custom Desktop metadata itself
+is not tracked by Git. No native application bundle was created.

@@ -1,6 +1,6 @@
 # Dust to Dominion
 
-![Dust to Dominion — Prospector, Hauler and Refinery ships in the fleet view](docs/reviews/2026-11-20-native-resolution/final/en-us-2560-fleet.png)
+![Dust to Dominion — original Prospector artwork used for the application icon](assets/icons/ready-to-use/app-icon-1024.png)
 
 A small offline asteroid-mining campaign built locally on scorbo2's
 spec-first pygame-ce game. Mine and sell ore, upgrade your ship, fight rival

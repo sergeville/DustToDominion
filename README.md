@@ -1,5 +1,7 @@
 # Dust to Dominion
 
+![Dust to Dominion — mining an asteroid near the station in Sector 1](docs/reviews/2026-11-20-native-resolution/final/en-us-2560-mining-z1.5.png)
+
 A small offline asteroid-mining campaign built locally on scorbo2's
 spec-first pygame-ce game. Mine and sell ore, upgrade your ship, fight rival
 ships, hire two crew members and build a three-ship operation. Win with both
